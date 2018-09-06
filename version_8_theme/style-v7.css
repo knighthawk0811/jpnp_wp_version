@@ -1,0 +1,631 @@
+/*
+Theme Name: version_7
+Theme URI: http://neathawk.us
+Author: Joseph Neathawk
+Author URI: http://neathawk.us
+Description: version_7 default theme incorporates items from prior versions. It is derived from _s
+Version: 2018.05.1
+License: GPLv3
+License URI: http://www.gnu.org/licenses/gpl.html
+Text Domain: version_7
+Tags:
+*/
+
+/*@import url('navBar.css');*/
+
+/*
+element {
+	layout(position)
+
+	content(text)
+
+	design(background)
+
+	other(z-index)
+}
+@font-face
+{
+      font-family: title_font;
+      src: url("/_font/font.ttf");
+}
+COLORS:
+	green:#bfd22b;
+	grey:#5d5c5a;
+	blue:#2695d2;
+
+Table of Contents:
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+# Main Structur
+# Elements
+# Navigation
+# Header Area
+# Content Area
+# Footer Area
+# Other
+# Templates
+# Media Queries
+--------------------------------------------------------------*/
+
+
+
+/*--------------------------------------------------------------
+# Main Structure
+--------------------------------------------------------------*/
+body {
+    position:relative;
+
+	background:#ffffff;
+}
+#page {
+    display:block;
+    width:100%;
+
+	background:#ffffff;
+}
+/*--------------------------------------------------------------
+# Elements
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Navigation
+--------------------------------------------------------------*/
+/* sidebar sliding navigation */
+/* container main */
+#nav-slide {
+	bottom:0px;
+	display:inline-block;
+	min-height:1.5rem;
+	margin:0;
+	padding:0;
+	position:absolute;
+    position: fixed;
+    right:0px;
+	top:0px;
+	width:0px;
+
+    font-variant: small-caps;
+
+	background:#2695d2;
+	border:none;
+	border-left:1px solid rgba(0,0,0,0);
+	box-shadow:0px 0px 0px 0px rgba(0,0,0,0);
+
+	overflow:hidden;
+	transition: all 450ms ease;
+	z-index:9999;
+}
+/* container visible */
+body.hamburger-menu #nav-slide {
+	width:300px;
+
+	border:none;
+	border-left:1px solid rgba(0,0,0,0.5);
+	box-shadow:-1px 1px 5px -1px rgba(0,0,0,0.5);
+}
+/* button */
+#nav-slide #hamburger-menu {
+	height:50px;
+	position:fixed;
+    right:-5px;
+	top:120px;
+	width:50px;
+
+    background:#2695d2;
+    border-radius:30%;
+    border-top-right-radius:0;
+    border-bottom-right-radius:0;
+
+	cursor:pointer;
+	filter: drop-shadow(-2px 0px 2px rgba(0,0,0,0.25));
+	transition: all 450ms ease;
+	z-index:999;
+}
+body.hamburger-menu #nav-slide #hamburger-menu {
+	right:295px;
+}
+#nav-slide #hamburger-menu div {
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	margin: 0;
+
+	color:#000000;
+    font-size: 32px;
+    line-height: 50px;
+    text-align:center;
+	text-decoration:none;
+    text-shadow:-1px 0px 2px rgba(0,0,0,0.5);
+
+	/*transform: rotate(-90deg);*/
+}
+/* menu */
+#nav-slide ul {
+	margin:30px 0;
+
+	list-style:none inside none;
+}
+/* links */
+#nav-slide .menu li a,
+#nav-slide .menu li a:active,
+#nav-slide .menu li a:visited,
+#nav-slide .menu li a:active:visited {
+    min-width: 110px;
+
+	color:#ffffff;
+    font-size: 18px;
+    line-height: 2;
+    text-align:center;
+	text-decoration:none;
+    text-shadow:0px 1px 2px rgba(0,0,0,0.5);
+}
+#nav-slide .menu li a:hover,
+#nav-slide .menu li a:active:hover,
+#nav-slide .menu li a:visited:hover,
+#nav-slide .menu li a:active:visited:hover {
+	text-decoration:underline;
+}
+
+/* header navigation */
+/* container main */
+#site-navigation {
+	height:30px;
+	position: absolute;
+    top: 90px;
+    width: 100%;
+
+    font-family: 'Audiowide', sans-serif;
+    font-variant: small-caps;
+    text-align: center;
+
+    border:none;
+
+    z-index:99;
+}
+#site-navigation .menu-d1-container {
+	width:auto;
+    float:right;
+    margin:0 70px 0 0;
+}
+#site-navigation .menu-d2-container {
+    clear:right;
+    float:right;
+    margin:0 70px 0 0;
+    width:auto;
+}
+/* container class */
+#site-navigation ul.menu {
+	display:inline-block;
+    margin: 0;
+	padding:0;
+    width:100%;
+}
+#site-navigation .menu-d1-container ul.menu {
+
+}
+#site-navigation .menu-d2-container ul.menu {
+
+}
+/* list items */
+#site-navigation .menu li {
+    float: left;
+    position: relative;
+
+    border-right:1px solid rgba(0,0,0,0.5);
+}
+#site-navigation .menu li:first-child {
+    border-left:1px solid rgba(0,0,0,0.5);
+}
+
+/* second tier */
+/* container */
+#site-navigation .menu li ul {
+    background:#ffffff;
+}
+/* list items */
+#site-navigation .menu ul li,
+#site-navigation .menu ul li:first-child,
+#site-navigation .menu ul li:last-child {
+    border:none;
+}
+/* links */
+#site-navigation .menu li a,
+#site-navigation .menu li a:active,
+#site-navigation .menu li a:visited,
+#site-navigation .menu li a:active:visited {
+    min-width: 110px;
+    padding: 0 10px;
+
+    color:#000000;
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.5;
+    text-align:center;
+}
+#site-navigation .menu li a:hover,
+#site-navigation .menu li a:active:hover,
+#site-navigation .menu li a:visited:hover,
+#site-navigation .menu li a:active:visited:hover {
+    text-decoration:underline;
+
+    border-radius:30px 30%;
+    background:rgba(0,0,0,0.125);
+}
+/*--------------------------------------------------------------
+# Header Area
+--------------------------------------------------------------*/
+#masthead {
+	min-height:180px;
+	padding:0;
+	position:relative;
+    width:100%;
+
+    background: #ffffff;
+
+    overflow:visible;
+}
+#masthead .custom-header-image {
+    height:auto;
+    left: 0px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0px;
+	width: auto;
+}
+#masthead .custom-logo-link {
+	left: 0px;
+    margin: 0;
+    position: absolute;
+    top:0px;
+    width:450px;
+
+    border-radius:0;
+
+    overflow:hidden;
+    z-index:999;
+}
+#masthead .site-title {
+    margin: 0;
+    position: relative;
+    width:300px;
+
+    font-family: 'Audiowide', sans-serif;
+    font-size: 24px;
+    text-align:center;
+    text-shadow:0px 1px 2px rgba(0,0,0,0.5);
+
+    z-index:9;
+}
+#masthead .site-title a {
+	color:#000000;
+	text-decoration:none;
+
+    z-index:9;
+}
+#masthead .site-description {
+    margin: 0;
+    position: relative;
+    width:300px;
+
+    color:#000000;
+    font-family: 'Audiowide', sans-serif;
+    font-size: 12px;
+    text-align:center;
+    text-shadow:0px 1px 2px rgba(0,0,0,0.5);
+}
+
+/*--------------------------------------------------------------
+# Content Area
+--------------------------------------------------------------*/
+#content {
+    display:inline-block;
+	min-height:70vh;
+    width:100%;
+
+    color:#000000;
+
+    background:#ffffff;
+}
+#primary {
+    display:inline-block;
+    padding:0 30px;
+    width:100%;
+}
+#main {
+    display:inline-block;
+    margin: 0;
+	padding:0 20px;
+    width: 100%;
+
+	background:none;
+}
+#main h1 {
+    color:#2695d2;
+}
+#secondary {
+    display:inline-block;
+    margin:0;
+    position:relative;
+    width:100%;
+
+	background:none;
+}
+
+/*thumbnails*/
+.size-thumbnail,
+.wp-post-image {
+	padding:3px;
+
+	border:1px solid rgba(255,255,255,0);
+	border-radius:10px;
+}
+.size-thumbnail:hover,
+.wp-post-image:hover {
+	border:1px solid #79a8cf;
+}
+/*--------------------------------------------------------------
+# Footer Area
+--------------------------------------------------------------*/
+#colophon {
+    display:block;
+	min-height:10vh;
+	position:relative;
+	width:100%;
+
+	color:#000000;
+	font-size:0.9em;
+
+    background: #ffffff;
+}
+#colophon a,
+#colophon a:visited {
+	color:#000000;
+}
+#colophon #footer-left {
+	clear:none;
+	float:left;
+	padding:0;
+	width:45%;
+
+    text-align:right;
+}
+#colophon #footer-center {
+	clear:none;
+	float:left;
+    margin:0;
+	padding:0;
+	width:100%;
+
+    text-align:center;
+}
+#colophon #footer-right {
+	clear:none;
+	float:right;
+	padding:0;
+	width:45%;
+
+    text-align:left;
+}
+/*--------------------------------------------------------------
+# Other
+--------------------------------------------------------------*/
+/* version_7_site_include_post_by_category */
+.paginate-container {
+    clear:both;
+    display:inline-block;
+    margin:0 auto;
+    position:relative;
+    width:100%;
+}
+.paginate-container .previous {
+    clear:left;
+    float:left;
+}
+.paginate-container .next {
+    clear:right;
+    float:right;
+}
+.paginate-container .page-number {
+    height:40px;
+    margin:0 auto;
+    position:relative;
+    width:220px;
+
+    text-align:center;
+}
+.paginate-container .page-number a,
+.paginate-container .page-number a:visited,
+.paginate-container .page-number a:hover,
+.paginate-container .page-number a:visited:hover {
+    display: inline-block;
+    margin: 3px;
+    min-width: 20px;
+    padding: 0 3px;
+
+    color:#000000;
+
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(0,0,0,0);
+    border-radius:5px;
+    box-shadow:0px 0px 1px 1px rgba(0,0,0,0.25);
+}
+.paginate-container .page-number a.current,
+.paginate-container .page-number a.current:hover,
+.paginate-container .page-number a.current:visited:hover {
+    background: rgba(189,210,48,0.5);
+    border: 1px solid rgba(0,0,0,0.5);
+}
+
+/* forms page - version_7_site_include_post_by_category */
+.forms .clearfix {
+    margin: 0 0 2em 0;
+    padding: 0 0 2em 0;
+
+    border-bottom: 1px solid #000000;
+}
+
+
+/* event calendar*/
+table.em-calendar td {
+    height:5rem;
+    width:14.2%;
+}
+table.em-calendar ul {
+    margin:0 0 10px 10px;
+    padding:0;
+
+    list-style:inside disc none;
+}
+table.em-calendar td.eventful a,
+table.em-calendar td.eventful-today a {
+    color:#2695d2;
+}
+table.em-calendar td.eventless-today,
+table.em-calendar td.eventful-today {
+    background-color:#bdd230;
+}
+table.em-calendar .month_name {
+    text-align:center;
+}
+/*--------------------------------------------------------------
+# Templates
+--------------------------------------------------------------*/
+/*homepage*/
+body.home .banner-home {
+    min-width:100%;
+    width:100%;
+}
+body.home h1.entry-title {
+    display:none;
+}
+body.home #main {
+    padding:0;
+}
+
+
+/*--------------------------------------------------------------
+# Media Queries
+--------------------------------------------------------------*/
+
+/* large to small */
+@media only screen and (max-width: 1279px) {
+/*1279px width and smaller*/
+
+
+}
+
+@media only screen and (max-width: 1023px) {
+/*1023px width and smaller*/
+
+}
+
+@media only screen and (max-width: 899px) {
+/*899px width and smaller*/
+
+    #site-navigation {
+        display:none;
+    }
+    #site-navigation ul.menu {
+        clear:both;
+        display: inline-block;
+        margin: 0;
+        padding:0;
+    }
+
+    #masthead .custom-logo-link {
+        max-width:100%;
+        position:relative;
+        width: auto;
+    }
+    #masthead .site-title,
+    #masthead .site-description {
+        position:absolute;
+        top:0px;
+    }
+
+}
+
+@media only screen and (max-width: 599px) {
+/*599px width and smaller*/
+
+
+}
+
+@media only screen and (max-width: 479px) {
+/*479px width and smaller*/
+
+
+}
+
+
+/* small to large */
+@media only screen and (min-width: 480px) {
+/*480px width and larger*/
+
+
+}
+@media only screen and (min-width: 600px) {
+/*600px width and larger*/
+
+
+}
+@media only screen and (min-width: 900px) {
+/*900px width and larger*/
+
+
+}
+@media only screen and (min-width: 1024px) {
+/*1024px width and larger*/
+
+    .entry-content .entry-thumbnail {
+        float: left;
+        margin: 0 1em 1em 0;
+    }
+}
+@media only screen and (min-width: 1280px) {
+/*1280px width and larger*/
+
+}
+
+/* specific size range */
+@media only screen and (min-width: 900px) and (max-width: 1100px) {
+/* range for header custom logo sizing */
+    #masthead .custom-logo-link {
+        width: 35%;
+    }
+}
+
+
+
+
+@media only print {
+
+/*--------------------------------------------------------------
+# Main Structure
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Elements
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Navigation
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Header Area
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Content Area
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Footer Area
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Other
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Templates
+--------------------------------------------------------------*/
+
+
+
+}
