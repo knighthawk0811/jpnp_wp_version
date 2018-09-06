@@ -1,0 +1,1 @@
+jpnp_wp_version
