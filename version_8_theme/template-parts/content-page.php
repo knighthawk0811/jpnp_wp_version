@@ -4,7 +4,7 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * @package version_7
+ * @package version_8
  */
 
 ?>
@@ -14,14 +14,14 @@
 		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
 	</header><!-- .entry-header -->
 
-	<?php version_7_post_thumbnail(); ?>
+	<?php version_8_post_thumbnail(); ?>
 
 	<div class="entry-content">
 		<?php
 			the_content();
 
 			wp_link_pages( array(
-				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'version_7' ),
+				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'version_8' ),
 				'after'  => '</div>',
 			) );
 		?>
@@ -34,7 +34,7 @@
 					sprintf(
 						wp_kses(
 							/* translators: %s: Name of current post. Only visible to screen readers */
-							__( 'Edit <span class="screen-reader-text">%s</span>', 'version_7' ),
+							__( 'Edit <span class="screen-reader-text">%s</span>', 'version_8' ),
 							array(
 								'span' => array(
 									'class' => array(),

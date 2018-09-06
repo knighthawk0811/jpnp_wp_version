@@ -1,5 +1,5 @@
 /**
- * version_7_ajax.js
+ * version_8_ajax.js
  *
  * @link 
  */
@@ -19,9 +19,9 @@ jQuery(document).ready(function()
 	/*/
 	event_call_function_once(function()
 	{
-		version_7_complete_middle_man();
+		version_8_complete_middle_man();
 		//alert("test");
-	}, 1000, "version_7_complete_middle_man");
+	}, 1000, "version_8_complete_middle_man");
 	//*/
 	return false
 });
@@ -32,15 +32,15 @@ jQuery(document).ready(function()
  * @link 
  * @param
  * @return 
- * @uses version_7_complete_middle_man
+ * @uses version_8_complete_middle_man
  */
-function version_7_complete_init() 
+function version_8_complete_init() 
 {			
 	event_call_function_once(function()
 	{
-		version_7_complete_middle_man();
+		version_8_complete_middle_man();
 		//1200 ms wait
-	}, 1200, "version_7_complete_middle_man");
+	}, 1200, "version_8_complete_middle_man");
 	
 	return false
 }
@@ -52,9 +52,9 @@ function version_7_complete_init()
  * @link 
  * @param
  * @return 
- * @uses version_7_complete_ajax
+ * @uses version_8_complete_ajax
  */
-function version_7_complete_middle_man() 
+function version_8_complete_middle_man() 
 {
 	if(jQuery("#main").hasClass("loaded"))
 	{
@@ -62,7 +62,7 @@ function version_7_complete_middle_man()
 	}
 	else
 	{
-		version_7_complete_ajax();
+		version_8_complete_ajax();
 	}
 }
 /**
@@ -73,9 +73,9 @@ function version_7_complete_middle_man()
  * @link 
  * @param
  * @return 
- * @uses version_7_generic_ajax_callback
+ * @uses version_8_generic_ajax_callback
  */
-function version_7_generic_ajax(arg0 = '', arg1 = '', arg2 = '', arg3 = '') 
+function version_8_generic_ajax(arg0 = '', arg1 = '', arg2 = '', arg3 = '') 
 {
 	var output = '';
 	jQuery.ajax(
@@ -84,7 +84,7 @@ function version_7_generic_ajax(arg0 = '', arg1 = '', arg2 = '', arg3 = '')
 		type: 'post',
 		data: 
 		{
-			action: 'version_7_generic_ajax_callback',
+			action: 'version_8_generic_ajax_callback',
 			param0: arg0,
 			param1: arg1,
 			param2: arg2,

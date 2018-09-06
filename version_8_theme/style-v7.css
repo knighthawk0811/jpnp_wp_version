@@ -1,13 +1,13 @@
 /*
-Theme Name: version_7
+Theme Name: version_8
 Theme URI: http://neathawk.us
 Author: Joseph Neathawk
 Author URI: http://neathawk.us
-Description: version_7 default theme incorporates items from prior versions. It is derived from _s
+Description: version_8 default theme incorporates items from prior versions. It is derived from _s
 Version: 2018.05.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
-Text Domain: version_7
+Text Domain: version_8
 Tags:
 */
 
@@ -410,7 +410,7 @@ body.hamburger-menu #nav-slide #hamburger-menu {
 /*--------------------------------------------------------------
 # Other
 --------------------------------------------------------------*/
-/* version_7_site_include_post_by_category */
+/* version_8_site_include_post_by_category */
 .paginate-container {
     clear:both;
     display:inline-block;
@@ -457,7 +457,7 @@ body.hamburger-menu #nav-slide #hamburger-menu {
     border: 1px solid rgba(0,0,0,0.5);
 }
 
-/* forms page - version_7_site_include_post_by_category */
+/* forms page - version_8_site_include_post_by_category */
 .forms .clearfix {
     margin: 0 0 2em 0;
     padding: 0 0 2em 0;

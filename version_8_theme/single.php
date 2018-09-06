@@ -4,7 +4,7 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post
  *
- * @package version_7
+ * @package version_8
  */
 
 get_header(); ?>

@@ -1,13 +1,13 @@
 <?php
 /**
- * version_7 functions and definitions
+ * version_8 functions and definitions
  *
  * @link https://developer.wordpress.org/themes/basics/theme-functions/
  *
- * @package version_7
+ * @package version_8
  */
 
-if ( ! function_exists( 'version_7_setup' ) ) :
+if ( ! function_exists( 'version_8_setup' ) ) :
 	/**
 	 * Sets up theme defaults and registers support for various WordPress features.
 	 *
@@ -15,14 +15,14 @@ if ( ! function_exists( 'version_7_setup' ) ) :
 	 * runs before the init hook. The init hook is too late for some features, such
 	 * as indicating support for post thumbnails.
 	 */
-	function version_7_setup() {
+	function version_8_setup() {
 		/**
 		 * Make theme available for translation.
 		 * Translations can be filed in the /languages/ directory.
-		 * If you're building a theme based on version_7, use a find and replace
-		 * to change 'version_7' to the name of your theme in all the template files.
+		 * If you're building a theme based on version_8, use a find and replace
+		 * to change 'version_8' to the name of your theme in all the template files.
 		 */
-		load_theme_textdomain( 'version_7', get_template_directory() . '/languages' );
+		load_theme_textdomain( 'version_8', get_template_directory() . '/languages' );
 
 		// Add default posts and comments RSS feed links to head.
 		add_theme_support( 'automatic-feed-links' );
@@ -44,8 +44,8 @@ if ( ! function_exists( 'version_7_setup' ) ) :
 
 		// This theme uses wp_nav_menu() in one location.
 		register_nav_menus( array(
-			'menu-1' => esc_html__( 'Primary', 'version_7' ),
-			'menu-2' => esc_html__( 'Mobile', 'version_7' ),
+			'menu-1' => esc_html__( 'Primary', 'version_8' ),
+			'menu-2' => esc_html__( 'Mobile', 'version_8' ),
 		) );
 
 		/**
@@ -61,7 +61,7 @@ if ( ! function_exists( 'version_7_setup' ) ) :
 		) );
 
 		// Set up the WordPress core custom background feature.
-		add_theme_support( 'custom-background', apply_filters( 'version_7_custom_background_args', array(
+		add_theme_support( 'custom-background', apply_filters( 'version_8_custom_background_args', array(
 			'default-color' => 'ffffff',
 			'default-image' => '',
 		) ) );
@@ -82,7 +82,7 @@ if ( ! function_exists( 'version_7_setup' ) ) :
 		) );
 	}
 endif;
-add_action( 'after_setup_theme', 'version_7_setup' );
+add_action( 'after_setup_theme', 'version_8_setup' );
 
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
@@ -91,73 +91,73 @@ add_action( 'after_setup_theme', 'version_7_setup' );
  *
  * @global int $content_width
  */
-function version_7_content_width() {
-	$GLOBALS['content_width'] = apply_filters( 'version_7_content_width', 800 );
+function version_8_content_width() {
+	$GLOBALS['content_width'] = apply_filters( 'version_8_content_width', 800 );
 }
-add_action( 'after_setup_theme', 'version_7_content_width', 0 );
+add_action( 'after_setup_theme', 'version_8_content_width', 0 );
 
 /**
  * Register widget area.
  *
  * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
  */
-function version_7_widgets_init() {
+function version_8_widgets_init() {
 	register_sidebar( array(
-		'name'          => esc_html__( 'Home Top', 'version_7' ),
+		'name'          => esc_html__( 'Home Top', 'version_8' ),
 		'id'            => 'home-1',
-		'description'   => esc_html__( 'Add widgets here.', 'version_7' ),
+		'description'   => esc_html__( 'Add widgets here.', 'version_8' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h2 class="widget-title">',
 		'after_title'   => '</h2>',
 	) );
 	register_sidebar( array(
-		'name'          => esc_html__( 'Home Bottom', 'version_7' ),
+		'name'          => esc_html__( 'Home Bottom', 'version_8' ),
 		'id'            => 'home-2',
-		'description'   => esc_html__( 'Add widgets here.', 'version_7' ),
+		'description'   => esc_html__( 'Add widgets here.', 'version_8' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h2 class="widget-title">',
 		'after_title'   => '</h2>',
 	) );
 	register_sidebar( array(
-		'name'          => esc_html__( 'Sidebar Footer Left', 'version_7' ),
+		'name'          => esc_html__( 'Sidebar Footer Left', 'version_8' ),
 		'id'            => 'sidebar-footer-1',
-		'description'   => esc_html__( 'Add widgets here.', 'version_7' ),
+		'description'   => esc_html__( 'Add widgets here.', 'version_8' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h2 class="widget-title">',
 		'after_title'   => '</h2>',
 	) );
 	register_sidebar( array(
-		'name'          => esc_html__( 'Sidebar Footer Center', 'version_7' ),
+		'name'          => esc_html__( 'Sidebar Footer Center', 'version_8' ),
 		'id'            => 'sidebar-footer-2',
-		'description'   => esc_html__( 'Add widgets here.', 'version_7' ),
+		'description'   => esc_html__( 'Add widgets here.', 'version_8' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h2 class="widget-title">',
 		'after_title'   => '</h2>',
 	) );
 	register_sidebar( array(
-		'name'          => esc_html__( 'Sidebar Footer Right', 'version_7' ),
+		'name'          => esc_html__( 'Sidebar Footer Right', 'version_8' ),
 		'id'            => 'sidebar-footer-3',
-		'description'   => esc_html__( 'Add widgets here.', 'version_7' ),
+		'description'   => esc_html__( 'Add widgets here.', 'version_8' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h2 class="widget-title">',
 		'after_title'   => '</h2>',
 	) );
 	register_sidebar( array(
-		'name'          => esc_html__( 'Load After Content', 'version_7' ),
+		'name'          => esc_html__( 'Load After Content', 'version_8' ),
 		'id'            => 'sidebar-after-1',
-		'description'   => esc_html__( 'Add here.', 'version_7' ),
+		'description'   => esc_html__( 'Add here.', 'version_8' ),
 		'before_widget' => '',
 		'after_widget'  => '',
 		'before_title'  => '',
 		'after_title'   => '',
 	) );
 }
-add_action( 'widgets_init', 'version_7_widgets_init' );
+add_action( 'widgets_init', 'version_8_widgets_init' );
 
 
 /**
@@ -168,32 +168,32 @@ add_action( 'widgets_init', 'version_7_widgets_init' );
  *
  * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
  */
-if ( ! function_exists( 'version_7_scripts' ) ) :
-function version_7_scripts() {
+if ( ! function_exists( 'version_8_scripts' ) ) :
+function version_8_scripts() {
 	//first style sheet is the foundation from _s
 	wp_enqueue_style( 'foundation-style', get_stylesheet_uri() );
 
 	//last style sheet is the actual style for the site
-	wp_register_style( 'version_7-style', get_stylesheet_directory_uri() . '/style-v7.css', NULL , NULL , 'all' );
-	wp_enqueue_style( 'version_7-style', get_stylesheet_directory_uri() . '/style-v7.css' );
+	wp_register_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-v7.css', NULL , NULL , 'all' );
+	wp_enqueue_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-v7.css' );
 
-	wp_enqueue_script( 'version_7-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '201802', true );
+	wp_enqueue_script( 'version_8-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '201802', true );
 
-	wp_enqueue_script( 'version_7-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '201802', true );
+	wp_enqueue_script( 'version_8-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '201802', true );
 
 	//AJAX
 	// register your script location, dependencies and version
-	//wp_register_script( 'version_7-AJAX', get_template_directory_uri() . '/js/version_7_ajax.js', array('jquery'), false, true );
+	//wp_register_script( 'version_8-AJAX', get_template_directory_uri() . '/js/version_8_ajax.js', array('jquery'), false, true );
 	// enqueue the script
-	//wp_enqueue_script('version_7-AJAX');
+	//wp_enqueue_script('version_8-AJAX');
 	// localize the script for proper AJAX functioning
-	//wp_localize_script( 'version_7-AJAX', 'theurl', array('ajaxurl' => admin_url( 'admin-ajax.php' )));
+	//wp_localize_script( 'version_8-AJAX', 'theurl', array('ajaxurl' => admin_url( 'admin-ajax.php' )));
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
-add_action( 'wp_enqueue_scripts', 'version_7_scripts' );
+add_action( 'wp_enqueue_scripts', 'version_8_scripts' );
 endif;
 
 
@@ -231,4 +231,4 @@ if ( defined( 'JETPACK__VERSION' ) ) {
  *
  * @link https://developer.wordpress.org/themes/basics/theme-functions/
  */
-require get_template_directory() . '/inc/version_7_function.php';
+require get_template_directory() . '/inc/version_8_function.php';

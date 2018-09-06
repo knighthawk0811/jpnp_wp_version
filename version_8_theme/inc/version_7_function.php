@@ -25,36 +25,36 @@
  * 1)put this into the functions.php file and replace the enqueue script function
  * 2)create a new style-v7.css file with the true theme style
  * 3)uncomment the add_action line
- * 4)require get_template_directory() . '/inc/version_7_function.php';
+ * 4)require get_template_directory() . '/inc/version_8_function.php';
  *
  * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
  */
-if ( ! function_exists( 'version_7_scripts' ) ) :
-function version_7_scripts() {
+if ( ! function_exists( 'version_8_scripts' ) ) :
+function version_8_scripts() {
 	//first style sheet is the foundation from _s
 	wp_enqueue_style( 'foundation-style', get_stylesheet_uri() );
 
 	//last style sheet is the actual style for the site
-	wp_register_style( 'version_7-style', get_stylesheet_directory_uri() . '/style-v7.css', NULL , NULL , 'all' );
-	wp_enqueue_style( 'version_7-style', get_stylesheet_directory_uri() . '/style-v7.css' );
+	wp_register_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-v7.css', NULL , NULL , 'all' );
+	wp_enqueue_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-v7.css' );
 
-	wp_enqueue_script( 'version_7-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '201802', true );
+	wp_enqueue_script( 'version_8-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '201802', true );
 
-	wp_enqueue_script( 'version_7-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '201802', true );
+	wp_enqueue_script( 'version_8-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '201802', true );
 
 	//AJAX
 	// register your script location, dependencies and version
-	//wp_register_script( 'version_7-AJAX', get_template_directory_uri() . '/js/version_7_ajax.js', array('jquery'), false, true );
+	//wp_register_script( 'version_8-AJAX', get_template_directory_uri() . '/js/version_8_ajax.js', array('jquery'), false, true );
 	// enqueue the script
-	//wp_enqueue_script('version_7-AJAX');
+	//wp_enqueue_script('version_8-AJAX');
 	// localize the script for proper AJAX functioning
-	//wp_localize_script( 'version_7-AJAX', 'theurl', array('ajaxurl' => admin_url( 'admin-ajax.php' )));
+	//wp_localize_script( 'version_8-AJAX', 'theurl', array('ajaxurl' => admin_url( 'admin-ajax.php' )));
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
-//add_action( 'wp_enqueue_scripts', 'version_7_scripts' );
+//add_action( 'wp_enqueue_scripts', 'version_8_scripts' );
 endif;
 
 /**
@@ -106,10 +106,10 @@ function parallelize_get_hostname($name) {
  * @return
  * @uses sanitize_text_field
  */
-if ( ! function_exists( 'version_7_generic_ajax_callback' ) ) :
-function version_7_generic_ajax_callback( $action = '', $param0 = '', $param1 = '', $param2 = '', $param3 = '' )
+if ( ! function_exists( 'version_8_generic_ajax_callback' ) ) :
+function version_8_generic_ajax_callback( $action = '', $param0 = '', $param1 = '', $param2 = '', $param3 = '' )
 {
-	//js version_7_generic_ajax()
+	//js version_8_generic_ajax()
 	//parameters are in the $_POST
 
 	if( !empty( $_POST['action'] ) )
@@ -144,8 +144,8 @@ function version_7_generic_ajax_callback( $action = '', $param0 = '', $param1 = 
 	die();
 }
 endif;
-add_action( 'wp_ajax_nopriv_version_7_generic_ajax_callback', 'version_7_generic_ajax_callback' );
-add_action( 'wp_ajax_version_7_generic_ajax_callback', 'version_7_generic_ajax_callback' );
+add_action( 'wp_ajax_nopriv_version_8_generic_ajax_callback', 'version_8_generic_ajax_callback' );
+add_action( 'wp_ajax_version_8_generic_ajax_callback', 'version_8_generic_ajax_callback' );
 
 /**
  * URL query parameters/variables
@@ -155,13 +155,13 @@ add_action( 'wp_ajax_version_7_generic_ajax_callback', 'version_7_generic_ajax_c
  * @return
  * @uses
  */
-if ( ! function_exists( 'version_7_add_query_param' ) ) :
-function version_7_add_query_param($param) {
+if ( ! function_exists( 'version_8_add_query_param' ) ) :
+function version_8_add_query_param($param) {
 	$param[] = "surl"; // URl param
 	return $param;
 }
 // hook version_6_add_query_param function into query_vars
-add_filter('query_vars', 'version_7_add_query_param');
+add_filter('query_vars', 'version_8_add_query_param');
 endif;
 
 /**
@@ -203,7 +203,7 @@ endif; // google_jquery_enqueue
  * @return
  * @uses
  */
-function version_7_customizer( $wp_customize ) {
+function version_8_customizer( $wp_customize ) {
 	/*
 	//header color
 	$wp_customize->add_setting('header_background', array(
@@ -232,8 +232,8 @@ function version_7_customizer( $wp_customize ) {
 	) );
 	//*/
 }
-//add_action( 'customize_register', 'version_7_customizer' );
-function version_7_customize_css()
+//add_action( 'customize_register', 'version_8_customizer' );
+function version_8_customize_css()
 {
     ?>
 		<style type="text/css">
@@ -244,11 +244,11 @@ function version_7_customize_css()
 		</style>
     <?php
 }
-//add_action( 'wp_head', 'version_7_customize_css');
+//add_action( 'wp_head', 'version_8_customize_css');
 
 
-if ( ! function_exists( 'version_7_theme_support' ) ) :
-function version_7_theme_support()
+if ( ! function_exists( 'version_8_theme_support' ) ) :
+function version_8_theme_support()
 {
 	add_theme_support( 'custom-background', array(
 		'default-color'          => '',
@@ -288,20 +288,20 @@ function version_7_theme_support()
 	add_theme_support( 'post-thumbnails' );
 }
 endif;
-add_action( 'after_setup_theme', 'version_7_theme_support' );
+add_action( 'after_setup_theme', 'version_8_theme_support' );
 
 //need style in visual editor?
 //must create an editor.css file for this to operate. keep i nming the body tag issue
-function version_7_editor_styles() {
+function version_8_editor_styles() {
     add_editor_style();
 }
-//add_action( 'init', 'version_7_editor_styles' );
+//add_action( 'init', 'version_8_editor_styles' );
 
 //run shortcode inside text widgets
 add_filter('widget_text', 'do_shortcode');
 
 //change title for 404 pages
-function version_7_filter_wp_title( $title )
+function version_8_filter_wp_title( $title )
 {
     if ( is_404() )
 	{
@@ -311,25 +311,25 @@ function version_7_filter_wp_title( $title )
     // just return $title
     return $title;
 }
-add_filter( 'wp_title', 'version_7_filter_wp_title', 10 );
+add_filter( 'wp_title', 'version_8_filter_wp_title', 10 );
 
 
 //register multiple menus
-if ( ! function_exists( 'version_7_menu_setup' ) ) :
-function version_7_menu_setup() {
+if ( ! function_exists( 'version_8_menu_setup' ) ) :
+function version_8_menu_setup() {
 	// This theme uses wp_nav_menu()
-		//'ID' => esc_html__( 'Visible Name', 'version_7' ),
+		//'ID' => esc_html__( 'Visible Name', 'version_8' ),
 	register_nav_menus( array(
-		'mobile-1' => __( 'Mobile 1 [SIDE]', 'version_7' ),
-		'mobile-2' => __( 'Mobile 2', 'version_7' ),
-		'mobile-3' => __( 'Mobile 3', 'version_7' ),
-		'desktop-1' => __( 'Desktop 1 [HEAD]', 'version_7' ),
-		'desktop-2' => __( 'Desktop 2 [HEAD]', 'version_7' ),
-		'desktop-3' => __( 'Desktop 3', 'version_7' ),
+		'mobile-1' => __( 'Mobile 1 [SIDE]', 'version_8' ),
+		'mobile-2' => __( 'Mobile 2', 'version_8' ),
+		'mobile-3' => __( 'Mobile 3', 'version_8' ),
+		'desktop-1' => __( 'Desktop 1 [HEAD]', 'version_8' ),
+		'desktop-2' => __( 'Desktop 2 [HEAD]', 'version_8' ),
+		'desktop-3' => __( 'Desktop 3', 'version_8' ),
 	) );
 }
-endif; // version_7_menu_setup
-add_action( 'after_setup_theme', 'version_7_menu_setup' );
+endif; // version_8_menu_setup
+add_action( 'after_setup_theme', 'version_8_menu_setup' );
 
 
 /*--------------------------------------------------------------
@@ -453,8 +453,8 @@ function site_var_dump_return($mixed = NULL)
 	return $content;
 }
 
-if ( ! function_exists( 'version_7_view_access' ) ) :
-function version_7_view_access($level = 0)
+if ( ! function_exists( 'version_8_view_access' ) ) :
+function version_8_view_access($level = 0)
 {
 	//define page IDs
 	$access[0] = 258; // access denied
@@ -480,8 +480,8 @@ function version_7_view_access($level = 0)
 }
 endif;
 
-if ( ! function_exists( 'version_7_get_thumbnail' ) ) :
-function version_7_get_thumbnail($id)
+if ( ! function_exists( 'version_8_get_thumbnail' ) ) :
+function version_8_get_thumbnail($id)
 {
 	//return value
 	$the_post_thumbnail = '';
@@ -524,8 +524,8 @@ function version_7_get_thumbnail($id)
 	return $the_post_thumbnail;
 }
 endif;
-if ( ! function_exists( 'version_7_get_thumbnail_url' ) ) :
-function version_7_get_thumbnail_url($id)
+if ( ! function_exists( 'version_8_get_thumbnail_url' ) ) :
+function version_8_get_thumbnail_url($id)
 {
 	//return value
 	$the_post_thumbnail_url = '';
@@ -595,8 +595,8 @@ endif;
  * @return mixed string or long
  *
  */
-if ( ! function_exists( 'version_7_url_short' ) ) :
-function version_7_url_short($input, $decode = false, $padding = 8, $pass_key = null)
+if ( ! function_exists( 'version_8_url_short' ) ) :
+function version_8_url_short($input, $decode = false, $padding = 8, $pass_key = null)
 {
 	$output = '';
 	//list of characters that may be included in the output
@@ -694,7 +694,7 @@ endif;
 shortcode for logged in/out content
 ********************/
 //logged OUT
-function version_7_visitor_check_shortcode( $atts, $content = null )
+function version_8_visitor_check_shortcode( $atts, $content = null )
 {
 	/*
 	[visitor]
@@ -715,9 +715,9 @@ function version_7_visitor_check_shortcode( $atts, $content = null )
 	}
 	return do_shortcode($content);
 }
-add_shortcode( 'visitor', 'version_7_visitor_check_shortcode' );
+add_shortcode( 'visitor', 'version_8_visitor_check_shortcode' );
 //logged IN
-function version_7_member_check_shortcode( $attr, $content = null )
+function version_8_member_check_shortcode( $attr, $content = null )
 {
 	/*
 	[member type="active"]
@@ -741,7 +741,7 @@ function version_7_member_check_shortcode( $attr, $content = null )
 
 	return do_shortcode($content);
 }
-add_shortcode( 'member', 'version_7_member_check_shortcode' );
+add_shortcode( 'member', 'version_8_member_check_shortcode' );
 
 
 
@@ -880,12 +880,12 @@ function site_include_post_by_category( $attr )
 						if($link)
 						{
 							$query2->post->the_title_link = '<a href="' . get_permalink($query2->post->ID) . '" >' . $query2->post->post_title . '</a>';
-							$query2->post->the_thumbnail_link = '<a href="' . get_permalink($query2->post->ID) . '" >' . version_7_get_thumbnail($query2->post->ID) . '</a>';
+							$query2->post->the_thumbnail_link = '<a href="' . get_permalink($query2->post->ID) . '" >' . version_8_get_thumbnail($query2->post->ID) . '</a>';
 						}
 						else
 						{
 							$query2->post->the_title_link = $query2->post->post_title;
-							$query2->post->the_thumbnail_link = '<a href="' . version_7_get_thumbnail_url($query2->post->ID) . '" >' . version_7_get_thumbnail($query2->post->ID) . '</a>';
+							$query2->post->the_thumbnail_link = '<a href="' . version_8_get_thumbnail_url($query2->post->ID) . '" >' . version_8_get_thumbnail($query2->post->ID) . '</a>';
 						}
 
 						$output .= '<div>';

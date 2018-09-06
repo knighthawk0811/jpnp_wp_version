@@ -1,0 +1,1347 @@
+<?php
+/*
+Plugin Name: version_8_plugin
+Plugin URI: http://neathawk.us
+Description: A collection of generic functions that pair with the version_8 theme.
+Version: 2018.09.06
+Author: Joseph Neathawk
+Author URI: http://Neathawk.us
+License: GNU General Public License v2 or later
+*/
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly
+}
+
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+# define default variables
+# Generic Plugin Functions
+# Generic PHP functions
+# Shortcodes (are plugin territory)
+# Woocommerce Customization
+# Woocommerce Custom Subscription Export options
+# Woocommerce Template Hooks
+--------------------------------------------------------------*/
+
+
+/*--------------------------------------------------------------
+# define default variables
+--------------------------------------------------------------*/
+define( SITE_PLUGIN_VERSION, '0.2' );
+define( SITE_PLUGIN_VERSION_DB, '0.2' );
+
+
+/*--------------------------------------------------------------
+# Generic Plugin Functions
+--------------------------------------------------------------*/
+/**
+ * INIT plugin and create DB tables
+ *
+ * @link
+ */
+if ( ! function_exists( 'site_plugin_init' ) ) :
+function site_plugin_init()
+{
+    if( !site_plugin_is_up_to_date() )
+    {
+        global $wpdb;
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+        //DB version 0.1
+        $sql = "CREATE TABLE " . $wpdb->prefix."site_plugin_log_guest (
+        id int( 60 ) UNSIGNED NOT NULL AUTO_INCREMENT,
+        email_address text NOT NULL,
+        name_first text NOT NULL,
+        name_last text NOT NULL,
+        name_company text NOT NULL,
+        user_id int(30) NOT NULL,
+        ip_address varchar(25) NOT NULL,
+        timestamp int(30) NOT NULL,
+        UNIQUE KEY id ( id )
+        );";
+        dbDelta( $sql );
+
+        update_option( 'site_plugin_version_db', SITE_PLUGIN_VERSION_DB );
+    }
+
+    //set these only if they don't already exist
+    /*
+    if( get_option( 'jpnp_botstop_emergency_last_timestamp', false ) == false )
+    {
+        update_option( 'jpnp_botstop_emergency_last_timestamp', current_time( 'timestamp' ) );
+    }
+    //*/
+}
+register_activation_hook( __FILE__, 'site_plugin_init' );
+endif;
+
+
+/**
+ * check if version is up to date
+ *
+ * @link
+ */
+if ( ! function_exists( 'site_plugin_is_up_to_date' ) ) :
+function site_plugin_is_up_to_date()
+{
+    return ( floatval(get_option( "site_plugin_version_db", 0 )) >= SITE_PLUGIN_VERSION_DB ? true : false );
+}
+endif;
+
+/**
+ * deactivate plugin, remove SOME data
+ *
+ * @link
+ */
+if ( ! function_exists( 'site_plugin_deactivate' ) ) :
+function site_plugin_deactivate()
+{
+    //delete_option('site_plugin_version_db');
+}
+register_deactivation_hook( __FILE__, 'site_plugin_deactivate' );
+endif;
+
+/**
+ * uninstall plugin, remove ALL data
+ *
+ * @link
+ */
+if ( ! function_exists( 'site_plugin_uninstall' ) ) :
+function site_plugin_uninstall()
+{
+    if ( !defined( 'WP_UNINSTALL_PLUGIN' ) )
+    {
+        exit();
+    }
+    //delete options
+    delete_option( 'site_plugin_version_db' );
+
+    //drop custom db table
+    global $wpdb;
+    $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}site_plugin_log_guest" );
+}
+register_uninstall_hook( __FILE__, 'site_plugin_uninstall' );
+endif;
+
+
+/*--------------------------------------------------------------
+# Generic PHP functions
+--------------------------------------------------------------*/
+
+/**
+ * display a var_dump as a <pre> html element
+ *
+ * @link copied form the version_7 theme
+ * @requires
+ */
+if ( ! function_exists( 'site_var_dump_pre' ) ) :
+function site_var_dump_pre($mixed = NULL, $label = NULL)
+{
+    if(is_string($label)){$label .= ': ';}else{$label = '';}
+    echo '<pre>' . $label . "\n";
+    var_dump($mixed);
+    echo '</pre>';
+    return NULL;
+}
+endif;
+/**
+ * return a var_dump as a string value
+ *
+ * @link copied form the version_7 theme
+ * @requires
+ */
+if ( ! function_exists( 'site_var_dump_return' ) ) :
+function site_var_dump_return($mixed = NULL)
+{
+    ob_start();
+    var_dump($mixed);
+    $content = ob_get_contents();
+    ob_end_clean();
+    return $content;
+}
+endif;
+
+
+/*--------------------------------------------------------------
+# Shortcodes
+--------------------------------------------------------------*/
+
+/**
+ * display a menu anywhere
+ *
+ * @link https://developer.wordpress.org/reference/functions/wp_nav_menu/
+ * @requires
+ */
+if ( ! function_exists( 'site_display_menu' ) ) :
+function site_display_menu($attr)
+{
+    /*
+    [site_menu id="menu_id"]
+    no content
+    [/site_menu]
+    */
+    ob_start();
+
+    extract( shortcode_atts( array( 'id' => null ), $attr ) );
+
+    if ( is_nav_menu( $id ) ) {
+        wp_nav_menu( array(
+            'menu' => $id,
+        ) );
+    }
+
+    $content = ob_get_contents();
+    ob_end_clean();
+    return $content;
+}
+endif;
+add_shortcode( 'site_menu', 'site_display_menu' );
+
+
+/**
+ * display breadcrumbs anywhere
+ *
+ * @link
+ * @requires
+ */
+if ( ! function_exists( 'site_display_breadcrumbs' ) ) :
+function site_display_breadcrumbs()
+{
+    $output = '';
+    $page_id = get_the_ID();
+    if(is_single())
+    {
+        $cats = get_the_category();
+        foreach($cats as $cat)
+        {
+            if($cat->cat_ID == 146)
+            {
+                //articales & tools
+                $page_id = 127;
+            }
+        }
+    }
+    //display breadcrumbs
+    $breadcrumb_array = array_reverse(get_post_ancestors($page_id));
+    $output .= '<div class="breadcrumb">      ';//add 6 spaces in case they get removed later
+    if(count($breadcrumb_array) > 0)
+    {
+        $output .= '<div class="bc-content">';
+        foreach($breadcrumb_array as $breadcrumb)
+        {
+            $output .= '<a href="'. get_permalink($breadcrumb) . '">' . get_the_title( $breadcrumb ) . '</a> &gt; ';
+        }
+        //this page
+        $output .= '<a class="current" href="'. get_permalink($page_id) . '">' . get_the_title($page_id) . '</a> &gt; ';
+        //$output .= get_the_title( get_the_ID() );
+    }
+
+    //if you are on the directory list page, there might be sub categories to show.
+    $map_category_array = NULL;
+    if(isset($_REQUEST['mc']) && preg_match('/^[0-9]+(,[0-9]+)*$/', $_REQUEST['mc']) == 1)
+    {
+        $map_category_array = explode(',',$_REQUEST['mc']);
+    }
+    if(count($map_category_array) > 0)
+    {
+        //var_dump($map_category_array);
+        $category_array = NULL;
+        foreach($map_category_array as $category)
+        {
+            $category_array[] = get_term_by('id', $category,'bgmp-category',ARRAY_A);
+        }
+        while ( false !== ( $category_array[] = get_term_by('id', end($category_array)['parent'],'bgmp-category',ARRAY_A) ) )
+        {
+            // do nothing, the action is in the loop test
+        }
+        //always gets one last "falsy" entry
+        array_pop($category_array);
+        $category_array = array_reverse($category_array);
+
+        foreach($category_array as $category)
+        {
+            $output .= '<a href="' . get_permalink() . '?mc=' .$category['term_id'] . '" />' . $category['name'] . '</a> &gt; ';
+        }
+    }
+    //remove the last ' &gt; '
+    $output = substr($output,0 ,-6);
+    if(count($breadcrumb_array) > 0)
+    {
+        //close this div
+        $output .= '</div>';
+    }
+    return $output . '</div>';
+}
+endif; // function
+add_shortcode( 'site_breadcrumbs', 'site_display_breadcrumbs' );
+
+
+
+/**
+ * display content to logged OUT users only
+ *
+ * @link
+ * @requires
+ */
+if ( ! function_exists( 'site_visitor_content' ) ) :
+function site_visitor_content( $atts, $content = null )
+{
+    /*
+    [visitor]
+    content
+    [/visitor]
+    //*/
+
+    if ( ( !is_user_logged_in() && !is_null( $content ) ) || is_feed() )
+    {
+        //logged out users get this content
+        //do nothing
+        //return $content;
+    }
+    else
+    {
+        //logged in users DO NOT get this content
+        $content = '';
+    }
+    return do_shortcode($content);
+}
+endif;
+add_shortcode( 'visitor', 'site_visitor_content' );
+
+/**
+ * display content to logged IN users only
+ *
+ * may include any roles as well, displaying content to different roles
+ *
+ * @link
+ * @requires
+ */
+if ( ! function_exists( 'site_member_content' ) ) :
+function site_member_content( $attr, $content = null )
+{
+    /*
+    [member]
+    content
+    [/member]
+    [member type="any"]
+    content
+    [/member]
+    [member type="editor"]
+    content
+    [/member]
+    [member type="subscriber, administrator"]
+    content
+    [/member]
+    //*/
+
+    extract( shortcode_atts( array( 'type' => 'read' ), $attr ) );
+    //remove spaces
+    $type = str_replace(" ", "", $type);
+    $ability = explode(",", $type);
+    $access_allowed = false;
+
+    //not NULL and also not in any feeds
+    if ( !is_null( $content ) && !is_feed() )
+    {
+        //targetted users get this content
+        foreach( $ability as $item )
+        {
+            if( strtolower($item) === 'any' )
+            {
+                //ACTION
+                $access_allowed = true;
+            }
+            else if( current_user_can( $item ) )
+            {
+                //ACTION
+                $access_allowed = true;
+            }
+        }
+    }
+
+    if( !$access_allowed )
+    {
+        //non-targetted users DO NOT get this content
+        $content = '';
+    }
+
+    return do_shortcode($content);
+}
+endif;
+add_shortcode( 'member', 'site_member_content' );
+
+
+/**
+ * CEAC - output a list of links to this months posts (magazine stories)
+ *
+ * @deprecated as of August 2018 after new design changes made individual posting of articles obsolete
+ */
+if ( ! function_exists( 'site_display_monthly_story' ) ) :
+function site_display_monthly_story()
+{
+    /*
+    [site_display_monthly_story]
+    ******
+    no options
+    ******
+    //*/
+    $transient_name = 'site_cache_monthy_story';
+    if(false === ($month_list = get_transient($transient_name)))
+    {
+        // It wasn't there, so regenerate the data and save the transient
+
+        $month_list = '';
+        //get the current month
+        $time_now = date('Y-m-d G:i:s');
+        $time_month_working = date('m', strtotime($time_now));
+        $time_month_past = 0;
+
+        $found = false;
+        while(!$found)
+        {
+            //get the most recent posts (minus a few categories)
+            $post_array = get_posts( array(
+                'post_status'=>'publish',
+                'numberposts' => 35,
+                'category' => '-14,-17,-288',
+                'orderby'    => 'date',
+                'sort_order' => 'desc'
+            ) );
+
+            if(date('m',strtotime($post_array[1]->post_date)) == $time_month_working)
+            {
+                $found = true;
+            }
+            else
+            {
+                $time_month_working = date('m', strtotime('-' . ++$time_month_past . ' months'));
+            }
+
+        }
+
+        if(is_array($post_array))
+        {
+            //cycle all posts found
+            foreach($post_array as $item)
+            {
+                //only use the curernt month's posts
+                if(date('m',strtotime($item->post_date)) == $time_month_working)
+                {
+                    //output a link with the title of the post
+                    $month_list .= '<p><a href="' . $item->guid . '" title="' . $item->post_title . '">' . $item->post_title . '</a></p>';
+                }
+                else
+                {
+                    //free memory
+                    $item = NULL;
+                }
+            }
+        }
+        //free memory
+        $post_array = NULL;
+        unset($post_array);
+
+        set_transient($transient_name, $month_list, 60 * MINUTE_IN_SECONDS );
+    }
+    //output
+    return $month_list;
+}
+add_shortcode( 'site_display_monthly_story', 'site_display_monthly_story' );
+endif; // function
+
+
+/**
+ * include post by category
+ *
+ * @link
+ */
+function site_include_post_by_category( $attr )
+{
+    /*
+    [site_include_post_by_cat cat="123" count="5" order="ASC" orderby="title"]
+        //no content is used here, so no closing tag required
+    [/site_include_post]
+    ******
+    cat = category to be shown
+    count = items per page
+    order = sort order
+    orderby = what to sort by
+    link = should the title be a link
+    thumbnail = true/false
+    content = how many full contents will be shown 0 equals none/need to fix so that it stops at the "read more" tag
+    pageinate = true
+    ******
+    //*/
+    $output = '';
+    extract( shortcode_atts( array( 'cat' => NULL,'count' => 5, 'order' => 'DESC', 'orderby' => 'date', 'link' => true, 'thumbnail' => false, 'content' => 0, 'excerpt_length' => 55,'pageinate' => true ), $attr ) );
+
+    if ( $link === 'false' ) $link = false; // just to be sure...
+    $link = (bool) $link;
+    if ( $thumbnail === 'false' ) $thumbnail = false; // just to be sure...
+    $thumbnail = (bool) $thumbnail;
+    $content_count = intval($content);
+    if($content_count < 0)
+    {
+        //if content is less than 0, then it is for the whole page
+        $content_count = $count;
+    }
+    $content = true;
+    if($content_count == 0)
+    {
+        $content = false;
+    }
+    $excerpt_length = intval($excerpt_length);
+    if ( $pageinate === 'false' ) $pageinate = false; // just to be sure...
+    $pageinate = (bool) $pageinate;
+
+    if ( !is_null( $cat ) && ( is_numeric( $cat ) || preg_match( '/^[0-9,]+$/', $cat ) ) && !is_feed() )
+    {
+        //pagination
+        $post_per_page = 5;
+        if ( !is_null( $count ) && is_numeric( $count ) )
+        {
+            if( $count < 1 )
+            {
+                $post_per_page = -1;
+            }
+            $post_per_page = $count;
+            $count = NULL;
+            unset($count);
+        }
+        if ( !is_null($order) && ($order != 'DESC' && $order != 'ASC'))
+        {
+            $order = 'DESC';
+        }
+        if ( !is_null($orderby) && (preg_match('/^[a-zA-Z\_]+$/', $orderby) != 1))
+        {
+            $orderby = 'date';
+        }
+        $page_current = 1;
+        $offset = 0;
+        if(isset($_GET['pn']) && is_numeric($_GET['pn']))
+        {
+            $page_current = intval($_GET['pn']);
+            $offset = ($page_current - 1) * $post_per_page;
+            if($offset < 0)
+            {
+                $offset = 0;
+            }
+        }
+        else
+        {
+            $page_current = 1;
+        }
+        //site_var_dump_pre($page_current,'page_current');
+
+        //count posts
+        $post_count = 0;
+        $transient_name = 'site_' . md5($cat . $count . $order . $orderby) . '_c';
+        if(false === ($post_count = get_transient($transient_name)))
+        {
+            // It wasn't there, so regenerate the data and save the transient
+            $args = array(
+                'posts_per_page'   => -1,
+                'offset'           => 0,
+                'category'         => "$cat",
+                'orderby'          => "$orderby",
+                'order'            => "$order",
+                'post_type'        => 'post',
+                'post_status'      => 'publish',
+                );
+            $post_count = count(get_posts($args));
+            set_transient($transient_name, $post_count, 10 * MINUTE_IN_SECONDS );
+        }
+        //get content
+        $transient_name = 'site_' . md5($cat . $count . $order . $orderby) . '_' . $page_current;
+        if(false === ($post_array = get_transient($transient_name)))
+        {
+            // It wasn't there, so regenerate the data and save the transient
+            $args = array(
+                'posts_per_page'   => $post_per_page,
+                'offset'           => $offset,
+                'category'         => "$cat",
+                'orderby'          => "$orderby",
+                'order'            => "$order",
+                'post_type'        => 'post',
+                'post_status'      => 'publish',
+                );
+            $post_array = get_posts($args);
+            set_transient($transient_name, $post_array, 10 * MINUTE_IN_SECONDS );
+        }
+
+        //display content
+        $output .= '<div class="' . get_category($cat)->slug . '">';
+        if(is_array($post_array) && count($post_array) > 0)
+        {
+            //site_var_dump_pre($post_array,'post_array');
+            foreach($post_array as $item)
+            {
+                //site_var_dump_pre($item,'item');
+                //echo($item->ID);
+
+                //new loop
+                $query2 = new WP_Query( array( 'p' => $item->ID ) );
+                if ( $query2->have_posts() )
+                {
+                    // The 2nd Loop
+                    while ( $query2->have_posts() )
+                    {
+                        //setup post
+                        $query2->the_post();
+
+                        if($link)
+                        {
+                            $query2->post->the_title_link = '<a href="' . get_permalink($query2->post->ID) . '" >' . $query2->post->post_title . '</a>';
+                            if($thumbnail){
+                                $query2->post->the_thumbnail_link = '<a href="' . get_permalink($query2->post->ID) . '" >' . version_7_get_thumbnail($query2->post->ID) . '</a>';
+                            }
+                        }
+                        else
+                        {
+                            $query2->post->the_title_link = $query2->post->post_title;
+                            if($thumbnail){
+                                $query2->post->the_thumbnail_link = '<a href="' . version_7_get_thumbnail_url($query2->post->ID) . '" >' . version_7_get_thumbnail($query2->post->ID) . '</a>';
+                            }
+                        }
+
+                        $output .= '<div>';
+                        if($thumbnail){
+                            $output .= '<div class="entry-thumbnail">' . $query2->post->the_thumbnail_link . '</div>';
+                        }
+                        $output .= '<p class="entry-title">' . $query2->post->the_title_link .'</p>';
+                        $output .= '<div class="entry-content">';
+                        if($content && $content_count-- > 0)
+                        {
+                            $the_content = $query2->post->post_content;
+                            $output .= apply_filters( 'the_content', $the_content);//doesn't work right without putting it in a variable. WTF!
+                        }
+                        else
+                        {
+                            $output .= wp_trim_words( strip_shortcodes($query2->post->post_content), $excerpt_length );
+                        }
+                        $output .= '</div>';
+                        $output .= '</div>';
+                        $output .= '<div class="clearfix"></div>';
+                        $output .= '<hr />';
+                    }
+                }
+
+                //dont forget to reset things
+                wp_reset_postdata();
+            }//end foreach
+
+            if($pageinate)
+            {
+                //paginate link back to previous/newer content
+                if($page_current > 1)
+                {
+                    $page_previous = $page_current - 1;
+                    $url_var = '?pn=';
+                    if($page_previous <= 1){$url_var = '';}else{$url_var .= $page_previous;}
+                    $output .= '<a style="clear:left;float:left;" href="' . esc_url(get_permalink()) . $url_var . '" title="Previous Page">Previous Page</a>';
+                }
+                //paginate link to next/older content
+                if(count($post_array) == $post_per_page)
+                {
+                    //is a link even needed?
+                    if(false === ($post_array_next = get_transient('cat_page_' . str_ireplace(',','_',$cat) . '__' . ($page_current + 1))))
+                    {
+                        // It wasn't there, so regenerate the data and save the transient
+                        $args = array(
+                            'posts_per_page'   => $post_per_page,
+                            'offset'           => ($page_current + 1) * $post_per_page,
+                            'category'         => "$cat",
+                            'orderby'          => "$orderby",
+                            'order'            => "$order",
+                            'post_type'        => 'post',
+                            'post_status'      => 'publish',
+                            );
+                        $post_array_next = get_posts($args);
+                        set_transient('cat_page_' . str_ireplace(',','_',$cat) . '__' . ($page_current + 1), $post_array_next, 10 * MINUTE_IN_SECONDS );
+                    }
+                    $count = count($post_array_next);
+                    if(count($count) > 0)
+                    {
+                        $output .= '<a style="clear:right;float:right;" href="' . esc_url(get_permalink()) . '?pn=' . ($page_current + 1) . '" title="Next Page">Next Page</a>';
+                    }
+                }
+                //paginate page numbers
+                if($post_count > $post_per_page)
+                {
+                    $output .= '<div style="height:40px; margin:0 auto; position:relative; width:220px; text-align:center;">';
+                    $page_count = intval(ceil($post_count / $post_per_page));
+                    $i = 1;
+                    $step = 0;
+                    if($page_count > 4 && $page_current > 1)
+                    {
+                        $i = $page_current - 1;
+                    }
+                    if($i > 1)
+                    {
+                        $link_extra_style = ' border:1px solid rgba(0,0,0,0); ';
+                        $output .= '<a style="display:inline-block; margin:3px; min-width:20px; padding:0 3px; background:rgba(0,0,0,0.25); ' . $link_extra_style . '" href="' . esc_url(get_permalink()) . '?pn=1" title="Page 1">1</a>';
+                        if($i > 2)
+                        {
+                            $output .= '...';
+                        }
+                    }
+                    for($i;$i <= $page_count; $i++)
+                    {
+                        $step++;
+                        if($step < 4 || $i == $page_count)
+                        {
+                            if($i == $page_count && $step > 3)
+                            {
+                                $output .= '...';
+                            }
+                            if($i == $page_current)
+                            {
+                                $link_extra_style = ' border:1px solid #000000; ';
+                            }
+                            else
+                            {
+                                $link_extra_style = ' border:1px solid rgba(0,0,0,0); ';
+                            }
+                            $output .= '<a style="display:inline-block; margin:3px; min-width:20px; padding:0 3px; background:rgba(0,0,0,0.25); ' . $link_extra_style . '" href="' . esc_url(get_permalink()) . '?pn=' . $i . '" title="Page ' . $i . '">' . $i . '</a>';
+                        }
+                    }
+                    $output .= '</div>';
+                }
+            }
+        }
+        $output .= '</div>';//close the category div tag
+    }
+    else
+    {
+        //do nothing
+    }
+
+    return $output;
+}
+add_shortcode( 'site_include_post_by_cat', 'site_include_post_by_category' );
+
+
+
+/**
+ * CEAC - output a list of nametags for an event
+ *
+ * @param
+ * @shortcode site_print_nametag
+ */
+if ( ! function_exists( 'site_display_nametag' ) ) :
+function site_display_nametag( $attr )
+{
+
+    /*
+    [site_print_nametag product="product_number"]
+    [site_print_nametag product="product_number, product_number"]
+    //*/
+    global $wpdb;
+    $order_item_id = null;
+    $post_id = null;
+    $user_id = null;
+    $user_meta = null;
+    $output = '';
+
+    //get input
+    extract( shortcode_atts( array( 'product' => '' ), $attr ) );
+    //remove spaces, and build array
+    $product = explode(',', str_replace(' ', '', $product));
+    //validate input
+    foreach( $product as $key => &$value )
+    {
+        if( !is_numeric( $value ) )
+        {
+            //$product[$key] = null;
+            unset( $product[$key] );
+        }
+    }
+    //get the things
+    if( sizeof( $product >= 1 ) )
+    {
+        //use the product ids to get to the next WC level which is the order ids of the order
+        foreach( $product as $key => &$value )
+        {
+            //gets a 2D array of the target value
+            $temp[$value] = $wpdb->get_results(
+                $wpdb->prepare(
+                    "
+                    SELECT order_item_id FROM {$wpdb->prefix}woocommerce_order_itemmeta
+                    WHERE meta_key = '_product_id'
+                    AND meta_value = %s
+                    ",
+                        array(
+                        $value
+                    )
+            ), ARRAY_A );
+
+            //I'm just looking for the targetted value, forget the rest
+            if( sizeof( $temp[$value] >= 1 ) )
+            {
+                foreach($temp[$value] as $target_order_item_id )
+                {
+                    $order_item_id[] = $target_order_item_id['order_item_id'];
+                }
+            }
+        }
+        unset( $temp );
+
+        //now we have the order ids
+        //the next WC level uses this to get the post ids
+        foreach( $order_item_id as $key => &$value )
+        {
+            //gets a 2D array of the target value
+            $temp[$value] = $wpdb->get_results(
+                $wpdb->prepare(
+                    "
+                    SELECT order_id FROM {$wpdb->prefix}woocommerce_order_items
+                    WHERE order_item_id = %s
+                    ",
+                        array(
+                        $value
+                    )
+            ), ARRAY_A );
+
+            //I'm just looking for the targetted value, forget the rest
+            if( sizeof( $temp[$value] >= 1 ) )
+            {
+                foreach($temp[$value] as $target_post_id )
+                {
+                    $post_id[] = $target_post_id['order_id'];
+                }
+            }
+        }
+        unset( $temp );
+
+        //now we have the post ids
+        //the next WC level uses this to get the user ids
+        foreach( $post_id as $key => &$value )
+        {
+            //gets a 2D array of the target value
+            $temp[$value] = $wpdb->get_results(
+                $wpdb->prepare(
+                    "
+                    SELECT meta_value FROM {$wpdb->prefix}postmeta
+                    WHERE post_id = %s
+                    AND meta_key = '_customer_user'
+                    ",
+                        array(
+                        $value
+                    )
+            ), ARRAY_A );
+
+            //I'm just looking for the targetted value, forget the rest
+            if( sizeof( $temp[$value] >= 1 ) )
+            {
+                foreach($temp[$value] as $target_user_id )
+                {
+                    $user_id[$target_user_id['meta_value']] = $target_user_id['meta_value'];
+                }
+            }
+        }
+        unset( $temp );
+
+        //now we have the user ids
+        //now we can get all the things
+        foreach( $user_id as $key => &$value )
+        {
+            //$key is the user_id
+            $temp[$key] = $wpdb->get_results(
+                $wpdb->prepare(
+                    "
+                    SELECT * FROM {$wpdb->prefix}usermeta
+                    WHERE user_id = %s
+                    ",
+                        array(
+                        $key
+                    )
+            ), ARRAY_A );
+
+            //I'm just looking for the targetted values, not every entire row contents
+            if( sizeof( $temp[$value] >= 1 ) )
+            {
+                foreach($temp[$key] as $target_user_id )
+                {
+                    $user_meta[$key][$target_user_id['meta_key']] = $target_user_id['meta_value'];
+                }
+            }
+        }
+        unset( $temp );
+    }
+
+    //output the things
+    if( sizeof( $user_meta >= 1 ) )
+    {
+        foreach( $user_meta as &$user )
+        {
+            $output .= '<div>';
+            $output .= '<p>' . $user['first_name'] . '</p>';
+            $output .= '<p>' . $user['last_name'] . '</p>';
+            $output .= '<p>' . $user['ceac_company_name'] . '</p>';
+            //todo: make the member type actually do the right thing
+            //first 3 checks reference the old / quick user data
+            if( !empty( $user['ceac_board_member'] ) )
+            {
+                $output .= '<p>The Chief Engineers Association</p>';
+            }
+            else if( $user['ceac_status_select'] == "1" )
+            {
+                $output .= '<p>Member Status Active</p>';
+            }
+            else if( $user['ceac_status_select'] == "2" )
+            {
+                $output .= '<p>Member Status Associate</p>';
+            }
+            else
+            {
+                //now comes the hard work
+                //
+                $output .= '<p>Guest</p>';
+            }
+            $output .= '</div>';
+
+        }
+    }
+
+
+    //$output .= site_var_dump_return($product);
+    //$output .= site_var_dump_return($order_item_id);
+    //$output .= site_var_dump_return($post_id);
+    //$output .= site_var_dump_return($user_id);
+    //$output .= site_var_dump_return($user_meta);
+
+    //return "<pre>$output</pre>";
+    return $output;
+}
+add_shortcode( 'site_print_nametag', 'site_display_nametag' );
+endif;
+
+/*--------------------------------------------------------------
+# Woocommerce Customization
+--------------------------------------------------------------*/
+
+
+/**
+ * Add guest email address to the checkout process
+ * actually add the field to the HTML form
+ *
+ * @link https://atlantisthemes.com/woocommerce-checkout-customization/
+ * @link https://rudrastyh.com/woocommerce/checkout-fields.html#create_checkout_field
+ * @link https://www.sitepoint.com/woocommerce-actions-and-filters-manipulate-cart/
+ */
+if ( ! function_exists( 'site_wc_custom_field_add' ) ) :
+function site_wc_custom_field_add( $checkout ) {
+
+    // check if product in catagory
+    if( qualifies_basedon_product_category( 'guest-item' ) > 0 )
+    {
+        //only one guest allowed per member per event
+        echo '<div id="site_wc_guest_field"><h3>'.__('Guest Information').'</h3>';
+        woocommerce_form_field( 'site_wc_guest_email', array(
+            'type'          => 'text', // text, textarea, select, radio, checkbox, password, about custom validation a little later
+            'required'      => true, // actually this parameter just adds "*" to the field
+            'class'         => array('ceac-field', 'form-row-wide'), // array only, read more about classes and styling in the previous step
+            'label'         => 'Guest Email Address',
+            'label_class'   => 'ceac-label', // sometimes you need to customize labels, both string and arrays are supported
+            //'options'       => array( // options for <select> or <input type="radio" />
+            //            ''          => 'Please select', // empty values means that field is not selected
+            //            'By phone'  => 'By phone', // 'value'=>'Name'
+            //            'By email'  => 'By email'
+            //            )
+            ), $checkout->get_value( 'site_wc_guest_email' ) );
+        woocommerce_form_field( 'site_wc_guest_name_first', array(
+            'type'          => 'text', // text, textarea, select, radio, checkbox, password, about custom validation a little later
+            'required'      => true, // actually this parameter just adds "*" to the field
+            'class'         => array('ceac-field', 'form-row-wide'), // array only, read more about classes and styling in the previous step
+            'label'         => 'First Name',
+            'label_class'   => 'ceac-label', // sometimes you need to customize labels, both string and arrays are supported
+            ), $checkout->get_value( 'site_wc_guest_name_first' ) );
+        woocommerce_form_field( 'site_wc_guest_name_last', array(
+            'type'          => 'text', // text, textarea, select, radio, checkbox, password, about custom validation a little later
+            'required'      => true, // actually this parameter just adds "*" to the field
+            'class'         => array('ceac-field', 'form-row-wide'), // array only, read more about classes and styling in the previous step
+            'label'         => 'Last Name',
+            'label_class'   => 'ceac-label', // sometimes you need to customize labels, both string and arrays are supported
+            ), $checkout->get_value( 'site_wc_guest_name_last' ) );
+        woocommerce_form_field( 'site_wc_guest_name_company', array(
+            'type'          => 'text', // text, textarea, select, radio, checkbox, password, about custom validation a little later
+            'required'      => true, // actually this parameter just adds "*" to the field
+            'class'         => array('ceac-field', 'form-row-wide'), // array only, read more about classes and styling in the previous step
+            'label'         => 'Company',
+            'label_class'   => 'ceac-label', // sometimes you need to customize labels, both string and arrays are supported
+            ), $checkout->get_value( 'site_wc_guest_name_company' ) );
+        echo '</div>';
+    }
+    else
+    {
+        //do nothing
+    }
+}
+add_action( 'woocommerce_before_order_notes', 'site_wc_custom_field_add' );
+endif;
+
+/**
+ * Validate guest email address against the DB collection of previously used email addresses
+ * Store logged email (etc) for future validation
+ *
+ * @link https://atlantisthemes.com/woocommerce-checkout-customization/
+ * @link https://rudrastyh.com/woocommerce/checkout-fields.html#create_checkout_field
+ * @link https://stackoverflow.com/questions/28603144/custom-validation-of-woocommerce-checkout-fields
+ */
+if ( ! function_exists( 'site_wc_custom_field_validation' ) ) :
+function site_wc_custom_field_validation() {
+
+    // check if product in catagory
+    //otherwise don't validate what isn't there
+    if( qualifies_basedon_product_category( 'guest-item' ) > 0 )
+    {
+        site_plugin_init();
+
+        // init variables
+        global $wpdb;
+        global $woocommerce;
+        $error_message = false;
+        $table_name = $wpdb->prefix . 'site_plugin_log_guest';
+        $guest_email = sanitize_email( $_POST['site_wc_guest_email'] );
+        $guest_name_first = sanitize_text_field( $_POST['site_wc_guest_name_first'] );
+        $guest_name_last = sanitize_text_field( $_POST['site_wc_guest_name_last'] );
+        $guest_name_company = sanitize_text_field( $_POST['site_wc_guest_name_company'] );
+        $the_result = $wpdb->get_results( "SELECT email_address FROM " . $table_name, ARRAY_N );
+        $result_array = null;
+
+        // is the given email address a valid email at all?
+        //if not the don't even process anything else
+        if( !is_email( $guest_email ) )
+        {
+            if( $error_message == false ) //double check
+            {
+                $error_message = 'The <strong>Guest Email</strong> is invalid. [B294]';
+            }
+        }
+        else
+        {
+            // $the_result is multidimensional, fix this so we can find values in it easier
+            if( is_array( $the_result[0] ) )
+            {
+                foreach( $the_result as &$result )
+                {
+                    $result_array[] = $result[0];
+                }
+            }
+
+            /////TESTING
+            //update_option( 'site_plugin_guest_email', $guest_email );
+            //update_option( 'site_plugin_the_result', $the_result );
+            //update_option( 'site_plugin_result_array', $result_array );
+
+            //if the given email is not found in previous entries
+            if( !in_array( $guest_email, $result_array ) )
+            {
+                //add this email to the db list of previous entries
+
+                // log values
+                $ip_address = $_SERVER['REMOTE_ADDR'];
+                $user_id = wp_get_current_user();
+
+                // work
+                $wpdb->query( $wpdb->prepare(
+                    "
+                        INSERT INTO $table_name
+                        ( email_address, name_first, name_last, name_company, user_id, ip_address, timestamp )
+                        VALUES ( %s,%s,%s,%s, %s, %s, %d )
+                    ",
+                    array(
+                        $guest_email,
+                        $guest_name_first,
+                        $guest_name_last,
+                        $guest_name_company,
+                        $user_id,
+                        $ip_address,
+                        current_time('timestamp')
+                    )
+                ) );
+            }
+            else
+            {
+                // the given email was found in previous entries
+                if( $error_message == false ) //double check
+                {
+                    $error_message = 'This <strong>Guest</strong> has already attended a CEAC Event.
+                    Guests are only allowed once.
+                    <br /> Please choose a different guest (via Guest Email) or cancel this order. [B376]';
+                }
+            }
+
+        }
+
+        // finally throws an error message if one was set
+        if( $error_message !== false )
+        {
+            //$woocommerce->add_error( __( $error_message ) ); // throws internal server error
+            wc_add_notice( __( $error_message ), 'error' );
+        }
+    }
+}
+add_action( 'woocommerce_checkout_process', 'site_wc_custom_field_validation' );
+endif;
+
+/**
+ * Add guest email address to the checkout process
+ * save value to the post meta
+ *
+ * @link https://atlantisthemes.com/woocommerce-checkout-customization/
+ * @link https://rudrastyh.com/woocommerce/checkout-fields.html#create_checkout_field
+ */
+if ( ! function_exists( 'site_wc_save_custom_field' ) ) :
+function site_wc_save_custom_field( $order_id ) {
+
+    if( !empty( $_POST['site_wc_guest_email'] ) )
+    {
+        update_post_meta( $order_id, 'site_wc_guest_email', sanitize_text_field( $_POST['site_wc_guest_email'] ) );
+        update_post_meta( $order_id, 'site_wc_guest_name_first', sanitize_text_field( $_POST['site_wc_guest_name_first'] ) );
+        update_post_meta( $order_id, 'site_wc_guest_name_last', sanitize_text_field( $_POST['site_wc_guest_name_last'] ) );
+        update_post_meta( $order_id, 'site_wc_guest_name_company', sanitize_text_field( $_POST['site_wc_guest_name_company'] ) );
+    }
+
+}
+add_action( 'woocommerce_checkout_update_order_meta', 'site_wc_save_custom_field' );
+endif;
+
+/**
+ * Add the field to order review/ thank you
+ *
+ * @link https://developer.wordpress.org/reference/functions/get_post_meta/
+ * @link https://docs.woocommerce.com/wc-apidocs/class-WC_Order.html
+ * @link https://docs.woocommerce.com/wc-apidocs/hook-docs.html
+ **/
+if ( ! function_exists( 'site_wc_checkout_field_order_review' ) ) :
+function site_wc_checkout_field_order_review( $order ) {
+    $guest_email = get_post_meta( $order->get_order_number(), 'site_wc_guest_email', true );
+    $guest_name_first = get_post_meta( $order->get_order_number(), 'site_wc_guest_name_first', true );
+    $guest_name_last = get_post_meta( $order->get_order_number(), 'site_wc_guest_name_last', true );
+    $guest_name_company = get_post_meta( $order->get_order_number(), 'site_wc_guest_name_company', true );
+    if( !empty( $guest_email ) )
+    {
+        echo '<div id="site_wc_guest_field"><h2>'.__('Guest Information').'</h2>';
+        echo 'Email Address: ' . $guest_email . '<br />';
+        echo 'First Name: ' . $guest_name_first . '<br />';
+        echo 'Last Name: ' . $guest_name_last . '<br />';
+        echo 'Company: ' . $guest_name_company . '<br />';
+        echo '</div>';
+    }
+}
+add_filter('woocommerce_order_details_after_order_table', 'site_wc_checkout_field_order_review');
+endif;
+
+/**
+ * Add the field to order emails
+ * ugly version
+ *
+ * @param $keys array of keys
+ *
+ * @link https://atlantisthemes.com/woocommerce-checkout-customization/
+ * @link https://rudrastyh.com/woocommerce/order-meta-in-emails.html
+ **/
+if ( ! function_exists( 'site_wc_checkout_email_order_meta_keys' ) ) :
+function site_wc_checkout_email_order_meta_keys( $keys ) {
+    $keys[] = 'site_wc_guest_email';
+    $keys[] = 'site_wc_guest_name_first';
+    $keys[] = 'site_wc_guest_name_last';
+    $keys[] = 'site_wc_guest_name_company';
+    return $keys;
+}
+//add_filter( 'woocommerce_email_order_meta_keys', 'site_wc_checkout_email_order_meta_keys' );
+endif;
+
+/**
+ * Add the field to order emails
+ * broken version
+ *
+ * @param $fields array of fields
+ * @param $sent_to_admin If this email is for administrator or for a customer
+ * @param $order_obj Order Object
+ *
+ * @link https://atlantisthemes.com/woocommerce-checkout-customization/
+ * @link https://rudrastyh.com/woocommerce/order-meta-in-emails.html
+ **/
+if ( ! function_exists( 'site_wc_checkout_email_order_meta_fields' ) ) :
+function site_wc_checkout_email_order_meta_fields( $fields, $sent_to_admin, $order_obj ) {
+    $fields['site_wc_guest_email'] = array(
+        'label' => 'Guest Email Address',
+        'value' => get_post_meta( $order_obj->get_order_number(), 'site_wc_guest_email', true )
+    );
+    $fields['site_wc_guest_name_first'] = array(
+        'label' => 'Guest First Name',
+        'value' => get_post_meta( $order_obj->get_order_number(), 'site_wc_guest_name_first', true )
+    );
+    $fields['site_wc_guest_name_last'] = array(
+        'label' => 'Guest Last Name',
+        'value' => get_post_meta( $order_obj->get_order_number(), 'site_wc_guest_name_last', true )
+    );
+    $fields['site_wc_guest_name_company'] = array(
+        'label' => 'Guest Company',
+        'value' => get_post_meta( $order_obj->get_order_number(), 'site_wc_guest_name_company', true )
+    );
+
+    return $fields;
+}
+//add_filter( 'woocommerce_email_order_meta_fields', 'site_wc_checkout_email_order_meta_fields' );
+endif;
+
+/**
+ * Add the field to order emails
+ * best, most customized version
+ *
+ * @param $order_obj Order Object
+ * @param $sent_to_admin If this email is for administrator or for a customer
+ * @param $plain_text HTML or Plain text (can be configured in WooCommerce > Settings > Emails)
+ *
+ * @link https://atlantisthemes.com/woocommerce-checkout-customization/
+ * @link https://rudrastyh.com/woocommerce/order-meta-in-emails.html
+ **/
+if ( ! function_exists( 'site_wc_checkout_email_order_meta' ) ) :
+function site_wc_checkout_email_order_meta( $order_obj, $sent_to_admin, $plain_text) {
+    $guest_email = get_post_meta( $order_obj->get_order_number(), 'site_wc_guest_email', true );
+    $guest_name_first = get_post_meta( $order_obj->get_order_number(), 'site_wc_guest_name_first', true );
+    $guest_name_last = get_post_meta( $order_obj->get_order_number(), 'site_wc_guest_name_last', true );
+    $guest_name_company = get_post_meta( $order_obj->get_order_number(), 'site_wc_guest_name_company', true );
+
+    if( !empty( $guest_email ) )
+    {
+        // add a separate version for plaintext emails
+        if( $plain_text == false )
+        {
+            // you shouldn't have to worry about inline styles, WooCommerce adds them itself depending on the theme you use
+            echo '<h2>Guest Information</h2>
+            <ul>
+            <li><strong>Email Address</strong> ' . $guest_email . '</li>
+            <li><strong>First Name</strong> ' . $guest_name_first . '</li>
+            <li><strong>Last Name</strong> ' . $guest_name_last . '</li>
+            <li><strong>Company</strong> ' . $guest_name_company . '</li>
+            </ul>';
+        }
+        else
+        {
+            echo 'Guest Information'. "\n" . 'Email Address: ' . $guest_email;
+            echo "\n" . 'First Name: ' . $guest_name_first;
+            echo "\n" . 'Last Name: ' . $guest_name_last;
+            echo "\n" . 'Company: ' . $guest_name_company;
+        }
+    }
+}
+add_action( 'woocommerce_email_order_meta', 'site_wc_checkout_email_order_meta' );
+endif;
+
+/**
+ * Will extract the Variation ID if available otherwise it will get the Product ID
+ * @param $product Product
+ * @param bool $check_variations Whether or not to check for variation IDs
+ * @return mixed
+ * @link https://www.sitepoint.com/woocommerce-actions-and-filters-manipulate-cart/
+ */
+if ( ! function_exists( 'get_id_from_product' ) ) :
+function get_id_from_product( $product, $check_variations = true ) {
+    // Are we taking variations into account?
+    if( $check_variations ) {
+        // Ternary Operator
+        // http://php.net/manual/en/language.operators.comparison.php
+        return ( isset( $product['variation_id'] )
+            && ! empty( $product['variation_id'])
+            && $product['variation_id'] != 0 )
+            ? $product['variation_id']
+            : $product['product_id'];
+    } else {
+        // No variations, just need the product IDs
+        return $product['product_id'];
+    }
+}
+endif;
+/**
+ * Checks the cart to verify whether or not a product from a Category is in the cart
+ * @param $category Accepts the Product Category Name, ID, Slug or array of them
+ * @return bool
+ * @link https://www.sitepoint.com/woocommerce-actions-and-filters-manipulate-cart/
+ */
+if ( ! function_exists( 'qualifies_basedon_product_category' ) ) :
+function qualifies_basedon_product_category( $category ) {
+    $count = 0;
+    foreach( WC()->cart->cart_contents as $key => $product_in_cart ) {
+        if( has_term( $category, 'product_cat', get_id_from_product( $product_in_cart, false ) ) ) {
+            $count++;
+        }
+    }
+    return $count;
+}
+endif;
+
+
+/*--------------------------------------------------------------
+# Woocommerce Custom Subscription Export options
+--------------------------------------------------------------*/
+/**
+ * Add custom headers to the list of default headers exported in the CSV
+ *
+ * @param array $headers
+ * @return array
+ */
+function site_wcsie_custom_export_headers( $headers = array() ) {
+    return array_merge( $headers, array(
+        'ceac_status_select' => 'Member Status',
+    ) );
+}
+add_filter( 'wcsie_export_headers', 'site_wcsie_custom_export_headers', 10, 1 );
+
+/**
+ * Adds a custom meta value to the exported row
+ *
+ * @param string value
+ * @param WC_Subscription $subscription
+ * @param
+ * @return string
+ */
+ function site_wcsie_custom_export_values( $value, $subscription, $header_key ) {
+    if ( 'ceac_status_select' == $header_key && empty( $value ) )
+    {
+        //use the customer ID to gather their "STATUS" from the user meta
+        $value = get_user_meta($subscription->customer_id, 'ceac_status_select', true);;
+    }
+
+    return $value;
+ }
+add_filter( 'wcsie_format_export_value', 'site_wcsie_custom_export_values', 10, 3 );
+
+
+
+/*--------------------------------------------------------------
+# Woocommerce Template Hooks
+--------------------------------------------------------------*/
+
+
+/**
+ * Hook: woocommerce_account_dashboard.
+ *
+ * @link https://businessbloomer.com/woocommerce-visual-hook-guide-account-pages/
+ * @link https://docs.woocommerce.com/document/third-party-custom-theme-compatibility/
+ * @requires
+ */
+if ( ! function_exists( 'site_wc_hook_account_message' ) ) :
+function site_wc_hook_account_message()
+{
+    //echo(' *found it* ' );
+    if( !is_user_logged_in() )
+    {
+        //echo(' *not logged in* ');
+    }
+    else
+    {
+        //echo(' *logged in* ');
+
+        echo( '<p>If this is your first time here, be sure to edit your <a href="https://chiefengineer.org/home/my-account/edit-account/">Account Details</a> and <a href="https://chiefengineer.org/home/my-account/edit-address/">Addresses.</p>');
+
+    }
+}
+endif;
+add_filter( 'woocommerce_account_dashboard', 'site_wc_hook_account_message' );
+
+
