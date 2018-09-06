@@ -49,9 +49,11 @@
 				wp_nav_menu( array(
 					'theme_location' => 'desktop-1',
 				) );
-			
 				wp_nav_menu( array(
 					'theme_location' => 'desktop-2',
+				) );			
+				wp_nav_menu( array(
+					'theme_location' => 'desktop-3',
 				) );
 			?>
 		</nav><!-- #site-navigation -->
@@ -72,17 +74,6 @@
 			endif; ?>
 		</div><!-- .site-branding -->
 		<?php /*
-
-		<nav id="site-navigation" class="main-navigation">
-			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'version_8' ); ?></button>
-			<?php
-				wp_nav_menu( array(
-					'theme_location' => 'menu-1',
-					'menu_id'        => 'primary-menu',
-				) );
-			?>
-		</nav><!-- #site-navigation -->
-
 		<div class="triangle-bottomright"></div>
 		<div class="triangle-bottomleft"></div>
 		*/ ?>

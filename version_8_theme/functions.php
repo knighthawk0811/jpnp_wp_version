@@ -121,6 +121,33 @@ function version_8_widgets_init() {
 		'after_title'   => '</h2>',
 	) );
 	register_sidebar( array(
+		'name'          => esc_html__( 'Sidebar Default 1', 'version_8' ),
+		'id'            => 'default-1',
+		'description'   => esc_html__( 'Add widgets here.', 'version_8' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h2 class="widget-title">',
+		'after_title'   => '</h2>',
+	) );
+	register_sidebar( array(
+		'name'          => esc_html__( 'Sidebar Default 2', 'version_8' ),
+		'id'            => 'default-2',
+		'description'   => esc_html__( 'Add widgets here.', 'version_8' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h2 class="widget-title">',
+		'after_title'   => '</h2>',
+	) );
+	register_sidebar( array(
+		'name'          => esc_html__( 'Sidebar Default 3', 'version_8' ),
+		'id'            => 'default-3',
+		'description'   => esc_html__( 'Add widgets here.', 'version_8' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h2 class="widget-title">',
+		'after_title'   => '</h2>',
+	) );
+	register_sidebar( array(
 		'name'          => esc_html__( 'Sidebar Footer Left', 'version_8' ),
 		'id'            => 'sidebar-footer-1',
 		'description'   => esc_html__( 'Add widgets here.', 'version_8' ),
@@ -149,7 +176,7 @@ function version_8_widgets_init() {
 	) );
 	register_sidebar( array(
 		'name'          => esc_html__( 'Load After Content', 'version_8' ),
-		'id'            => 'sidebar-after-1',
+		'id'            => 'sidebar-active-1',
 		'description'   => esc_html__( 'Add here.', 'version_8' ),
 		'before_widget' => '',
 		'after_widget'  => '',
@@ -174,8 +201,8 @@ function version_8_scripts() {
 	wp_enqueue_style( 'foundation-style', get_stylesheet_uri() );
 
 	//last style sheet is the actual style for the site
-	wp_register_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-v7.css', NULL , NULL , 'all' );
-	wp_enqueue_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-v7.css' );
+	wp_register_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-version_8.css', NULL , NULL , 'all' );
+	wp_enqueue_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-version_8.css' );
 
 	wp_enqueue_script( 'version_8-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '201802', true );
 

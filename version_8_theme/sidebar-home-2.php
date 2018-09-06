@@ -12,6 +12,6 @@ if ( ! is_active_sidebar( 'home-2' ) ) {
 }
 ?>
 
-<aside class="home-2" class="widget-area">
+<aside id="home-2" class="widget-area">
 	<?php dynamic_sidebar( 'home-2' ); ?>
 </aside><!-- #home-2 -->

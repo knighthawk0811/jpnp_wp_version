@@ -1,6 +1,6 @@
 <?php
 /**
- * The sidebar containing the main widget area
+ * The no sidebar sidebar
  *
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
  *

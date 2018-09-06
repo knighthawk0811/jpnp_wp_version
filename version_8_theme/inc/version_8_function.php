@@ -35,8 +35,8 @@ function version_8_scripts() {
 	wp_enqueue_style( 'foundation-style', get_stylesheet_uri() );
 
 	//last style sheet is the actual style for the site
-	wp_register_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-v7.css', NULL , NULL , 'all' );
-	wp_enqueue_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-v7.css' );
+	wp_register_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-version_8.css', NULL , NULL , 'all' );
+	wp_enqueue_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-version_8.css' );
 
 	wp_enqueue_script( 'version_8-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '201802', true );
 
@@ -320,11 +320,11 @@ function version_8_menu_setup() {
 	// This theme uses wp_nav_menu()
 		//'ID' => esc_html__( 'Visible Name', 'version_8' ),
 	register_nav_menus( array(
-		'mobile-1' => __( 'Mobile 1 [SIDE]', 'version_8' ),
+		'mobile-1' => __( 'Mobile 1 [MAIN]', 'version_8' ),
 		'mobile-2' => __( 'Mobile 2', 'version_8' ),
 		'mobile-3' => __( 'Mobile 3', 'version_8' ),
-		'desktop-1' => __( 'Desktop 1 [HEAD]', 'version_8' ),
-		'desktop-2' => __( 'Desktop 2 [HEAD]', 'version_8' ),
+		'desktop-1' => __( 'Desktop 1 [MAIN]', 'version_8' ),
+		'desktop-2' => __( 'Desktop 2', 'version_8' ),
 		'desktop-3' => __( 'Desktop 3', 'version_8' ),
 	) );
 }

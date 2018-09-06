@@ -10,6 +10,6 @@
 if ( ! is_active_sidebar( 'sidebar-footer-2' ) ) {
 	return;
 }?>
-<div id="footer-center">
+<div id="footer-2">
 <?php dynamic_sidebar( 'sidebar-footer-2' ); ?>
 </div>
