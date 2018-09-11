@@ -3,7 +3,7 @@
 Plugin Name: version_8_plugin
 Plugin URI: http://neathawk.us
 Description: A collection of generic functions that pair with the version_8 theme.
-Version: 2018.09.06
+Version: 2018.09.06 - 0.2
 Author: Joseph Neathawk
 Author URI: http://Neathawk.us
 License: GNU General Public License v2 or later

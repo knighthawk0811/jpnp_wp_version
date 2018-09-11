@@ -1,0 +1,143 @@
+/*
+Plugin Name: version_8_child_plugin
+Plugin URI: http://neathawk.us
+Author: Joseph Neathawk
+Author URI: http://neathawk.us
+Description: A collection of generic functions that are specific to this site
+Version: 2018.09.10
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags:
+*/
+
+/*@import url('navBar.css');*/
+
+/*
+element {
+	layout(position)
+
+	content(text)
+
+	design(background)
+
+	other(z-index)
+}
+@font-face
+{
+      font-family: title_font;
+      src: url("/_font/font.ttf");
+}
+COLORS:
+	black:#000000;
+	white:#ffffff;
+	Aqua: #6fccdd;
+
+Table of Contents:
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+# Main Structur
+# Elements
+# Navigation
+# Header Area
+# Content Area
+# Footer Area
+# Other
+# Templates
+# Media Queries
+--------------------------------------------------------------*/
+
+
+/*--------------------------------------------------------------
+# Main Structure
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Elements
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Navigation
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Header Area
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Content Area
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Footer Area
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Other
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Templates
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+# Media Queries
+--------------------------------------------------------------*/
+
+/* large to small */
+@media only screen and (max-width: 1279px) {
+/*1279px width and smaller*/
+
+}
+
+@media only screen and (max-width: 1023px) {
+/*1023px width and smaller*/
+
+}
+
+@media only screen and (max-width: 899px) {
+/*899px width and smaller*/
+
+}
+
+@media only screen and (max-width: 599px) {
+/*599px width and smaller*/
+
+}
+
+@media only screen and (max-width: 479px) {
+/*479px width and smaller*/
+
+}
+
+
+/* small to large */
+@media only screen and (min-width: 480px) {
+/*480px width and larger*/
+
+
+}
+@media only screen and (min-width: 600px) {
+/*600px width and larger*/
+
+
+}
+@media only screen and (min-width: 900px) {
+/*900px width and larger*/
+
+
+}
+@media only screen and (min-width: 1024px) {
+/*1024px width and larger*/
+
+}
+@media only screen and (min-width: 1280px) {
+/*1280px width and larger*/
+
+}
+
+/* specific size range */
+@media only screen and (min-width: 900px) and (max-width: 1100px) {
+/* range for header custom logo sizing */
+
+}
+
+/* PRINT */
+@media only print {
+
+
+
+}
