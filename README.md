@@ -18,7 +18,7 @@ My theme/plugin v8 with my own set of functions
 * v8
 * First commit to GIT
 * move from v7 to v8
-* combine theme and plugin into one project
+* combine v8 theme and plugin into one project
 
 = 2018.08.09 =
 * v7
@@ -27,3 +27,8 @@ My theme/plugin v8 with my own set of functions
 = 2018.01.31 =
 * v7 FPL
 
+
+
+== Internal Notes ==
+use version_8 for all functions and such that may one day be updated
+use v8 when commenting about v8 and find/replace won't update it
