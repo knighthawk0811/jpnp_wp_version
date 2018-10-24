@@ -12,7 +12,8 @@
  * @package version_8
  */
 
-get_header(); ?>
+get_header();
+get_sidebar('default-1'); ?>
 
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main">
@@ -52,5 +53,5 @@ get_header(); ?>
 	</div><!-- #primary -->
 
 <?php
-get_sidebar();
+get_sidebar('default-3');
 get_footer();

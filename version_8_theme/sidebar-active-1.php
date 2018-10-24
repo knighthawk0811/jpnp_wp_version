@@ -10,6 +10,6 @@
 if ( ! is_active_sidebar( 'sidebar-active-1' ) ) {
 	return;
 }?>
-<div>
+<div id="active-1">
 <?php dynamic_sidebar( 'sidebar-active-1' ); ?>
 </div>

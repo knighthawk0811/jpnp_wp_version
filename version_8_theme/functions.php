@@ -122,7 +122,7 @@ function version_8_widgets_init() {
 	) );
 	register_sidebar( array(
 		'name'          => esc_html__( 'Sidebar Default 1', 'version_8' ),
-		'id'            => 'default-1',
+		'id'            => 'sidebar-default-1',
 		'description'   => esc_html__( 'Add widgets here.', 'version_8' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</section>',
@@ -131,7 +131,7 @@ function version_8_widgets_init() {
 	) );
 	register_sidebar( array(
 		'name'          => esc_html__( 'Sidebar Default 2', 'version_8' ),
-		'id'            => 'default-2',
+		'id'            => 'sidebar-default-2',
 		'description'   => esc_html__( 'Add widgets here.', 'version_8' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</section>',
@@ -140,7 +140,7 @@ function version_8_widgets_init() {
 	) );
 	register_sidebar( array(
 		'name'          => esc_html__( 'Sidebar Default 3', 'version_8' ),
-		'id'            => 'default-3',
+		'id'            => 'sidebar-default-3',
 		'description'   => esc_html__( 'Add widgets here.', 'version_8' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</section>',

@@ -124,6 +124,30 @@ function site_plugin_uninstall()
 register_uninstall_hook( __FILE__, 'site_plugin_uninstall' );
 endif;
 
+/**
+ * ENQUEUE SCRIPTS AND STYLES
+ *
+ * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
+ */
+if ( ! function_exists( 'version_8_plugin_scripts' ) ) :
+function version_8_plugin_scripts() {
+
+    //style for the plugin
+    wp_register_style( 'version_8_plugin-style', plugins_url( '/version_8_plugin.css', __FILE__ ), NULL , NULL , 'all' );
+    wp_enqueue_style( 'version_8_plugin-style' );
+
+    //AJAX
+    // register your script location, dependencies and version
+    wp_register_script( 'version_8_plugin-js', plugins_url( '/js/version_8_plugin.js', __FILE__ ), array( 'jquery' ), false, true );
+    // enqueue the script
+    wp_enqueue_script('version_8_plugin-js');
+    // localize the script for proper AJAX functioning
+    wp_localize_script( 'version_8_plugin-js', 'theurl', array('ajaxurl' => admin_url( 'admin-ajax.php' )));
+
+}
+add_action( 'wp_enqueue_scripts', 'version_8_plugin_scripts' );
+endif;
+
 
 /*--------------------------------------------------------------
 # Generic PHP functions
@@ -168,6 +192,80 @@ endif;
 --------------------------------------------------------------*/
 
 /**
+ * Call a shortcode function by tag name.
+ *
+ * @author J.D. Grimes
+ * @link https://codesymphony.co/dont-do_shortcode/
+ *
+ * @param string $tag     The shortcode whose function to call.
+ * @param array  $atts    The attributes to pass to the shortcode function. Optional.
+ * @param array  $content The shortcode's content. Default is null (none).
+ *
+ * @return string|bool False on failure, the result of the shortcode on success.
+ */
+function do_shortcode_func( $tag, array $atts = array(), $content = null )
+{
+    global $shortcode_tags;
+
+    if ( ! isset( $shortcode_tags[ $tag ] ) )
+    {
+        return false;
+    }
+
+    return call_user_func( $shortcode_tags[ $tag ], $atts, $content, $tag );
+}
+/**
+ * Filters all menu item URLs for a #placeholder#.
+ *
+ * @link https://stackoverflow.com/questions/11403189/how-to-insert-shortcode-into-wordpress-menu
+ * @param WP_Post[] $menu_items All of the nave menu items, sorted for display.
+ * @return WP_Post[] The menu items with any placeholders properly filled in.
+ */
+function site_dynamic_menu_item( $menu_items ) {
+
+    // A list of placeholders to replace.
+    // You can add more placeholders to the list as needed.
+    $placeholders = array(
+        '#logout-link#' => array(
+            'shortcode' => 'site_logout_url',
+            'atts' => array(), // Shortcode attributes.
+            'content' => '', // Content for the shortcode.
+        ),
+        '#login-link#' => array(
+            'shortcode' => 'site_login_url',
+            'atts' => array(), // Shortcode attributes.
+            'content' => '', // Content for the shortcode.
+        ),
+    );
+
+    foreach ( $menu_items as $menu_item )
+    {
+
+        if ( isset( $placeholders[ $menu_item->url ] ) )
+        {
+
+            global $shortcode_tags;
+
+            $placeholder = $placeholders[ $menu_item->url ];
+
+            if ( isset( $shortcode_tags[ $placeholder['shortcode'] ] ) )
+            {
+
+                $menu_item->url = call_user_func(
+                    $shortcode_tags[ $placeholder['shortcode'] ]
+                    , $placeholder['atts']
+                    , $placeholder['content']
+                    , $placeholder['shortcode']
+                );
+            }
+        }
+    }
+
+    return $menu_items;
+}
+add_filter( 'wp_nav_menu_objects', 'site_dynamic_menu_item' );
+
+/**
  * display a menu anywhere
  *
  * @link https://developer.wordpress.org/reference/functions/wp_nav_menu/
@@ -196,6 +294,258 @@ function site_display_menu($attr)
     return $content;
 }
 add_shortcode( 'site_menu', 'site_display_menu' );
+endif;
+
+
+/**
+ * display a login "button" anywhere
+ *
+ * @link
+ * @requires
+ */
+if ( ! function_exists( 'site_login_button_display' ) ) :
+function site_login_button_display($attr)
+{
+    /*
+    [site_login_button redirect="url"]
+    no content
+    [/site_login_button]
+    */
+    ob_start();
+
+    extract( shortcode_atts( array( 'redirect' => null ), $attr ) );
+
+    $url = wp_login_url( get_permalink() );
+    $redirect = esc_url_raw( $redirect );
+    if($redirect != null )
+    {
+        $url = wp_login_url( $redirect );
+    }
+
+    echo('<form name="loginform" id="loginform" action="' . $url . '" method="post">');
+    echo('<input type="submit" name="login-submit" class="button button-login" value="Log In" />');
+    echo('<input type="hidden" name="redirect_to" value="' . get_permalink() . '" />');
+    echo('<input type="hidden" name="login" value="true"/>');
+    echo('<input type="hidden" name="request_url" value="' . get_permalink() . '"/>');
+    echo('</form>');
+
+
+    $content = ob_get_contents();
+    ob_end_clean();
+    return $content;
+}
+add_shortcode( 'site_login_button', 'site_login_button_display' );
+add_shortcode( 'site_button_login', 'site_login_button_display' );//will be deprecated
+endif;
+
+/**
+ * display a login link anywhere
+ *
+ * @link
+ * @requires
+ */
+if ( ! function_exists( 'site_login_link_display' ) ) :
+function site_login_link_display($attr)
+{
+    /*
+    [site_login_link redirect="url"]
+    no content
+    [/site_login_link]
+    */
+
+    extract( shortcode_atts( array( 'redirect' => null ), $attr ) );
+
+    $link = wp_loginout( get_permalink(), false );
+    $redirect = esc_url_raw( $redirect );
+    if($redirect != null )
+    {
+        $link = wp_loginout( $redirect, false );
+    }
+
+    //echo( $link );
+
+    return $link;
+}
+add_shortcode( 'site_login_link', 'site_login_link_display' );
+endif;
+
+/**
+ * display a login URL anywhere
+ *
+ * @link
+ * @requires
+ */
+if ( ! function_exists( 'site_login_url_display' ) ) :
+function site_login_url_display($attr)
+{
+    /*
+    [site_login_url redirect="url"]
+    no content
+    [/site_login_url]
+    */
+
+    extract( shortcode_atts( array( 'redirect' => null ), $attr ) );
+
+    $link = wp_login_url( get_permalink() );
+    $redirect = esc_url_raw( $redirect );
+    if($redirect != null )
+    {
+        $link = wp_login_url( $redirect );
+    }
+
+    //echo( $link );
+
+    return $link;
+}
+add_shortcode( 'site_login_url', 'site_login_url_display' );
+endif;
+
+/**
+ * display a logout "button" anywhere
+ *
+ * @link
+ * @requires
+ */
+if ( ! function_exists( 'site_logout_button_display' ) ) :
+function site_logout_button_display($attr)
+{
+    /*
+    [site_button_logout redirect="url"]
+    no content
+    [/site_button_logout]
+    */
+    ob_start();
+
+    extract( shortcode_atts( array( 'redirect' => null ), $attr ) );
+
+    $url = wp_logout_url( get_permalink() );
+    $redirect = esc_url_raw( $redirect );
+    if($redirect != null )
+    {
+        $url = wp_logout_url( $redirect );
+    }
+
+    echo('<form name="logoutform" id="logoutform" action="' . $url . '" method="post">');
+    echo('<input type="submit" name="logout-submit" class="button button-logout" value="Log Out" />');
+    echo('<input type="hidden" name="redirect_to" value="' . get_permalink() . '" />');
+    echo('<input type="hidden" name="logout" value="true"/>');
+    echo('<input type="hidden" name="request_url" value="' . get_permalink() . '"/>');
+    echo('</form>');
+
+    $content = ob_get_contents();
+    ob_end_clean();
+    return $content;
+}
+add_shortcode( 'site_logout_button', 'site_logout_button_display' );
+endif;
+
+/**
+ * display a logout link anywhere
+ *
+ * @link
+ * @requires
+ */
+if ( ! function_exists( 'site_logout_link_display' ) ) :
+function site_logout_link_display($attr)
+{
+    /*
+    [site_logout_link redirect="url"]
+    no content
+    [/site_logout_link]
+    */
+
+    extract( shortcode_atts( array( 'redirect' => null ), $attr ) );
+
+    $link = wp_loginout( get_permalink(), false );
+    $redirect = esc_url_raw( $redirect );
+    if($redirect != null )
+    {
+        $link = wp_loginout( $redirect, false );
+    }
+
+    //echo( $link );
+
+    return $link;
+}
+add_shortcode( 'site_logout_link', 'site_logout_link_display' );
+endif;
+/**
+ * display a logout URL anywhere
+ *
+ * @link
+ * @requires
+ */
+if ( ! function_exists( 'site_logout_url_display' ) ) :
+function site_logout_url_display($attr)
+{
+    /*
+    [site_logout_url redirect="url"]
+    no content
+    [/site_logout_url]
+    */
+
+    extract( shortcode_atts( array( 'redirect' => null ), $attr ) );
+
+    $link = wp_logout_url( get_permalink() );
+    $redirect = esc_url_raw( $redirect );
+    if($redirect != null )
+    {
+        $link = wp_logout_url( $redirect );
+    }
+
+    //echo( $link );
+
+    return $link;
+}
+add_shortcode( 'site_logout_url', 'site_logout_url_display' );
+endif;
+
+
+/**
+ * display a link "button" anywhere
+ *
+ * @link https://codex.wordpress.org/Data_Validation#Input_Validation
+ * @requires
+ */
+if ( ! function_exists( 'site_display_button_link' ) ) :
+function site_display_button_link($attr)
+{
+    /*
+    [site_button_link url="url" text="text"]
+    no content
+    [/site_button_link]
+    */
+    ob_start();
+
+    extract( shortcode_atts( array( 'url' => null, 'text' => null ), $attr ) );
+
+    if($url != null )
+    {
+        $url = esc_url_raw( $url );
+    }
+    else
+    {
+        $url = '/';
+    }
+    if($text != null )
+    {
+        $text = sanitize_text_field( $text );
+    }
+    else
+    {
+        $text = 'Link';
+    }
+
+    echo('<form name="button-link" class="button button-link" style="position:inline;" action="' . $url . '" method="post">');
+    echo('<input type="submit" name="button-link' . $text . '" class="button button-link" value="' . $text . '" />');
+    echo('</form>');
+
+
+    $content = ob_get_contents();
+    ob_end_clean();
+    return $content;
+}
+add_shortcode( 'site_button_link', 'site_display_button_link' );
 endif;
 
 
@@ -372,6 +722,108 @@ add_shortcode( 'member', 'site_member_content' );
 endif;
 
 
+/**
+ * include post by ID
+ *
+ * @link
+ */
+function site_include_post_by_id( $attr )
+{
+    /*
+    ***************************************************************************
+    [site_include_post_by_id id="123" display="title,link,content,all"]
+        //no content is used here, so no closing tag required
+    [/site_include_post_by_id]
+    ***************************************************************************
+    id = post to be shown
+    display = display options
+    ***************************************************************************
+    //*/
+
+
+    $post_object = null;
+    $output = '';
+
+    //get input
+    extract( shortcode_atts( array( 'id' => NULL,'display' => 'all' ), $attr ) );
+    //remove spaces, and build array
+    $display_option = explode(',', str_replace(' ', '', $display));
+    //validate input
+    foreach( $display_option as $key => &$value )
+    {
+        switch( $value )
+        {
+            case 'title':
+                $display_option['title'] = true;
+                break;
+            case 'link':
+                $display_option['link'] = true;
+                break;
+            case 'content':
+                $display_option['content'] = true;
+                break;
+            case 'excerpt':
+                $display_option['excerpt'] = true;
+                break;
+            case 'all':
+                $display_option['title'] = true;
+                $display_option['link'] = true;
+                $display_option['content'] = true;
+                $display_option['excerpt'] = false;//can't do both, that's crazy
+                break;
+            default:
+                //any other values are garbage in
+                $value = null;
+                unset($display_option[$key]);
+        }
+    }
+
+    //get the data
+    if( is_numeric( $id) )
+    {
+        $post_object = get_post($id);
+
+    }
+
+    //build the output
+    if( !empty( $post_object ) )
+    {
+        //$output = site_var_dump_return( $post_object );
+        //display the title
+        if( $display_option['title'] )
+        {
+            $output .= '<p class="entry-title">';
+            if( $display_option['link'] )
+            {
+                $output .= '<a href="' . $post_object->guid . '">';
+            }
+            $output .= $post_object->post_title;
+            if( $display_option['link'] )
+            {
+                $output .= '</a>';
+            }
+            $output .= '</p>';
+
+        }
+
+        //display the content/excerpt
+        //why would we ever want both?
+        //if someone ever want sboth, let them build the whole thing, crazy bastards
+        if( $display_option['content'] )
+        {
+            $output .= $post_object->post_content;
+        }
+        else if( $display_option['excerpt'] )
+        {
+            //display the excerpt
+            $output .= $post_object->post_excerpt;
+        }
+    }
+
+    return do_shortcode($output);
+}
+add_shortcode( 'site_include_post_by_id', 'site_include_post_by_id' );
+
 
 /**
  * include post excerpt
@@ -423,7 +875,7 @@ function site_include_post_excerpt( $attr )
     
     return $output;
 }
-add_shortcode( 'site_include_post', 'site_include_post_excerpt' );
+add_shortcode( 'site_include_post_excerpt', 'site_include_post_excerpt' );
 endif;
 
 /**

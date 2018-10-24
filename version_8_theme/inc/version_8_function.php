@@ -297,8 +297,14 @@ function version_8_editor_styles() {
 }
 //add_action( 'init', 'version_8_editor_styles' );
 
-//run shortcode inside text widgets
-add_filter('widget_text', 'do_shortcode');
+/**
+ * run shortcode inside text widgets
+ *
+ * @link https://dannyvankooten.com/enabling-shortcodes-in-widgets-quick-wordpress-tip/
+ */
+add_filter( 'widget_text', 'shortcode_unautop');
+add_filter( 'widget_text', 'do_shortcode', 11);
+
 
 //change title for 404 pages
 function version_8_filter_wp_title( $title )
@@ -336,14 +342,41 @@ endif; // version_8_menu_setup
 add_action( 'after_setup_theme', 'version_8_menu_setup' );
 
 
+/**
+ * Changes 'Username' to 'Email Address' on wp-admin login form
+ * and the forgotten password form
+ *
+ * @link https://wpartisan.me/tutorials/wordpress-how-to-change-the-text-labels-on-login-and-lost-password-pages
+ * @since 20180919
+ * @version 20180919
+ * @return null
+ */
+if ( ! function_exists( 'version_8_login_head' ) ) :
+function version_8_login_head() 
+{
+    function version_8_username_label( $translated_text, $text, $domain ) 
+    {
+        if ( 'Username or E-mail:' === $text || 'Username' === $text || 'Username or Email Address' === $text) 
+        {
+            $translated_text = __( 'Email Address' , 'version_8' );
+        }
+        return $translated_text;
+    }
+    add_filter( 'gettext', 'version_8_username_label', 20, 3 );
+    add_filter( 'ngettext', 'version_8_username_label', 20, 3 );
+}
+add_action( 'login_head', 'version_8_login_head' );
+endif;
+
+
 /*--------------------------------------------------------------
 # WP Security features
 --------------------------------------------------------------*/
 
 //remove update nag for wordpress versions
 //usefull when there are other admins and we really don't want them to clicky things they no should be touchy
-if ( ! function_exists( 'remove_update_nag' ) ) :
-function remove_update_nag() {
+if ( ! function_exists( 'version_8_remove_update_nag' ) ) :
+function version_8_remove_update_nag() {
 	?>
         <style type="text/css">
 			.update-nag {
@@ -356,7 +389,7 @@ endif; // remove_update_nag
 //add_action( 'admin_head', 'remove_update_nag' );
 
 //hide admin bar from those who cannot write
-function hide_admin_from_viewers( )
+function version_8_hide_admin_from_viewers( )
 {
 	if( !current_user_can('publish_posts') )
 	{
@@ -367,7 +400,7 @@ function hide_admin_from_viewers( )
 
 //remove the function "wp.getUsersBlogs" to avoid brute force attacks popular 2014-07
 //a small plugin has covered this function, but it is left here as memorial
-function remove_unneeded_XMLRPC( $methods ) {
+function version_8_remove_unneeded_XMLRPC( $methods ) {
     unset( $methods['wp.getUsersBlogs'] );
     return $methods;
 }
@@ -381,7 +414,7 @@ if (!current_user_can('manage_options'))
 
 //hide profile fields with jquery
 //not the most secure, but relatively effective for the average user
-function jquery_remove_profile_fields()
+function version_8_jquery_remove_profile_fields()
 {
 	if (is_page('your-profile'))
 	{
@@ -426,7 +459,7 @@ function jquery_remove_profile_fields()
 
 
 //when adding a new user, redirect to edit their profile immediately so you can access their extra fields
-function redirect_on_user_add( $user_id )
+function version_8_redirect_on_user_add( $user_id )
 {
 	if(!empty($user_id))
 	{

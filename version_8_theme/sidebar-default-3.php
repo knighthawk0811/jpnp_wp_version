@@ -7,11 +7,11 @@
  * @package version_8
  */
 
-if ( ! is_active_sidebar( 'default-3' ) ) {
+if ( ! is_active_sidebar( 'sidebar-default-3' ) ) {
 	return;
 }
 ?>
 
 <aside id="default-3" class="widget-area">
-	<?php dynamic_sidebar( 'default-3' ); ?>
+	<?php dynamic_sidebar( 'sidebar-default-3' ); ?>
 </aside><!-- #default-3 -->
