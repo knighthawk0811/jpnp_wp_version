@@ -88,11 +88,13 @@ add_action( 'after_setup_theme', 'version_8_setup' );
  * Set the content width in pixels, based on the theme's design and stylesheet.
  *
  * Priority 0 to make it available to lower priority callbacks.
+ * The content width sets the maximum allowed width for any content added to your site, including uploaded images.
  *
  * @global int $content_width
+ * @link https://developer.wordpress.org/themes/basics/theme-functions/
  */
 function version_8_content_width() {
-	$GLOBALS['content_width'] = apply_filters( 'version_8_content_width', 800 );
+	$GLOBALS['content_width'] = apply_filters( 'version_8_content_width', 1600 );
 }
 add_action( 'after_setup_theme', 'version_8_content_width', 0 );
 
@@ -187,42 +189,6 @@ function version_8_widgets_init() {
 add_action( 'widgets_init', 'version_8_widgets_init' );
 
 
-/**
- * ENQUEUE SCRIPTS AND STYLES
- * 1)put this into the functions.php file and replace the enqueue script function
- * 2)create a new style-v7.css file with the true theme style
- * 3)uncomment the add_action line
- *
- * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
- */
-if ( ! function_exists( 'version_8_scripts' ) ) :
-function version_8_scripts() {
-	//first style sheet is the foundation from _s
-	wp_enqueue_style( 'foundation-style', get_stylesheet_uri() );
-
-	//last style sheet is the actual style for the site
-	wp_register_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-version_8.css', NULL , NULL , 'all' );
-	wp_enqueue_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-version_8.css' );
-
-	wp_enqueue_script( 'version_8-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '201802', true );
-
-	wp_enqueue_script( 'version_8-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '201802', true );
-
-	//AJAX
-	// register your script location, dependencies and version
-	//wp_register_script( 'version_8-AJAX', get_template_directory_uri() . '/js/version_8_ajax.js', array('jquery'), false, true );
-	// enqueue the script
-	//wp_enqueue_script('version_8-AJAX');
-	// localize the script for proper AJAX functioning
-	//wp_localize_script( 'version_8-AJAX', 'theurl', array('ajaxurl' => admin_url( 'admin-ajax.php' )));
-
-	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-		wp_enqueue_script( 'comment-reply' );
-	}
-}
-add_action( 'wp_enqueue_scripts', 'version_8_scripts' );
-endif;
-
 
 /**
  * Implement the Custom Header feature.
@@ -255,6 +221,8 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 
 /**
  * LOAD CUSTOM INCLUDED FILE
+ *
+ * This is where all of the unique code lives... may or may not change that
  *
  * @link https://developer.wordpress.org/themes/basics/theme-functions/
  */

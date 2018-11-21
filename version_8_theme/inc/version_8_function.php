@@ -22,17 +22,21 @@
 --------------------------------------------------------------*/
 /**
  * ENQUEUE SCRIPTS AND STYLES
- * 1)put this into the functions.php file and replace the enqueue script function
- * 2)create a new style-v7.css file with the true theme style
- * 3)uncomment the add_action line
- * 4)require get_template_directory() . '/inc/version_8_function.php';
+ * 1)functions.php => require get_template_directory() . '/inc/version_8_function.php';
+ * 2)child theme overwrite by if ( ! function_exists( 'version_8_enqueue_style' ) ) :
+ * 3)create a new style-version_8.css file with the true theme style
+ * 4)profit
  *
  * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
+ * @since 0.1.1811
  */
-if ( ! function_exists( 'version_8_scripts' ) ) :
-function version_8_scripts() {
+if ( ! function_exists( 'version_8_enqueue_style' ) ) :
+function version_8_enqueue_style() {
+	//parent theme => get_template_directory_uri()
+	//child theme => get_stylesheet_directory_uri()
+
 	//first style sheet is the foundation from _s
-	wp_enqueue_style( 'foundation-style', get_stylesheet_uri() );
+	wp_enqueue_style( 'version_8-style-foundation', get_stylesheet_uri() );
 
 	//last style sheet is the actual style for the site
 	wp_register_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-version_8.css', NULL , NULL , 'all' );
@@ -42,6 +46,26 @@ function version_8_scripts() {
 
 	wp_enqueue_script( 'version_8-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '201802', true );
 
+	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+		wp_enqueue_script( 'comment-reply' );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'version_8_enqueue_style' );
+endif;
+/**
+ * ENQUEUE SCRIPTS AND STYLES
+ * 1)functions.php => require get_template_directory() . '/inc/version_8_function.php';
+ * 2)child theme overwrite by if ( ! function_exists( 'version_8_enqueue_script' ) ) :
+ * 3)profit
+ *
+ * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
+ * @since 0.1.1811
+ */
+if ( ! function_exists( 'version_8_enqueue_script' ) ) :
+function version_8_enqueue_script() {
+	//parent theme => get_template_directory_uri()
+	//child theme => get_stylesheet_directory_uri()
+
 	//AJAX
 	// register your script location, dependencies and version
 	//wp_register_script( 'version_8-AJAX', get_template_directory_uri() . '/js/version_8_ajax.js', array('jquery'), false, true );
@@ -49,12 +73,8 @@ function version_8_scripts() {
 	//wp_enqueue_script('version_8-AJAX');
 	// localize the script for proper AJAX functioning
 	//wp_localize_script( 'version_8-AJAX', 'theurl', array('ajaxurl' => admin_url( 'admin-ajax.php' )));
-
-	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-		wp_enqueue_script( 'comment-reply' );
-	}
 }
-//add_action( 'wp_enqueue_scripts', 'version_8_scripts' );
+add_action( 'wp_enqueue_scripts', 'version_8_enqueue_script' );
 endif;
 
 /**
