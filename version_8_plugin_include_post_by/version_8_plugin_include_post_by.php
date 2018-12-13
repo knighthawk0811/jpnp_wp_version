@@ -276,7 +276,7 @@ class version_8_plugin_include_post_by
 	        {
 	            while( $the_posts->have_posts() )
 	            {
-	                $the_posts->the_post();//Iterate the post index in the loop.
+	                $the_posts->the_post();//setup the current post
 
 	                if( $display_option['title'] )
 	                {
@@ -315,6 +315,8 @@ class version_8_plugin_include_post_by
 	                        echo( ' ' . version_8_plugin_include_post_by::get_thumbnail($id) );
 	                        echo( '</div>' );
 	                    }
+	                    //gotta fix things after getting the thumbnail
+	                	$the_posts->reset_postdata();//setup the current post
 	                }
 
 	                if( $display_option['content'] )
@@ -437,7 +439,7 @@ class version_8_plugin_include_post_by
 
 	        //count all posts
 	        $post_count = 0;
-	        $transient_name = 'v8_' . md5( $cat . $count . $order . $orderby ) . '_c';
+	        $transient_name = 'v8_' . md5( $cat . $perpage . $order . $orderby ) . '_c';
 	        if( false === ( $post_count = get_transient( $transient_name ) ) )
 	        {
 	            // It wasn't there, so regenerate the data and save the transient
@@ -454,7 +456,7 @@ class version_8_plugin_include_post_by
 	            set_transient( $transient_name, $post_count, 10 * MINUTE_IN_SECONDS );
 	        }
 	        //get content for just the current page of posts
-	        $transient_name = 'v8_' . md5( $cat . $count . $order . $orderby ) . '_' . $page_current;
+	        $transient_name = 'v8_' . md5( $cat . $perpage . $order . $orderby ) . '_' . $page_current;
 	        if( false === ( $post_array = get_transient( $transient_name ) ) )
 	        {
 	            // It wasn't there, so regenerate the data and save the transient

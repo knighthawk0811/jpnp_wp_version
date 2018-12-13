@@ -202,6 +202,8 @@ endif;
  * @param array  $content The shortcode's content. Default is null (none).
  *
  * @return string|bool False on failure, the result of the shortcode on success.
+ * @example $result = do_shortcode_func( 'shorcode' );
+ * @example $result = do_shortcode_func( 'shortcode', array( 'attr' => 'value' ), 'shortcode content' );
  */
 function do_shortcode_func( $tag, array $atts = array(), $content = null )
 {
