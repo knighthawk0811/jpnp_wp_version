@@ -3,7 +3,7 @@
 Plugin Name: Version 8 Plugin: Include Post By
 Plugin URI: http://neathawk.us
 Description: A collection of shortcodes to include posts inside other posts, etc
-Version: 0.1.181212
+Version: 0.1.181213
 Author: Joseph Neathawk
 Author URI: http://Neathawk.us
 License: GNU General Public License v2 or later
@@ -11,7 +11,8 @@ License: GNU General Public License v2 or later
 
 //TODO: put pageination style into CSS classes
 
-class version_8_plugin_include_post_by {
+class version_8_plugin_include_post_by 
+{
     /*--------------------------------------------------------------
     >>> TABLE OF CONTENTS:
     ----------------------------------------------------------------
@@ -186,7 +187,7 @@ class version_8_plugin_include_post_by {
 				printf( '<span class="cat-links">' . esc_html__( 'Posted in %1$s', 'version_8_plugin_include_post_by' ) . '</span>', $categories_list ); // WPCS: XSS OK.
 			}
 		}
-	}
+	}//category_list
 
 
     /*--------------------------------------------------------------
@@ -198,7 +199,7 @@ class version_8_plugin_include_post_by {
 	 *
 	 * @version 0.1.181212
 	 */
-	private static function include_post_by_id( $attr )
+	public static function include_post_by_id( $attr )
 	{
 	    /*
 	    ***************************************************************************
@@ -267,9 +268,7 @@ class version_8_plugin_include_post_by {
 	        //obstream
 	        ob_start();
 	        //setup post
-	        $args = array(
-	            'p' => $id
-	            );
+	        $args = array( 'p' => $id );
 
 	        $the_posts = new WP_Query($args);
 	        //normal output the post stuff
@@ -279,9 +278,9 @@ class version_8_plugin_include_post_by {
 	            {
 	                $the_posts->the_post();//Iterate the post index in the loop.
 
-	                if($display_option['title'])
+	                if( $display_option['title'] )
 	                {
-	                    if($display_option['link'])
+	                    if( $display_option['link'] )
 	                    {
 	                        the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
 	                    }
@@ -291,45 +290,45 @@ class version_8_plugin_include_post_by {
 	                    }
 	                }
 
-	                if($display_option['meta'])
+	                if( $display_option['meta'] )
 	                {
-	                    echo('<div class="entry-meta">');
+	                    echo( '<div class="entry-meta">' );
 	                    version_8_plugin_include_post_by::posted_on();
 	                    version_8_plugin_include_post_by::posted_by();
-	                    echo('</div>');
-	                    echo('<div class="entry-footer">');
+	                    echo( '</div>' );
+	                    echo( '<div class="entry-footer">' );
 	                    version_8_plugin_include_post_by::category_list();
-	                    echo('</div>');
+	                    echo( '</div>' );
 	                }
 
-	                if($display_option['thumbnail'])
+	                if( $display_option['thumbnail'] )
 	                {
-	                    if($display_option['link'])
+	                    if( $display_option['link'] )
 	                    {
-	                        echo('<a class="post-thumbnail" href="' . get_the_permalink() . '" >');
-	                        echo(' ' . version_8_plugin_include_post_by::get_thumbnail($id));
-	                        echo('</a>');
+	                        echo( '<a class="post-thumbnail" href="' . get_the_permalink() . '" >' );
+	                        echo( ' ' . version_8_plugin_include_post_by::get_thumbnail($id) );
+	                        echo( '</a>' );
 	                    }
 	                    else
 	                    {
-	                        echo('<div class="post-thumbnail">');
-	                        echo(' ' . version_8_plugin_include_post_by::get_thumbnail($id));
-	                        echo('</div>');
+	                        echo( '<div class="post-thumbnail">' );
+	                        echo( ' ' . version_8_plugin_include_post_by::get_thumbnail($id) );
+	                        echo( '</div>' );
 	                    }
 	                }
 
-	                if($display_option['content'])
+	                if( $display_option['content'] )
 	                {
-	                    echo('<div class="entry-content">');
+	                    echo( '<div class="entry-content">' );
 	                    the_content();
-	                    echo('</div>');
+	                    echo( '</div>' );
 	                }
-	                else if($display_option['excerpt'])
+	                else if( $display_option['excerpt'] )
 	                {
-	                    echo('<div class="entry-content">');
+	                    echo( '<div class="entry-content">' );
 	                    the_excerpt();
-	                    echo('<a href="' . esc_url( get_permalink() ) . '">Continue Reading</a>');
-	                    echo('</div>');
+	                    echo( '<a href="' . esc_url( get_permalink() ) . '">Continue Reading</a>' );
+	                    echo( '</div>' );
 	                }
 	            }
 	            wp_reset_postdata();
@@ -341,7 +340,8 @@ class version_8_plugin_include_post_by {
 	    }
 	    //return $output
 	    return $output;
-	}
+	}//include_post_by_id
+
 
 	/**
 	 * include post by category
@@ -349,7 +349,7 @@ class version_8_plugin_include_post_by {
 	 *
 	 * @version 0.1.181212
 	 */
-	private static include_post_by_cat( $attr )
+	public static function include_post_by_cat( $attr )
 	{
 	    /*
 	    *************************************
@@ -376,7 +376,15 @@ class version_8_plugin_include_post_by {
 	    *************************************
 	    //*/
 	    $output = '';
-	    extract( shortcode_atts( array( 'cat' => NULL, 'order' => 'DESC', 'orderby' => 'date', 'display' => 'all', 'pageinate' => true, 'perpage' => 5, 'offset' => 0 ), $attr ) );
+	    extract( shortcode_atts( array( 
+	    	'cat' => NULL, 
+	    	'order' => 'DESC', 
+	    	'orderby' => 'date', 
+	    	'display' => 'all', 
+	    	'pageinate' => true, 
+	    	'perpage' => 5, 
+	    	'offset' => 0 
+	    ), $attr ) );
 
 
 	    if ( !is_null( $cat ) && ( is_numeric( $cat ) || preg_match( '/^[0-9,]+$/', $cat ) ) && !is_feed() )
@@ -399,13 +407,13 @@ class version_8_plugin_include_post_by {
 	        }
 
 	        //order
-	        if ( !is_null($order) && ($order != 'DESC' && $order != 'ASC'))
+	        if ( !is_null( $order ) && ( $order != 'DESC' && $order != 'ASC' ) )
 	        {
 	            $order = 'DESC';
 	        }
 
 	        //orderby
-	        if ( !is_null($orderby) && (preg_match('/^[a-zA-Z\_]+$/', $orderby) != 1))
+	        if ( !is_null( $orderby ) && ( preg_match('/^[a-zA-Z\_]+$/', $orderby ) != 1) )
 	        {
 	            $orderby = 'date';
 	        }
@@ -413,11 +421,11 @@ class version_8_plugin_include_post_by {
 	        //offest
 	        $page_current = 1;
 	        $offset = 0;
-	        if(isset($_GET['pn']) && is_numeric($_GET['pn']))
+	        if( isset( $_GET['pn'] ) && is_numeric( $_GET['pn'] ) )
 	        {
-	            $page_current = intval($_GET['pn']);
-	            $offset = ($page_current - 1) * $perpage;
-	            if($offset < 0)
+	            $page_current = intval( $_GET['pn'] );
+	            $offset = ( $page_current - 1 ) * $perpage;
+	            if( $offset < 0 )
 	            {
 	                $offset = 0;
 	            }
@@ -429,8 +437,8 @@ class version_8_plugin_include_post_by {
 
 	        //count all posts
 	        $post_count = 0;
-	        $transient_name = 'v8_' . md5($cat . $count . $order . $orderby) . '_c';
-	        if(false === ($post_count = get_transient($transient_name)))
+	        $transient_name = 'v8_' . md5( $cat . $count . $order . $orderby ) . '_c';
+	        if( false === ( $post_count = get_transient( $transient_name ) ) )
 	        {
 	            // It wasn't there, so regenerate the data and save the transient
 	            $args = array(
@@ -442,12 +450,12 @@ class version_8_plugin_include_post_by {
 	                'post_type'        => 'post',
 	                'post_status'      => 'publish',
 	                );
-	            $post_count = count(get_posts($args));
-	            set_transient($transient_name, $post_count, 10 * MINUTE_IN_SECONDS );
+	            $post_count = count( get_posts( $args ) );
+	            set_transient( $transient_name, $post_count, 10 * MINUTE_IN_SECONDS );
 	        }
 	        //get content for just the current page of posts
-	        $transient_name = 'v8_' . md5($cat . $count . $order . $orderby) . '_' . $page_current;
-	        if(false === ($post_array = get_transient($transient_name)))
+	        $transient_name = 'v8_' . md5( $cat . $count . $order . $orderby ) . '_' . $page_current;
+	        if( false === ( $post_array = get_transient( $transient_name ) ) )
 	        {
 	            // It wasn't there, so regenerate the data and save the transient
 	            $args = array(
@@ -459,41 +467,48 @@ class version_8_plugin_include_post_by {
 	                'post_type'        => 'post',
 	                'post_status'      => 'publish',
 	                );
-	            $post_array = get_posts($args);
+	            $post_array = get_posts( $args );
 	            set_transient($transient_name, $post_array, 10 * MINUTE_IN_SECONDS );
 	        }
 
 	        //display content
-	        $output .= '<div class="' . get_category($cat)->slug . '">';
-	        if(is_array($post_array) && count($post_array) > 0)
+	        $output .= '<div class="' . get_category( $cat )->slug . '">';
+	        if(is_array( $post_array ) && count( $post_array ) > 0)
 	        {
-	            foreach($post_array as $item)
+	            foreach( $post_array as $item )
 	            {
 	                //call site_include_post_by_id();
 	                $args = array(
 	                    'id'       =>"$item->ID",
 	                    'display'   =>"$display"
 	                    );
-	                $output .= version_8_plugin_include_post_by::include_post_by_id($args);
+	                $output .= version_8_plugin_include_post_by::include_post_by_id( $args );
 	            }
 
 
 				//pageination
-	            if($pageinate)
+	            if( $pageinate )
 	            {
 	                //paginate link back to previous/newer content
-	                if($page_current > 1)
+	                if( $page_current > 1 )
 	                {
 	                    $page_previous = $page_current - 1;
 	                    $url_var = '?pn=';
-	                    if($page_previous <= 1){$url_var = '';}else{$url_var .= $page_previous;}
-	                    $output .= '<a style="clear:left;float:left;" href="' . esc_url(get_permalink()) . $url_var . '" title="Previous Page">Previous Page</a>';
+	                    if( $page_previous <= 1 )
+                    	{ 
+                    		$url_var = ''; 
+                    	}
+                    	else
+                		{ 
+                			$url_var .= $page_previous; 
+                		}
+	                    $output .= '<a style="clear:left;float:left;" href="' . esc_url( get_permalink() ) . $url_var . '" title="Previous Page">Previous Page</a>';
 	                }
 	                //paginate link to next/older content
-	                if(count($post_array) == $perpage)
+	                if( count( $post_array ) == $perpage )
 	                {
 	                    //is a link even needed?
-	                    if(false === ($post_array_next = get_transient('cat_page_' . str_ireplace(',','_',$cat) . '__' . ($page_current + 1))))
+	                    if( false === ( $post_array_next = get_transient( 'cat_page_' . str_ireplace( ',','_',$cat ) . '__' . ( $page_current + 1 ) ) ) )
 	                    {
 	                        // It wasn't there, so regenerate the data and save the transient
 	                        $args = array(
@@ -506,44 +521,44 @@ class version_8_plugin_include_post_by {
 	                            'post_status'      => 'publish',
 	                            );
 	                        $post_array_next = get_posts($args);
-	                        set_transient('cat_page_' . str_ireplace(',','_',$cat) . '__' . ($page_current + 1), $post_array_next, 10 * MINUTE_IN_SECONDS );
+	                        set_transient( 'cat_page_' . str_ireplace( ',','_',$cat ) . '__' . ( $page_current + 1 ), $post_array_next, 10 * MINUTE_IN_SECONDS );
 	                    }
-	                    $count = count($post_array_next);
-	                    if(count($count) > 0)
+	                    $count = count( $post_array_next );
+	                    if( count( $count ) > 0 )
 	                    {
-	                        $output .= '<a style="clear:right;float:right;" href="' . esc_url(get_permalink()) . '?pn=' . ($page_current + 1) . '" title="Next Page">Next Page</a>';
+	                        $output .= '<a style="clear:right;float:right;" href="' . esc_url( get_permalink() ) . '?pn=' . ( $page_current + 1 ) . '" title="Next Page">Next Page</a>';
 	                    }
 	                }
 	                //paginate page numbers
-	                if($post_count > $perpage)
+	                if( $post_count > $perpage )
 	                {
 	                    $output .= '<div style="height:40px; margin:0 auto; position:relative; width:220px; text-align:center;">';
-	                    $page_count = intval(ceil($post_count / $perpage));
+	                    $page_count = intval( ceil( $post_count / $perpage ) );
 	                    $i = 1;
 	                    $step = 0;
-	                    if($page_count > 4 && $page_current > 1)
+	                    if( $page_count > 4 && $page_current > 1 )
 	                    {
 	                        $i = $page_current - 1;
 	                    }
-	                    if($i > 1)
+	                    if( $i > 1 )
 	                    {
 	                        $link_extra_style = ' border:1px solid rgba(0,0,0,0); ';
 	                        $output .= '<a style="display:inline-block; margin:3px; min-width:20px; padding:0 3px; background:rgba(0,0,0,0.25); ' . $link_extra_style . '" href="' . esc_url(get_permalink()) . '?pn=1" title="Page 1">1</a>';
-	                        if($i > 2)
+	                        if( $i > 2 )
 	                        {
 	                            $output .= '...';
 	                        }
 	                    }
-	                    for($i;$i <= $page_count; $i++)
+	                    for( $i; $i <= $page_count; $i++ )
 	                    {
 	                        $step++;
-	                        if($step < 4 || $i == $page_count)
+	                        if( $step < 4 || $i == $page_count )
 	                        {
-	                            if($i == $page_count && $step > 3)
+	                            if( $i == $page_count && $step > 3 )
 	                            {
 	                                $output .= '...';
 	                            }
-	                            if($i == $page_current)
+	                            if( $i == $page_current )
 	                            {
 	                                $link_extra_style = ' border:1px solid #000000; ';
 	                            }

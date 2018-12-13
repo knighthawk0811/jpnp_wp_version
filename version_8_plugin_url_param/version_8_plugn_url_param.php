@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: version_8_plugin_url_param
+Plugin Name: Version 8 Plugin: URL Param
 Plugin URI: http://neathawk.us
 Description: A collection of shortcodes to access/use the URL parameters
 Version: 0.1.181130

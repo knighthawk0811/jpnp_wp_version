@@ -38,7 +38,7 @@ class version_8_plugin_member_content {
      * @requires
      * @version 0.1.181213
      */
-    private static visitor_content( $atts, $content = null )
+    public static visitor_content( $atts, $content = null )
     {
         /*
         [visitor]
@@ -69,7 +69,7 @@ class version_8_plugin_member_content {
      * @requires
      * @version 0.1.181213
      */
-    private static function member_content( $attr, $content = null )
+    public static function member_content( $attr, $content = null )
     {
         /*
         [member]
