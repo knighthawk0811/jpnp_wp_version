@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: version_8_plugin_include_post_by
+Plugin Name: Version 8 Plugin: Include Post By
 Plugin URI: http://neathawk.us
 Description: A collection of shortcodes to include posts inside other posts, etc
 Version: 0.1.181212
@@ -12,8 +12,19 @@ License: GNU General Public License v2 or later
 //TODO: put pageination style into CSS classes
 
 class version_8_plugin_include_post_by {
+    /*--------------------------------------------------------------
+    >>> TABLE OF CONTENTS:
+    ----------------------------------------------------------------
+    # Reusable Functions
+    # Shortcode Functions (are plugin territory)
+    --------------------------------------------------------------*/
 
-	
+
+
+
+    /*--------------------------------------------------------------
+    # Reusable Functions
+    --------------------------------------------------------------*/	
 	
 	/**
 	 * return the thumbnail URL as a string
@@ -177,12 +188,17 @@ class version_8_plugin_include_post_by {
 		}
 	}
 
+
+    /*--------------------------------------------------------------
+    # Shortcode Functions (are plugin territory)
+    --------------------------------------------------------------*/
+
 	/**
 	 * include post by ID
 	 *
 	 * @version 0.1.181212
 	 */
-	private static function version_8_include_post_by_id( $attr )
+	private static function include_post_by_id( $attr )
 	{
 	    /*
 	    ***************************************************************************
@@ -333,7 +349,7 @@ class version_8_plugin_include_post_by {
 	 *
 	 * @version 0.1.181212
 	 */
-	private static version_8_include_post_by_cat( $attr )
+	private static include_post_by_cat( $attr )
 	{
 	    /*
 	    *************************************
@@ -458,7 +474,7 @@ class version_8_plugin_include_post_by {
 	                    'id'       =>"$item->ID",
 	                    'display'   =>"$display"
 	                    );
-	                $output .= version_8_plugin_include_post_by::version_8_include_post_by_id($args);
+	                $output .= version_8_plugin_include_post_by::include_post_by_id($args);
 	            }
 
 
@@ -555,7 +571,6 @@ class version_8_plugin_include_post_by {
 
 }
 
-
-add_shortcode( 'include-post-by-id', Array(  'version_8_plugin_include_post_by', 'version_8_include_post_by_id' ) );
-add_shortcode( 'include-post-by-cat', Array( 'version_8_plugin_include_post_by', 'version_8_include_post_by_cat' ) );
+add_shortcode( 'include-post-by-id', Array(  'version_8_plugin_include_post_by', 'include_post_by_id' ) );
+add_shortcode( 'include-post-by-cat', Array( 'version_8_plugin_include_post_by', 'include_post_by_cat' ) );
 
