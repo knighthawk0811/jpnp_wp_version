@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: version_8_plugin
+Plugin Name: Version 8 Plugin: Generic
 Plugin URI: http://neathawk.us
 Description: A collection of generic functions that don't have their own plugin
-Version: 0.2.20181214
+Version: 0.2.181214
 Author: Joseph Neathawk
 Author URI: http://Neathawk.us
 License: GNU General Public License v2 or later
@@ -28,8 +28,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /*--------------------------------------------------------------
 # define default variables
 --------------------------------------------------------------*/
-define( VERSION_8_PUGIN, '0.2' );
-define( VERSION_8_PUGIN_DB, '0.2' );
+define( VERSION_8_PLUGIN, '0.2' );
+define( VERSION_8_PLUGIN_DB, '0.2' );
 
 
 /*--------------------------------------------------------------
@@ -46,7 +46,7 @@ function version_8_plugin_init()
     if( !site_plugin_is_up_to_date() )
     {
 
-        update_option( 'version_8_plugin_db', VERSION_8_PUGIN_DB );
+        update_option( 'version_8_plugin_db', VERSION_8_PLUGIN_DB );
     }
 
     //set options if they don't already exist
@@ -69,7 +69,7 @@ endif;
 if ( ! function_exists( 'version_8_plugin_is_up_to_date' ) ) :
 function version_8_plugin_is_up_to_date()
 {
-    return ( floatval(get_option( "version_8_plugin_db", 0 )) >= VERSION_8_PUGIN_DB ? true : false );
+    return ( floatval(get_option( "version_8_plugin_db", 0 )) >= VERSION_8_PLUGIN_DB ? true : false );
 }
 endif;
 
@@ -197,6 +197,7 @@ function do_shortcode_func( $tag, array $atts = array(), $content = null )
 
     return call_user_func( $shortcode_tags[ $tag ], $atts, $content, $tag );
 }
+endif;
 
 /**
  * Filters all menu item URLs for a #placeholder#.

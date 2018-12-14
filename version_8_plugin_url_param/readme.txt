@@ -1,9 +1,9 @@
-=== Plugin Name ===
+=== Version 8 Plugin: URL Param ===
 Contributors: knighthawk0811
 Tags: get, params, shortcode, vars
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 0.1.181130
+Stable tag: 0.2.181214
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,7 +68,9 @@ Examples follow, assuming the user goes to your post page http://example.com/pos
 
 == Changelog ==
 
+= 0.2.181214 =
+* version_8 modular cleanup
 
 = 0.1.181130 =
-FPL
+* FPL
 

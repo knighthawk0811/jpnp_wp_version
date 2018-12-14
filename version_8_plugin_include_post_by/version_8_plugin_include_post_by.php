@@ -3,7 +3,7 @@
 Plugin Name: Version 8 Plugin: Include Post By
 Plugin URI: http://neathawk.us
 Description: A collection of shortcodes to include posts inside other posts, etc
-Version: 0.1.181213
+Version: 0.2.181214
 Author: Joseph Neathawk
 Author URI: http://Neathawk.us
 License: GNU General Public License v2 or later

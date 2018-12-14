@@ -3,7 +3,7 @@
 Plugin Name: version_8_plugin_site
 Plugin URI: http://neathawk.us
 Description: A collection of generic functions that are specific to this site
-Version: 0.1.20181214
+Version: 0.2.181214
 Author: Joseph Neathawk
 Author URI: http://Neathawk.us
 License: GNU General Public License v2 or later

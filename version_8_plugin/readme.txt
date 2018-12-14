@@ -1,10 +1,10 @@
-=== version_8 Plugin ===
+=== Version 8 Plugin: Generic ===
 Contributors: Knighthawk
 Donate link:
 Tags:
 Requires at least: ?
 Tested up to: 4.9
-Version: 2018.09.10
+Version: 0.2.181214
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -19,9 +19,16 @@ This plugin is intentiaonally not OOP as it is by nature a bit of a hodgepodge
 
 == Changelog ==
 
+= 0.2.181214 =
+* Removed/created all current possible stand alone plugins
+* include post by
+* member content
+* login link
+* url param
+* site specific
 
 = 0.1.181213 =
-removed include_post_by... as it is now located in its own plugin "Version 8 Plugin: Include Post By"
+* removed include_post_by... as it is now located in its own plugin "Version 8 Plugin: Include Post By"
 
 = 2018.09.10 =
 * FPL v9

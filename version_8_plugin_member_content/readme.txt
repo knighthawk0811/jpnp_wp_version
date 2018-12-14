@@ -4,7 +4,7 @@ Donate link:
 Tags:
 Requires at least: ?
 Tested up to: 4.9
-Version: 2018.09.10
+Version: 0.2.181214
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -17,6 +17,5 @@ A collection of generic functions that separate content by visitor/member/ membe
 
 == Changelog ==
 
-
-= 0.1.181213 =
-* FPL 
+= 0.2.181214 =
+* FPL

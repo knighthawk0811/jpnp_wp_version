@@ -16,9 +16,11 @@ Version 8 Plugin: Include Post By - provides your pages and posts with shortcode
 
 == Changelog ==
 
+= 0.2.181214 =
+* tested and functional
 
 = 0.1.181213 =
-self contained code, not reliant on functions from outside WP core
+* self contained code, not reliant on functions from outside WP core
 
 = 0.1.181212 =
 FPL

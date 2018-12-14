@@ -3,7 +3,7 @@
 Plugin Name: Version 8 Plugin: URL Param
 Plugin URI: http://neathawk.us
 Description: A collection of shortcodes to access/use the URL parameters
-Version: 0.1.181130
+Version: 0.2.181214
 Author: Joseph Neathawk
 Author URI: http://Neathawk.us
 License: GNU General Public License v2 or later

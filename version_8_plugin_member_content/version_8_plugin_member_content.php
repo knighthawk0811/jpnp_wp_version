@@ -3,7 +3,7 @@
 Plugin Name: Version 8 Plugin: Member Content
 Plugin URI: http://neathawk.us
 Description: A collection of generic functions that separate content by visitor/member/ member of type
-Version: 0.1.20181213
+Version: 0.2.181214
 Author: Joseph Neathawk
 Author URI: http://Neathawk.us
 License: GNU General Public License v2 or later
@@ -38,7 +38,7 @@ class version_8_plugin_member_content {
      * @requires
      * @version 0.1.181213
      */
-    public static visitor_content( $atts, $content = null )
+    public static function visitor_content( $atts, $content = null )
     {
         /*
         [visitor]

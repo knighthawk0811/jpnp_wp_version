@@ -4,7 +4,7 @@ Donate link:
 Tags:
 Requires at least: ?
 Tested up to: 4.9
-Version: 2018.09.10
+Version: 0.2.181214
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -18,5 +18,5 @@ A collection of functions and shortcodes that display login/out links and button
 == Changelog ==
 
 
-= 0.1.181214 =
+= 0.2.181214 =
 * FPL

@@ -3,7 +3,7 @@
 Plugin Name: Version 8 Plugin: Login Link
 Plugin URI: http://neathawk.us
 Description: A collection of functions and shortcodes that display login/out links and buttons
-Version: 0.1.20181214
+Version: 0.2.181214
 Author: Joseph Neathawk
 Author URI: http://Neathawk.us
 License: GNU General Public License v2 or later
@@ -16,15 +16,65 @@ class version_8_plugin_login_link {
     /*--------------------------------------------------------------
     >>> TABLE OF CONTENTS:
     ----------------------------------------------------------------
-    # Reusable Functions
+    # General Functions
     # Shortcode Functions (are plugin territory)
     --------------------------------------------------------------*/
 
 
     /*--------------------------------------------------------------
-    # Reusable Functions
+    # General Functions
     --------------------------------------------------------------*/
-    //nothing to see here
+    
+    /**
+     * Filters all menu item URLs for a #placeholder#.
+     *
+     * @link https://stackoverflow.com/questions/11403189/how-to-insert-shortcode-into-wordpress-menu
+     * @param WP_Post[] $menu_items All of the nave menu items, sorted for display.
+     * @return WP_Post[] The menu items with any placeholders properly filled in.
+     */
+    function dynamic_menu_item( $menu_items ) {
+
+        // A list of placeholders to replace.
+        // You can add more placeholders to the list as needed.
+        $placeholders = array(
+            '#logout-link#' => array(
+                'shortcode' => 'vip_logout_url',
+                'atts' => array(), // Shortcode attributes.
+                'content' => '', // Content for the shortcode.
+            ),
+            '#login-link#' => array(
+                'shortcode' => 'vip_login_url',
+                'atts' => array(), // Shortcode attributes.
+                'content' => '', // Content for the shortcode.
+            ),
+        );
+
+        foreach ( $menu_items as $menu_item )
+        {
+
+            if ( isset( $placeholders[ $menu_item->url ] ) )
+            {
+
+                global $shortcode_tags;
+
+                $placeholder = $placeholders[ $menu_item->url ];
+
+                if ( isset( $shortcode_tags[ $placeholder['shortcode'] ] ) )
+                {
+
+                    $menu_item->url = call_user_func(
+                        $shortcode_tags[ $placeholder['shortcode'] ]
+                        , $placeholder['atts']
+                        , $placeholder['content']
+                        , $placeholder['shortcode']
+                    );
+                }
+            }
+        }
+
+        return $menu_items;
+    }
+
 
 
     /*--------------------------------------------------------------
@@ -220,6 +270,7 @@ class version_8_plugin_login_link {
 
 }//class version_8_plugin_login_link
 
+add_filter( 'wp_nav_menu_objects', Array(  'version_8_plugin_login_link', 'dynamic_menu_item' ) );
 
 add_shortcode( 'vip_login_button', Array(  'version_8_plugin_login_link', 'login_button_display' ) );
 add_shortcode( 'vip_login_link', Array(  'version_8_plugin_login_link', 'login_link_display' ) );
