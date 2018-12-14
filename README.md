@@ -41,6 +41,6 @@ My theme/plugin v8 with my own set of functions
 
 
 == Internal Notes ==
-use version_8 for all functions that may one day be updated
-use "vip_" or "naked" as a shortcode prefix. "vip" stands for "version iteration plugin"
-use v8 when commenting about v8 and find/replace won't update "version_8"
+* use version_8 for all functions that may one day be updated
+* use "vip_" or "naked" as a shortcode prefix. "vip" stands for "version iteration plugin"
+* use v8 when commenting about v8 and find/replace won't update "version_8"
