@@ -122,6 +122,10 @@ class version_8_plugin_member_content {
 
 }//class version_8_plugin_member_content
 
+add_shortcode( 'vip_visitor', Array(  'version_8_plugin_member_content', 'visitor_content' ) );
+add_shortcode( 'vip_member', Array(  'version_8_plugin_member_content', 'member_content' ) );
+
+//backward compatability
 add_shortcode( 'visitor', Array(  'version_8_plugin_member_content', 'visitor_content' ) );
 add_shortcode( 'member', Array(  'version_8_plugin_member_content', 'member_content' ) );
 

@@ -16,11 +16,18 @@ class version_8_plugin_include_post_by
     /*--------------------------------------------------------------
     >>> TABLE OF CONTENTS:
     ----------------------------------------------------------------
+    # TODO
     # Reusable Functions
     # Shortcode Functions (are plugin territory)
     --------------------------------------------------------------*/
 
-
+    /*--------------------------------------------------------------
+    # TODO
+    --------------------------------------------------------------*/
+    //include_by_cat
+    //only do "get_post" once then programatically do the offest and page rather the query the DB again
+    //put the desired posts into a new array and delete the old array
+    //then you should be able to carry one as usual
 
 
     /*--------------------------------------------------------------

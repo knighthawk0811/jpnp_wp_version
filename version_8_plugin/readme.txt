@@ -14,6 +14,7 @@ Site Specific Functions
 
 A collection of generic functions that pair with the version_8 theme.
 As functiosn grow bigger they branch out into their own plugin
+This plugin is intentiaonally not OOP as it is by nature a bit of a hodgepodge
 
 
 == Changelog ==

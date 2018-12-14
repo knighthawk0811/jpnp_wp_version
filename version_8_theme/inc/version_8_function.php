@@ -537,68 +537,28 @@ function version_8_view_access($level = 0)
 }
 endif;
 
-if ( ! function_exists( 'version_8_get_thumbnail' ) ) :
-function version_8_get_thumbnail($id)
-{
-	//return value
-	$the_post_thumbnail = '';
-
-	//new loop
-	$query2 = new WP_Query( array( 'p' => $id ) );
-	if ( $query2->have_posts() )
-	{
-		// The 2nd Loop
-		while ( $query2->have_posts() )
-		{
-			//setup post
-			$query2->the_post();
-			//echo '<li>' . get_the_title( $query2->post->ID ) . '</li>';
-			//already have a thumbnail? use that one
-			if(has_post_thumbnail($query2->post->ID))
-			{
-				$the_post_thumbnail = get_the_post_thumbnail($query2->post->ID, 'thumbnail');
-			}
-			else
-			{
-				//no thumbnail set, then grab the first image
-				ob_start();
-				ob_end_clean();
-				$output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $query2->post->post_content, $matches);
-				$the_post_thumbnail_url = $matches[1][0];
-
-				//set a default image inside the theme folder
-				if(empty($the_post_thumbnail_url))
-				{
-					$the_post_thumbnail_url = get_stylesheet_directory_uri() ."/image/default_thumbnail.png";
-				}
-				$the_post_thumbnail = '<img src="' . $the_post_thumbnail_url .'" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" width="150" height="150" />';
-			}
-		}
-		// Restore original Post Data
-		wp_reset_postdata();
-	}
-
-	return $the_post_thumbnail;
-}
-endif;
+/**
+ * return the thumbnail URL as a string
+ * Maintain copy from plugin "include post by"
+ *
+ * @version 0.1.181213
+ */
 if ( ! function_exists( 'version_8_get_thumbnail_url' ) ) :
-function version_8_get_thumbnail_url($id)
+function version_8_get_thumbnail_url($id = null)
 {
 	//return value
 	$the_post_thumbnail_url = '';
 
-	//new loop
-	$query2 = new WP_Query( array( 'p' => $id ) );
-	if ( $query2->have_posts() )
+	if($id == null)
 	{
-		// The 2nd Loop
-		while ( $query2->have_posts() )
+		// no new loop
+		global $post;
+
+		//is this a proper post type?
+		if( 'post' === get_post_type($post) || 'page' === get_post_type($post) )
 		{
-			//setup post
-			$query2->the_post();
-			//echo '<li>' . get_the_title( $query2->post->ID ) . '</li>';
 			//already have a thumbnail? use that one
-			if(has_post_thumbnail($query2->post->ID))
+			if(has_post_thumbnail($id))
 			{
 				ob_start();
 				the_post_thumbnail_url('full');
@@ -620,11 +580,66 @@ function version_8_get_thumbnail_url($id)
 				}
 			}
 		}
-		// Restore original Post Data
-		wp_reset_postdata();
+
+	}
+	else
+	{
+
+		//new loop
+		$query2 = new WP_Query( array( 'p' => $id ) );
+		if ( $query2->have_posts() )
+		{
+			// The 2nd Loop
+			while ( $query2->have_posts() )
+			{
+				//setup post
+				$query2->the_post();
+				//is this a proper post type?
+				if( 'post' === get_post_type($query2->post) || 'page' === get_post_type($query2->post) )
+				{
+					//already have a thumbnail? use that one
+					if(has_post_thumbnail($query2->post->ID))
+					{
+						ob_start();
+						the_post_thumbnail_url('full');
+						$the_post_thumbnail_url = ob_get_contents();
+						ob_end_clean();
+					}
+					else
+					{
+						//no thumbnail set, then grab the first image
+						ob_start();
+						ob_end_clean();
+						$output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $query2->post->post_content, $matches);
+						$the_post_thumbnail_url = $matches[1][0];
+
+						//set a default image inside the theme folder
+						if(empty($the_post_thumbnail_url))
+						{
+							$the_post_thumbnail_url = get_stylesheet_directory_uri() ."/image/default_thumbnail.png";
+						}
+					}
+				}
+			}
+			// Restore original Post Data
+			wp_reset_postdata();
+		}
 	}
 
 	return $the_post_thumbnail_url;
+}
+endif;
+
+/**
+ * return the thumbnail <img> as a string
+ *
+ * @version 0.1.181213
+ */
+if ( ! function_exists( 'version_8_get_thumbnail' ) ) :
+function version_8_get_thumbnail($id = null, $class = '')
+{
+	//return string <img> value
+	return '<img src="' . version_8_plugin_include_post_by::get_thumbnail_url($id) .'" class=" ' . $class . ' attachment-thumbnail size-thumbnail wp-post-image" alt="" width="150" height="150" />';
 }
 endif;
 
