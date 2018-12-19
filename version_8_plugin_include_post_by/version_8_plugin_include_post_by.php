@@ -3,7 +3,7 @@
 Plugin Name: Version 8 Plugin: Include Post By
 Plugin URI: http://neathawk.us
 Description: A collection of shortcodes to include posts inside other posts, etc
-Version: 0.2.181214
+Version: 0.2.181219
 Author: Joseph Neathawk
 Author URI: http://Neathawk.us
 License: GNU General Public License v2 or later
@@ -204,7 +204,7 @@ class version_8_plugin_include_post_by
 	/**
 	 * include post by ID
 	 *
-	 * @version 0.1.181212
+	 * @version 0.1.181219
 	 */
 	public static function include_post_by_id( $attr )
 	{
@@ -219,8 +219,7 @@ class version_8_plugin_include_post_by
 	    ***************************************************************************
 	    //*/
 
-	    //TODO: add thumbnail 
-
+	    //TODO: add thumbnail
 
 	    $post_object = null;
 	    $output = '';
@@ -228,9 +227,17 @@ class version_8_plugin_include_post_by
 	    //get input
 	    extract( shortcode_atts( array( 'id' => NULL,'display' => 'all' ), $attr ) );
 	    //remove spaces, and build array
-	    $display_option = explode(',', str_replace(' ', '', $display));
+	    $display_option_input = explode(',', str_replace(' ', '', $display));
+	    //default values
+	    $display_option['title'] = false;
+	    $display_option['link'] = false;
+	    $display_option['meta'] = false;
+	    $display_option['thumbnail'] = false;
+	    $display_option['content'] = false;
+	    $display_option['excerpt'] = false;
+	    $display_option['all'] = false;
 	    //validate input
-	    foreach( $display_option as $key => &$value )
+	    foreach( $display_option_input as $key => &$value )
 	    {
 	        switch( $value )
 	        {
@@ -285,9 +292,9 @@ class version_8_plugin_include_post_by
 	            {
 	                $the_posts->the_post();//setup the current post
 
-	                if( $display_option['title'] )
+	                if( $display_option['title'] === true)
 	                {
-	                    if( $display_option['link'] )
+	                    if( $display_option['link'] === true )
 	                    {
 	                        the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
 	                    }
@@ -297,7 +304,7 @@ class version_8_plugin_include_post_by
 	                    }
 	                }
 
-	                if( $display_option['meta'] )
+	                if( $display_option['meta'] === true )
 	                {
 	                    echo( '<div class="entry-meta">' );
 	                    version_8_plugin_include_post_by::posted_on();
@@ -308,11 +315,11 @@ class version_8_plugin_include_post_by
 	                    echo( '</div>' );
 	                }
 
-	                if( $display_option['thumbnail'] )
+	                if( $display_option['thumbnail'] === true )
 	                {
-	                    if( $display_option['link'] )
+	                    if( $display_option['link'] === true )
 	                    {
-	                        echo( '<a class="post-thumbnail" href="' . get_the_permalink() . '" >' );
+	                        echo( '<a class="post-thumbnail" href="' . esc_url( get_permalink() ) . '" >' );
 	                        echo( ' ' . version_8_plugin_include_post_by::get_thumbnail($id) );
 	                        echo( '</a>' );
 	                    }
@@ -326,13 +333,13 @@ class version_8_plugin_include_post_by
 	                	$the_posts->reset_postdata();//setup the current post
 	                }
 
-	                if( $display_option['content'] )
+	                if( $display_option['content'] === true )
 	                {
 	                    echo( '<div class="entry-content">' );
 	                    the_content();
 	                    echo( '</div>' );
 	                }
-	                else if( $display_option['excerpt'] )
+	                else if( $display_option['excerpt'] === true )
 	                {
 	                    echo( '<div class="entry-content">' );
 	                    the_excerpt();

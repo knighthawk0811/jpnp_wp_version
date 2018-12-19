@@ -3,7 +3,7 @@
 Plugin Name: Version 8 Plugin: Generic
 Plugin URI: http://neathawk.us
 Description: A collection of generic functions that don't have their own plugin
-Version: 0.2.181214
+Version: 0.2.181219
 Author: Joseph Neathawk
 Author URI: http://Neathawk.us
 License: GNU General Public License v2 or later
@@ -19,9 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 # Generic Plugin Functions
 # Generic PHP functions
 # Shortcodes (are plugin territory)
-# Woocommerce Customization
-# Woocommerce Custom Subscription Export options
-# Woocommerce Template Hooks
 --------------------------------------------------------------*/
 
 
@@ -43,7 +40,7 @@ define( VERSION_8_PLUGIN_DB, '0.2' );
 if ( ! function_exists( 'version_8_plugin_init' ) ) :
 function version_8_plugin_init()
 {
-    if( !site_plugin_is_up_to_date() )
+    if( !version_8_plugin_is_up_to_date() )
     {
 
         update_option( 'version_8_plugin_db', VERSION_8_PLUGIN_DB );

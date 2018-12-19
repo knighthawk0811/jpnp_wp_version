@@ -16,6 +16,9 @@ Version 8 Plugin: Include Post By - provides your pages and posts with shortcode
 
 == Changelog ==
 
+= 0.2.181219 =
+* fixed bug in include-post-by-id where display data was being cached between multiple executions
+
 = 0.2.181214 =
 * tested and functional
 

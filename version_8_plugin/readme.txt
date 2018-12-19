@@ -19,6 +19,9 @@ This plugin is intentiaonally not OOP as it is by nature a bit of a hodgepodge
 
 == Changelog ==
 
+= 0.2.181219 =
+* fixed a bug - typo in a function call inside version_8_plugin_init
+
 = 0.2.181214 =
 * Removed/created all current possible stand alone plugins
 * include post by
