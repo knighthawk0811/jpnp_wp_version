@@ -210,7 +210,7 @@ class version_8_plugin_include_post_by
 	{
 	    /*
 	    ***************************************************************************
-	    [include-post-by-id id="123" display="title,link,meta,thumbnail,content,excerpt,all"]
+	    [include-post-by-id id="123" display="title,link,meta,thumbnail,content,excerpt,all" more="true" more_text="Continue Reading"]
 	        //no content is used here, so no closing tag required
 	    [/include-post-by-id]
 	    ***************************************************************************
@@ -225,7 +225,7 @@ class version_8_plugin_include_post_by
 	    $output = '';
 
 	    //get input
-	    extract( shortcode_atts( array( 'id' => NULL,'display' => 'all' ), $attr ) );
+	    extract( shortcode_atts( array( 'id' => NULL,'display' => 'all', 'more' => true, 'more_text' => '' ), $attr ) );
 	    //remove spaces, and build array
 	    $display_option_input = explode(',', str_replace(' ', '', $display));
 	    //default values
@@ -236,6 +236,9 @@ class version_8_plugin_include_post_by
 	    $display_option['content'] = false;
 	    $display_option['excerpt'] = false;
 	    $display_option['all'] = false;
+	    //	    
+	    $more_option['more'] = false;
+	    $more_option['more_text'] = 'Continue Reading';
 	    //validate input
 	    foreach( $display_option_input as $key => &$value )
 	    {
@@ -272,6 +275,15 @@ class version_8_plugin_include_post_by
 	                $value = null;
 	                unset($display_option[$key]);
 	        }
+	    }
+	    if($more == true)
+	    {
+	    	$more_option['more'] = true;
+	    }
+	    if( !empty( sanitize_text_field( $more_text ) ) )
+	    {
+	    	$more_option['more'] = true;
+	    	$more_option['more-text'] = sanitize_text_field( $more_text );
 	    }
 
 
@@ -343,7 +355,10 @@ class version_8_plugin_include_post_by
 	                {
 	                    echo( '<div class="entry-content">' );
 	                    the_excerpt();
-	                    echo( '<a href="' . esc_url( get_permalink() ) . '">Continue Reading</a>' );
+	                    if($more_option['more'])
+	                    {
+		                    echo( '<a href="' . esc_url( get_permalink() ) . '">' . $more_option['more-text'] . '</a>' );
+		                }
 	                    echo( '</div>' );
 	                }
 	            }
