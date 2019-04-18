@@ -204,7 +204,8 @@ class version_8_plugin_include_post_by
 	/**
 	 * include post by ID
 	 *
-	 * @version 0.1.181219
+	 * @since 0.1.181219
+	 * @version 0.1.190211
 	 */
 	public static function include_post_by_id( $attr )
 	{
