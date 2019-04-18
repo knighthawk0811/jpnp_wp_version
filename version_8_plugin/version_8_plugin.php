@@ -25,8 +25,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /*--------------------------------------------------------------
 # define default variables
 --------------------------------------------------------------*/
-define( VERSION_8_PLUGIN, '0.2' );
-define( VERSION_8_PLUGIN_DB, '0.2' );
+define( VERSION_8_PLUGIN, '0.2.181219' );
+define( VERSION_8_PLUGIN_DB, '0.2.181219' );
 
 
 /*--------------------------------------------------------------
@@ -102,7 +102,13 @@ register_uninstall_hook( __FILE__, 'version_8_plugin_uninstall' );
 endif;
 
 /**
- * ENQUEUE SCRIPTS AND STYLES
+ * ENQUEUE SCRIPTS AND STYLES * 
+ * 
+ * wp_register_style( string $handle, string|bool $src, array $deps = array(), string|bool|null $ver = false, string $media = 'all' )
+ * wp_register_script( string $handle, string|bool $src, array $deps = array(), string|bool|null $ver = false, bool $in_footer = false )
+ * 
+ * wp_register_style( string $handle, string|bool $src, array $deps = array(), string|bool|null $ver = false, string $media = 'all' )
+ * wp_register_script( string $handle, string|bool $src, array $deps = array(), string|bool|null $ver = false, bool $in_footer = false )
  *
  * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
  */
@@ -110,16 +116,18 @@ if ( ! function_exists( 'version_8_plugin_scripts' ) ) :
 function version_8_plugin_scripts() {
 
     //style for the plugin
-    wp_register_style( 'version_8_plugin-style', plugins_url( '/version_8_plugin.css', __FILE__ ), NULL , NULL , 'all' );
-    wp_enqueue_style( 'version_8_plugin-style' );
+    //wp_enqueue_style( 'version_8_plugin-style', plugins_url( '/version_8_plugin.css', __FILE__ ), NULL , NULL , 'all' );
+    
+	//JS
+	//included in header
+	//wp_enqueue_script( 'version_8_plugin-JS_head', get_template_directory_uri() . '/js/version_8_plugin_head.js', array('jquery'), false, true );	
+	//included in footer
+	//wp_enqueue_script( 'version_8_plugin-JS_foot', get_template_directory_uri() . '/js/version_8_plugin_foot.js', array('jquery'), false, false );	
 
     //AJAX
-    // register your script location, dependencies and version
-    wp_register_script( 'version_8_plugin-js', plugins_url( '/js/version_8_plugin.js', __FILE__ ), array( 'jquery' ), false, true );
-    // enqueue the script
-    wp_enqueue_script('version_8_plugin-js');
+    //wp_enqueue_script( 'version_8_plugin-AJAX', plugins_url( '/js/version_8_plugin_ajax.js', __FILE__ ), array( 'jquery' ), false, true );
     // localize the script for proper AJAX functioning
-    wp_localize_script( 'version_8_plugin-js', 'theurl', array('ajaxurl' => admin_url( 'admin-ajax.php' )));
+    //wp_localize_script( 'version_8_plugin-AJAX', 'theurl', array('ajaxurl' => admin_url( 'admin-ajax.php' )));
 
 }
 add_action( 'wp_enqueue_scripts', 'version_8_plugin_scripts' );
