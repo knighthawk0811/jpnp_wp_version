@@ -9,7 +9,7 @@
 >>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
 # WP Theme agnostic functions
-# WP Theme dependant functions
+# WP Theme dependant functions (child theme override)
 # WP Security features
 # PHP Functions
 # Shortcodes
@@ -20,62 +20,71 @@
 /*--------------------------------------------------------------
 # WP Theme agnostic functions
 --------------------------------------------------------------*/
+
+
 /**
- * ENQUEUE SCRIPTS AND STYLES
- * 1)functions.php => require get_template_directory() . '/inc/version_8_function.php';
- * 2)child theme overwrite by if ( ! function_exists( 'version_8_enqueue_style' ) ) :
- * 3)create a new style-version_8.css file with the true theme style
- * 4)profit
- *
+ * REGISTER SCRIPTS AND STYLES
+ * 
+ * done early, can be overwritten by child theme
+ * wp_register_style( string $handle, string|bool $src, array $deps = array(), string|bool|null $ver = false, string $media = 'all' )
+ * wp_register_script( string $handle, string|bool $src, array $deps = array(), string|bool|null $ver = false, bool $in_footer = false )
+ * 
  * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
- * @since 0.1.1811
  */
-if ( ! function_exists( 'version_8_enqueue_style' ) ) :
-function version_8_enqueue_style() {
-	//parent theme => get_template_directory_uri()
-	//child theme => get_stylesheet_directory_uri()
-
-	//first style sheet is the foundation from _s
-	wp_enqueue_style( 'version_8-style-foundation', get_stylesheet_uri() );
-
-	//last style sheet is the actual style for the site
+if ( ! function_exists( 'version_8_register_scripts' ) ) :
+function version_8_register_scripts() {
+	//the foundation from _s
+	wp_register_script( 'version_8-navigation', get_template_directory_uri() . '/js/navigation.js', array(), false, true );
+	wp_register_script( 'version_8-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), false, true );
+	//this style sheet is the actual style for the site
 	wp_register_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-version_8.css', NULL , NULL , 'all' );
-	wp_enqueue_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-version_8.css' );
-
-	wp_enqueue_script( 'version_8-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '201802', true );
-
-	wp_enqueue_script( 'version_8-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '201802', true );
-
-	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-		wp_enqueue_script( 'comment-reply' );
-	}
+	//JS (non-AJAX)
+	//included in header
+	//wp_register_script( 'version_8-JS_head', get_template_directory_uri() . '/js/version_8_js_head.js', array('jquery'), false, true );	
+	//included in footer
+	wp_register_script( 'version_8-JS_foot', get_template_directory_uri() . '/js/version_8_js_foot.js', array('jquery'), false, false );	
+	
+	//AJAX
+	//wp_register_script( 'version_8-AJAX', get_template_directory_uri() . '/js/version_8_ajax.js', array('jquery'), false, true );
 }
-add_action( 'wp_enqueue_scripts', 'version_8_enqueue_style' );
+add_action( 'init', 'version_8_register_scripts' );
 endif;
 /**
  * ENQUEUE SCRIPTS AND STYLES
- * 1)functions.php => require get_template_directory() . '/inc/version_8_function.php';
- * 2)child theme overwrite by if ( ! function_exists( 'version_8_enqueue_script' ) ) :
- * 3)profit
- *
+ * 
+ * can be overwritten by child theme
+ * wp_enqueue_style( string $handle, string $src = '', array $deps = array(), string|bool|null $ver = false, string $media = 'all' )
+ * wp_enqueue_script( string $handle, string $src = '', array $deps = array(), string|bool|null $ver = false, bool $in_footer = false )
+ * 
  * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
- * @since 0.1.1811
  */
-if ( ! function_exists( 'version_8_enqueue_script' ) ) :
-function version_8_enqueue_script() {
-	//parent theme => get_template_directory_uri()
-	//child theme => get_stylesheet_directory_uri()
-
-	//AJAX
-	// register your script location, dependencies and version
-	//wp_register_script( 'version_8-AJAX', get_template_directory_uri() . '/js/version_8_ajax.js', array('jquery'), false, true );
-	// enqueue the script
-	//wp_enqueue_script('version_8-AJAX');
-	// localize the script for proper AJAX functioning
-	//wp_localize_script( 'version_8-AJAX', 'theurl', array('ajaxurl' => admin_url( 'admin-ajax.php' )));
-}
-add_action( 'wp_enqueue_scripts', 'version_8_enqueue_script' );
-endif;
+if ( ! function_exists( 'version_8_enqueue_scripts' ) ) :
+	function version_8_enqueue_scripts() {
+		//the foundation from _s
+		wp_enqueue_style( 'foundation-style', get_stylesheet_uri() );
+		wp_enqueue_script( 'version_8-navigation' );
+		wp_enqueue_script( 'version_8-skip-link-focus-fix' );
+	
+		//this style sheet is the actual style for the site
+		wp_enqueue_style( 'version_8-style' );	
+	
+		//JS (non-AJAX)
+		//included in header
+		//wp_enqueue_script('version_8-JS_head');
+		//included in footer
+		wp_enqueue_script('version_8-JS_foot');
+		
+		//AJAX
+		//wp_enqueue_script('version_8-AJAX');
+		// localize the script for proper AJAX functioning
+		//_wp_localize_script( 'version_8-AJAX', 'theurl', array('ajaxurl' => admin_url( 'admin-ajax.php' )));
+	
+		if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+			wp_enqueue_script( 'comment-reply' );
+		}
+	}
+	add_action( 'wp_enqueue_scripts', 'version_8_enqueue_scripts' );
+	endif;
 
 /**
  * parallelize-downloads-across-hostnames
@@ -223,6 +232,7 @@ endif; // google_jquery_enqueue
  * @return
  * @uses
  */
+if ( ! function_exists( 'version_8_customizer' ) ) :
 function version_8_customizer( $wp_customize ) {
 	/*
 	//header color
@@ -253,6 +263,8 @@ function version_8_customizer( $wp_customize ) {
 	//*/
 }
 //add_action( 'customize_register', 'version_8_customizer' );
+endif;
+if ( ! function_exists( 'version_8_customize_css' ) ) :
 function version_8_customize_css()
 {
     ?>
@@ -265,6 +277,7 @@ function version_8_customize_css()
     <?php
 }
 //add_action( 'wp_head', 'version_8_customize_css');
+endif;
 
 
 if ( ! function_exists( 'version_8_theme_support' ) ) :
@@ -307,15 +320,17 @@ function version_8_theme_support()
 
 	add_theme_support( 'post-thumbnails' );
 }
-endif;
 add_action( 'after_setup_theme', 'version_8_theme_support' );
+endif;
 
 //need style in visual editor?
 //must create an editor.css file for this to operate. keep i nming the body tag issue
+if ( ! function_exists( 'version_8_editor_styles' ) ) :
 function version_8_editor_styles() {
     add_editor_style();
 }
 //add_action( 'init', 'version_8_editor_styles' );
+endif;
 
 /**
  * run shortcode inside text widgets
@@ -327,6 +342,7 @@ add_filter( 'widget_text', 'do_shortcode', 11);
 
 
 //change title for 404 pages
+if ( ! function_exists( 'version_8_filter_wp_title' ) ) :
 function version_8_filter_wp_title( $title )
 {
     if ( is_404() )
@@ -338,6 +354,7 @@ function version_8_filter_wp_title( $title )
     return $title;
 }
 add_filter( 'wp_title', 'version_8_filter_wp_title', 10 );
+endif;
 
 
 /**
@@ -358,8 +375,8 @@ function version_8_menu_setup() {
 		'desktop-3' => __( 'Desktop 3', 'version_8' ),
 	) );
 }
-endif; // version_8_menu_setup
 add_action( 'after_setup_theme', 'version_8_menu_setup' );
+endif; // version_8_menu_setup
 
 
 /**
