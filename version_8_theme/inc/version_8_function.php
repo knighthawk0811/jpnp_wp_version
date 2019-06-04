@@ -34,10 +34,11 @@
 if ( ! function_exists( 'version_8_register_scripts' ) ) :
 function version_8_register_scripts() {
 	//the foundation from _s
+	//wp_register_script( 'foundation-style', get_template_directory_uri() . '/style.css' );
 	wp_register_script( 'version_8-navigation', get_template_directory_uri() . '/js/navigation.js', array(), false, true );
 	wp_register_script( 'version_8-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), false, true );
 	//this style sheet is the actual style for the site
-	wp_register_style( 'version_8-style', get_stylesheet_directory_uri() . '/style-version_8.css', NULL , NULL , 'all' );
+	wp_register_style( 'version_8-style', get_template_directory_uri() . '/style-version_8.css', array('foundation-style') , NULL , 'all' );
 	//JS (non-AJAX)
 	//included in header
 	//wp_register_script( 'version_8-JS_head', get_template_directory_uri() . '/js/version_8_js_head.js', array('jquery'), false, true );	
