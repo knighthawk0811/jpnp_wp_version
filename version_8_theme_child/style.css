@@ -1,0 +1,492 @@
+/*
+Theme Name:   version_8 Child [resume]
+Theme URI:    http://neathawk.us
+Description:  version_8 Child Theme is a custom theme which is meant to be used with underscores
+Author:       Joseph Neathawk
+Author URI:   http://neathawk.us
+Template:     underscores
+Version:      1906.03.0
+License: GPLv3
+License URI: http://www.gnu.org/licenses/gpl.html
+Tags:         jpnp
+Text Domain:  version_8_child
+*/
+/*
+element {
+	layout(position)
+
+	content(text)
+
+	design(background)
+
+	other(z-index)
+}
+@font-face
+{
+      font-family: title_font;
+      src: url("/_font/font.ttf");
+}
+COLORS:
+	green:#bfd22b;
+	grey:#5d5c5a;
+	blue:#2695d2;
+
+Table of Contents:
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+# Main Structur
+# Elements
+# Navigation
+# Header Area
+# Content Area
+# Footer Area
+# Other
+# Templates
+# Media Queries
+--------------------------------------------------------------*/
+
+
+*,
+*:before,
+*:after { /* apply a natural box layout model to all elements; see http://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
+    -webkit-box-sizing: border-box; /* Not needed for modern webkit but still used by Blackberry Browser 7.0; see http://caniuse.com/#search=box-sizing */
+    -moz-box-sizing:    border-box; /* Still needed for Firefox 28; see http://caniuse.com/#search=box-sizing */
+    box-sizing:         border-box;
+}
+
+/*--------------------------------------------------------------
+# Main Structure
+--------------------------------------------------------------*/
+body {
+    position:relative;
+
+    font-family: 'Anonymous Pro', monospace, sans-serif;
+    
+	background:#ffffff;	
+}
+#page {
+    display:block;
+    width:100%; 
+    max-width: 1000px;
+    margin: 0 auto;
+
+	background:#ffffff;	
+}
+/*--------------------------------------------------------------
+# Elements
+--------------------------------------------------------------*/
+a,
+a:visited {
+    color:#bb0000;
+    text-decoration:none;
+}
+a:hover,
+a:visited:hover {
+    color:#990000;
+    text-decoration:underline;
+}
+ul {
+    list-style: inside none disc;
+}
+/*--------------------------------------------------------------
+# Navigation
+--------------------------------------------------------------*/
+/* sidebar sliding navigation */
+#nav-slide {
+	bottom:0px;
+	display:inline-block;
+	min-height:1.5rem;
+	margin:0;
+	padding:0;
+	position:absolute;
+    position: fixed;
+    right:0px;
+	top:0px;
+	width:0px;
+
+    font-variant: small-caps;
+
+	background:#dd0000;
+	border:none;
+	border-left:1px solid rgba(0,0,0,0);
+	box-shadow:0px 0px 0px 0px rgba(0,0,0,0);
+
+	overflow:hidden;
+	transition: all 450ms ease;
+	z-index:9999;
+}
+body.hamburger-menu #nav-slide {
+	width:300px;
+
+	border:none;
+	border-left:1px solid rgba(0,0,0,0.5);
+	box-shadow:-1px 1px 5px -1px rgba(0,0,0,0.5);
+}
+#nav-slide #hamburger-menu {
+	height:50px;
+	position:fixed;
+    right:-1px;
+	top:120px;
+	width:50px;
+
+    background:#dd0000;
+    border-radius:20%;
+    border-top-right-radius:0;
+    border-bottom-right-radius:0;
+
+	cursor:pointer;
+	filter: drop-shadow(-2px 0px 2px rgba(0,0,0,0.25));
+	transition: all 450ms ease;
+	z-index:999;
+}
+body.hamburger-menu #nav-slide #hamburger-menu {
+	right:299px;
+}
+#nav-slide #hamburger-menu div {
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	margin: 0;
+
+	color:#ffffff;
+    font-size: 32px;
+    line-height: 50px;
+    text-align:center;
+	text-decoration:none;
+    text-shadow:-1px 0px 2px rgba(0,0,0,0.5);
+
+	/*transform: rotate(-90deg);*/
+}
+#nav-slide ul {
+	margin:2rem 0;
+
+	list-style:none inside none;
+}
+#nav-slide .menu-item-1193 {
+	display:none;
+	height:0px;
+	width:0px;
+}
+#nav-slide .menu li a,
+#nav-slide .menu li a:visited {
+    min-width: 110px;
+
+	color:#ffffff;
+    font-size: 1.5rem;
+    line-height: 2;
+    text-align:center;
+	text-decoration:none;
+    text-shadow:0px 1px 2px rgba(0,0,0,0.5);
+}
+#nav-slide .menu li a:hover,
+#nav-slide .menu li a:visited:hover {
+	text-decoration:underline;
+}
+
+/* header navigation */
+#site-navigation {
+	height:2rem;
+	position: absolute;
+    top: 90px;
+    width: 100%;
+
+    font-variant: small-caps;
+    text-align: center;
+
+    border:none;
+
+    z-index:99;
+}
+#site-navigation .menu-d1-container {
+	width:100%;
+    float:right;
+
+    overflow-x:hidden;
+}
+#site-navigation .menu-d2-container {
+    width:40%;
+    float:right;
+}
+
+#site-navigation ul.menu {
+	display:inline-block;
+    margin: 0 0 0 460px;
+	padding-bottom:5px;
+    width:100%;
+}
+#site-navigation .menu li {
+    float: left;
+    position: relative;
+}
+#site-navigation .menu li a,
+#site-navigation .menu li a:visited {
+    min-width: 110px;
+    padding: 0 10px;
+
+	color:#000000;
+    font-size: 1rem;
+	font-style: italic;
+    line-height: 1.5;
+    text-align:center;
+    text-shadow:0px 1px 2px rgba(0,0,0,0.5);
+}
+#site-navigation .menu li a:hover,
+#site-navigation .menu li a:visited:hover {
+	text-decoration:underline;
+}
+#site-navigation .menu li ul {
+    background:rgba(0,0,0,0.25);
+}
+
+/*buttons*/
+#site-navigation .menu li {
+    border-right:1px solid rgba(0,0,0,0.5);
+}
+#site-navigation .menu li:first-child {
+    border-left:1px solid rgba(0,0,0,0.5);
+}
+
+#site-navigation .menu li a:hover {
+    border-radius:30px 30%;
+    background:rgba(0,0,0,0.25);
+}
+/*--------------------------------------------------------------
+# Header Area
+--------------------------------------------------------------*/
+#masthead {
+	min-height:180px;
+	padding:0;
+	position:relative;
+    width:100%; 
+	
+    background: #ffffff; 
+    
+    overflow:visible;
+}
+#masthead .custom-header-image {
+    height:auto;  
+    left: 0px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0px; 
+	width: auto;
+}
+#masthead .custom-logo-link {
+	left: 0px;
+    margin: 0;
+    position: absolute;
+    top:0px;
+    width:450px;
+
+    border-radius:0;
+
+    overflow:hidden;
+    z-index:999;
+}
+#masthead .site-title {
+    margin: 0;
+    position: relative;
+    width:100%;
+
+    font-size: 3rem;
+    text-shadow:0px 1px 2px rgba(0,0,0,0.5);
+
+    z-index:9;
+}
+#masthead .site-title a {
+	color:#dd0000;    
+	text-decoration:none;
+
+    z-index:9;
+}
+#masthead .site-description {
+    margin: 0;
+    position: relative;
+    width:100%;
+
+    color:#000000;    
+    font-size: 0.8rem;
+    text-shadow:0px 1px 2px rgba(0,0,0,0.5);
+}
+
+/*--------------------------------------------------------------
+# Content Area
+--------------------------------------------------------------*/
+#content {
+    display:inline-block;
+	min-height:70vh;
+    width:100%;	
+
+    color:#000000;
+
+    background:#ffffff; 
+}
+#primary {
+    display:inline-block;
+    width:100%;
+}
+#main {
+    display:inline-block;
+    margin: 0;
+	padding:0;
+    width: 100%;
+
+	background:none;	
+}
+#main .page-header {
+    margin:0 0 2rem 0;
+
+    color:#dd0000;
+
+    border:none;
+    border-bottom:1px solid rgba(0,0,0,0.25);
+}
+#main article {
+    border:none;
+    border-bottom:1px solid rgba(0,0,0,0.25);
+}
+#main .entry-title,
+#main .entry-content {
+    margin:0;
+}
+#secondary {
+    display:inline-block;
+    margin:0;
+    position:relative;
+    width:100%;
+
+	background:none;	
+}
+
+/*thumbnails*/
+.size-thumbnail,
+.wp-post-image {
+	padding:3px;
+	
+	border:1px solid rgba(255,255,255,0);
+	border-radius:10px;
+}
+.size-thumbnail:hover,
+.wp-post-image:hover {
+	border:1px solid #79a8cf;
+}
+/*--------------------------------------------------------------
+# Footer Area
+--------------------------------------------------------------*/
+#colophon {
+    display:block;
+	min-height:10vh;
+	position:relative;
+	width:100%;	
+	
+	color:#000000;
+	font-size:0.9rem;		
+    
+    background: #ffffff;     
+}
+#colophon a,
+#colophon a:visited {
+	color:#000000;	
+}
+#colophon #footer-left {
+	clear:none; 
+	float:left;
+	padding:0;	
+	width:45%;
+
+    text-align:right;
+}
+#colophon #footer-center {
+	clear:none; 
+	float:left;	
+    margin:0;
+	padding:0;
+	width:100%;
+
+    text-align:center;
+}
+#colophon #footer-right {
+	clear:none; 
+	float:right;
+	padding:0;	
+	width:45%;
+
+    text-align:left;
+}
+/*--------------------------------------------------------------
+# Other
+--------------------------------------------------------------*/
+body.home .banner-home {
+    min-width:100%;
+    width:100%;
+}
+/*--------------------------------------------------------------
+# Templates
+--------------------------------------------------------------*/
+/*homepage*/
+body.home h1.entry-title {
+    display:none;
+}
+body.home #main {
+    padding:0;   
+}
+
+
+/*--------------------------------------------------------------
+# Media Queries
+--------------------------------------------------------------*/
+
+@media only screen and (max-width: 999px) {
+/*999px width and smaller*/
+
+    #page {
+        width:98%; 
+    }
+
+}
+
+@media only screen and (max-width: 899px) {
+/*899px width and smaller*/
+
+    #masthead .site-title {
+        font-size: 2rem;
+    }
+
+}
+
+@media only screen and (max-width: 479px) {
+/*479px width and smaller*/
+
+    #masthead .site-title {
+        font-size: 1.5rem;
+    }
+
+}
+
+
+
+
+/* small to large */
+@media only screen and (min-width: 480px) {
+/*480px width and larger*/
+
+}
+
+/* large to small */
+@media only screen and (max-width: 1279px) {
+/*1279px width and smaller*/
+
+}
+
+/* specific size range */
+@media only screen and (min-width: 900px) and (max-width: 1100px) {
+/* range for header custom logo sizing */
+
+}
+
+
+@media only print {
+
+}
