@@ -16,8 +16,8 @@
 		<?php if ( 'post' === get_post_type() ) : ?>
 		<div class="entry-meta">
 			<?php
-				version_8_posted_on();
-				version_8_posted_by();
+			version_8_posted_on();
+			version_8_posted_by();
 			?>
 		</div><!-- .entry-meta -->
 		<?php endif; ?>

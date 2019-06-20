@@ -15,70 +15,46 @@
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="profile" href="http://gmpg.org/xfn/11">
-
-	<link href="https://fonts.googleapis.com/css?family=Audiowide" rel="stylesheet"> 
+	<link rel="profile" href="https://gmpg.org/xfn/11">
 
 	<?php wp_head(); ?>
-
-	<script>
-		jQuery( function( $ ){
-			$( "#hamburger-menu" ).click( function(){
-				$( "body" ).toggleClass( "hamburger-menu" );
-			});
-		});
-	</script>
-
 </head>
 
 <body <?php body_class(); ?>>
-<div id="nav-slide">
-	<div id="hamburger-menu"><div>&#9776;</div></div>
-	<?php
-		wp_nav_menu( array(
-			'theme_location' => 'mobile-1',
-		) );
-	?>
-</div>
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'version_8' ); ?></a>
 
+	<?php get_template_part( 'sidebar-templates/sidebar', 'modal' ); ?>
 	<header id="masthead" class="site-header">
+		<div class="site-branding">
+			<?php
+			the_custom_logo();
+			if ( is_front_page() && is_home() ) :
+				?>
+				<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+				<?php
+			else :
+				?>
+				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+				<?php
+			endif;
+			$version_8_description = get_bloginfo( 'description', 'display' );
+			if ( $version_8_description || is_customize_preview() ) :
+				?>
+				<p class="site-description"><?php echo $version_8_description; /* WPCS: xss ok. */ ?></p>
+			<?php endif; ?>
+		</div><!-- .site-branding -->
+
 		<nav id="site-navigation" class="main-navigation">
+			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'version_8' ); ?></button>
 			<?php
 				wp_nav_menu( array(
 					'theme_location' => 'desktop-1',
 				) );
-				wp_nav_menu( array(
-					'theme_location' => 'desktop-2',
-				) );			
-				wp_nav_menu( array(
-					'theme_location' => 'desktop-3',
-				) );
 			?>
 		</nav><!-- #site-navigation -->
-		<div class="site-branding">
-			<img class="custom-header-image"src="<?php header_image(); ?>" alt="" />
-			<?php the_custom_logo(); ?>
-			<?php if ( is_front_page() && is_home() ) : ?>
-				<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-			<?php else : ?>
-				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-			<?php
-			endif;
-
-			$description = get_bloginfo( 'description', 'display' );
-			if ( $description || is_customize_preview() ) : ?>
-				<p class="site-description"><?php echo $description; /* WPCS: xss ok. */ ?></p>
-			<?php
-			endif; ?>
-		</div><!-- .site-branding -->
-		<?php /*
-		<div class="triangle-bottomright"></div>
-		<div class="triangle-bottomleft"></div>
-		*/ ?>
+		
+		<?php get_template_part( 'sidebar-templates/sidebar', 'header' ); ?>
 	</header><!-- #masthead -->
 
 	<div id="content" class="site-content">
-
-			<?php if( is_front_page() ){ get_sidebar('home-1'); } ?>

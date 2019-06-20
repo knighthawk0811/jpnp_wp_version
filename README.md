@@ -4,7 +4,7 @@ Donate link:
 Tags:
 Requires at least: 3.5
 Tested up to: 4.9.8
-Stable tag: 0.2.181214
+Stable tag: 8.3.190620
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -13,6 +13,10 @@ My theme/plugin v8 with my own set of functions
 
 
 == Changelog ==
+
+= 8.3.190620 =
+* refactor theme files with updated underscores
+* preparing to finalize version_8
 
 = 0.2.181214 =
 * tested all modules in live environment

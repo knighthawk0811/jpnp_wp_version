@@ -11,21 +11,14 @@
 
 ?>
 
-            <?php if( is_front_page() ){ get_sidebar('home-2'); } ?>
-
 	</div><!-- #content -->
 
-	<footer id="colophon" class="site-footer">
-		<div class="site-info">
-			<?php get_sidebar('footer-1'); ?>
-			<?php get_sidebar('footer-3'); ?>
-            <?php get_sidebar('footer-2'); ?>
-		</div><!-- .site-info -->
+	<footer id="colophon" class="site-footer">		
+		<?php get_template_part( 'sidebar-templates/sidebar', 'footer' ); ?>
 	</footer><!-- #colophon -->
 </div><!-- #page -->
-<?php wp_footer(); ?>
 
-<?php get_sidebar('after-1'); ?>
+<?php wp_footer(); ?>
 
 </body>
 </html>

@@ -1,0 +1,446 @@
+/*  
+Theme Name: version_8
+Theme URI: http://neathawk.us
+Author: Joseph Neathawk
+Author URI: http://neathawk.us
+Description: version_8 default theme incorporates items from prior versions. It is derived from _s
+Version: 2018.05.1
+License: GPLv3
+License URI: http://www.gnu.org/licenses/gpl.html
+Text Domain: version_8
+Tags:
+*/
+
+/*@import url('navBar.css');*/
+
+/*
+element {
+	layout(position)
+	
+	content(text)
+	
+	design(background)
+	
+	other(z-index)
+}
+@font-face
+{
+      font-family: title_font;
+      src: url("/_font/font.ttf");
+}
+COLORS:	  
+	black:#000000;
+	white:#ffffff;
+	Aqua: #6fccdd;		
+
+Table of Contents:
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+# Main Structur
+# Elements
+# Navigation
+# Header Area
+# Content Area
+# Footer Area
+# Other
+# Templates
+# Media Queries
+--------------------------------------------------------------*/
+
+
+
+/*--------------------------------------------------------------
+# Main Structure
+--------------------------------------------------------------*/
+body {
+    position:relative;
+    
+	background:#000000;	
+}
+#page {
+	background:#ffffff;	
+}
+/*--------------------------------------------------------------
+# Elements
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Navigation
+--------------------------------------------------------------*/
+/* sidebar sliding navigation */
+#nav-side {
+	bottom:0px;
+	display:inline-block;
+	left:0px;
+	min-height:1.5rem;
+	margin:0;
+	padding:0;
+	position:absolute;
+	top:0px;
+	width:0px;
+
+	background:#79a8cf;
+	border:none;
+	border-right:1px solid rgba(0,0,0,0);
+	box-shadow:0px 0px 0px 0px rgba(0,0,0,0);
+
+	overflow:hidden;
+	transition: all 750ms ease;
+	z-index:9999;
+}
+body.hamburger #nav-side {
+	width:300px;
+
+	border:none;
+	border-right:1px solid rgba(0,0,0,0.5);
+	box-shadow:1px 1px 5px -1px rgba(0,0,0,0.5);
+}
+#nav-side #hamburger {
+	height:150px;
+	left:-5px;
+	position:fixed;
+	top:120px;
+	width:50px;
+
+	background:url(image/tab.png) top left;
+
+	cursor:pointer;
+	filter: drop-shadow(2px 0px 2px rgba(0,0,0,0.25));
+	transition: all 750ms ease;
+	z-index:999;
+}
+body.hamburger #nav-side #hamburger {
+	left:295px;
+}
+#nav-side #hamburger div {
+	width: 150px;
+	height: 50px;
+	text-align: center;
+	margin: 45px 0 0 -50px;
+
+	color:#ffffff;
+    font-size: 32px;
+    line-height: 2;
+    text-align:center;
+	text-decoration:none;
+    text-shadow:-1px 0px 2px rgba(0,0,0,0.5);
+
+	/*transform: rotate(-90deg);*/
+}
+#nav-side ul {
+	margin:30px 0;
+
+	list-style:none inside none;
+}
+#nav-side .menu-item-1193 {
+	display:none;
+	height:0px;
+	width:0px;
+}
+#nav-side .menu li a,
+#nav-side .menu li a:visited {
+    min-width: 110px;
+
+	color:#ffffff;
+    font-size: 18px;
+    line-height: 2;
+    text-align:center;
+	text-decoration:none;
+    text-shadow:0px 1px 2px rgba(0,0,0,0.5);
+}
+#nav-side .menu li a:hover,
+#nav-side .menu li a:visited:hover {
+	text-decoration:underline;
+}
+
+/* header navigation */
+#site-navigation {
+	height:30px;
+    left: 50%;
+    margin: 0 0 0 -700px;
+	position: absolute;
+    top: 50px;
+    width: 1400px;
+
+    text-align: center;
+
+    border:none;
+}
+#site-navigation .menu-item-1193 {
+	width:400px;
+}
+
+#site-navigation ul.menu {
+	display:inline-block;
+	padding-bottom:5px;
+
+    border-bottom:1px solid rgba(255,255,255,0.7);
+}
+#site-navigation .menu li {
+    float: left;
+    position: relative;
+}
+#site-navigation .menu li a,
+#site-navigation .menu li a:visited {
+    min-width: 110px;
+    padding: 0 10px;
+
+	color:#ffffff;
+    font-size: 16px;
+	font-style: italic;
+    line-height: 1.5;
+    text-align:center;
+    text-shadow:0px 1px 2px rgba(0,0,0,0.5);
+}
+#site-navigation .menu li a:hover,
+#site-navigation .menu li a:visited:hover {
+	text-decoration:underline;
+}
+#site-navigation .menu li ul {
+    background:rgba(0,0,0,0.25);
+}
+/*--------------------------------------------------------------
+# Header Area
+--------------------------------------------------------------*/
+#masthead {
+	min-height:250px;
+	padding:0;
+	position:relative;
+	
+	background:#ff0000;	
+	
+	overflow:hidden;
+}
+#masthead .custom-header-image {  
+    left: 50%;
+    height: 300px;
+    margin: 0 0 0 -540px;
+    max-width: 2000px; 
+    min-height: 600px;
+    position: absolute;
+    top: 0px; 
+	width: auto;
+}
+#masthead .custom-logo-link {
+	left: 50%;
+    margin: 0 0 0 -190px;
+    position: absolute;
+    top:5px;
+
+    z-index:99;
+}
+#masthead .site-title {
+    position: relative;
+    width:100%;
+
+    text-align:center;
+    text-shadow:0px 1px 2px rgba(0,0,0,0.5);
+
+    z-index:999;
+}
+#masthead .site-title a {
+	color:#ffffff;    
+	text-decoration:none;
+}
+#masthead .site-description {
+    margin: 40px 0 0 0;
+    position: relative;
+    width:100%;
+
+    text-align:center;
+    text-shadow:0px 1px 2px rgba(0,0,0,0.5);
+}
+#masthead .triangle-bottomright { 
+	width: 0; 
+	height: 0; 
+	border-bottom: 200px solid #ffffff; 
+	border-left: 1000px solid transparent; 
+	position: absolute;
+	left: 50%;
+	bottom: 0px;
+}
+#masthead .triangle-bottomleft { 
+	width: 0; 
+	height: 0; 
+	border-bottom: 200px solid #ffffff; 
+	border-right: 1000px solid transparent; 
+	position: absolute;
+	right: 50%;
+	bottom: 0px;
+}
+/*--------------------------------------------------------------
+# Content Area
+--------------------------------------------------------------*/
+#content {
+    display:inline-block;
+	min-height:50vh;	
+}
+#primary {
+    display:inline-block;
+
+	background:#ffff00;	
+}
+#main {
+    display:inline-block;
+
+	padding:0 20px;
+
+	background:none;	
+}
+#secondary {
+    display:inline-block;
+
+	background:#ff00ff;	
+}
+
+/*thumbnails*/
+.size-thumbnail,
+.wp-post-image {
+	padding:3px;
+	
+	border:1px solid rgba(255,255,255,0);
+	border-radius:10px;
+}
+.size-thumbnail:hover,
+.wp-post-image:hover {
+	border:1px solid #79a8cf;
+}
+/*--------------------------------------------------------------
+# Footer Area
+--------------------------------------------------------------*/
+#colophon {
+	display:block;
+	min-height:20vh;
+	position:relative;
+	width:100%;	
+	
+	color:#ffffff;
+	font-size:0.9em;
+	
+	background:#00ff00;	
+}
+#colophon a,
+#colophon a:visited {
+	color:#ffffff;	
+}
+#colophon #footer-left {
+	clear:none; 
+	float:left;
+	min-height:100px;
+	padding:20px 0 0 20px;	
+	width:33%;
+}
+#colophon #footer-center {
+	clear:none; 
+	float:left;	
+	min-height:100px;
+	padding:20px;
+	width:33%;
+}
+#colophon #footer-right {
+	clear:none; 
+	float:left;
+	min-height:100px;
+	padding:20px 20px 0 0;	
+	width:33%;
+}
+/*--------------------------------------------------------------
+# Other
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Templates
+--------------------------------------------------------------*/
+/*homepage*/
+body.home #masthead { 
+    min-height:300px;
+}
+body.home .entry-header .entry-title {
+    display:none;   
+}
+body.home .entry-thumbnail {
+    float:left;  
+    margin:10px;
+}
+body.home .entry-content figure.wp-caption {
+    float:right;  
+    margin:10px;
+}
+body.home #main {
+    padding:0;
+}
+body.home #main p,
+body.home #main h1 {
+    padding-left:20px;
+    padding-right:20px;
+}
+body.home .logo_sig img,
+body.home .logo_sig img:hover {
+    margin:-75px 0 0 -75px;
+    width: 150px;
+    text-align: center;
+    left: 50%;
+    position: absolute;
+
+    border:none;
+}
+body.home .logo_sig hr {    
+    margin: 90px 0 110px 0;
+}
+
+/*--------------------------------------------------------------
+# Media Queries
+--------------------------------------------------------------*/
+
+@media only screen and (max-width: 1279px) {
+/*1279px width and smaller*/
+
+}
+
+@media only screen and (max-width: 799px) {
+/*799px width and smaller*/
+
+}
+
+@media only screen and (max-width: 599px) {
+/*599px width and smaller*/
+
+}
+
+@media only screen and (max-width: 479px) {
+/*479px width and smaller*/
+
+}
+
+
+
+
+@media only print {
+
+/*--------------------------------------------------------------
+# Main Structure
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Elements
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Navigation
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Header Area
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Content Area
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Footer Area
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Other
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Templates
+--------------------------------------------------------------*/
+
+
+
+}
