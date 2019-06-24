@@ -1,11 +1,11 @@
 /*
-Theme Name:   version_8 Child [Regents Pointe]
+Theme Name:   version_8 Child [Domain]
 Theme URI:    http://neathawk.us
 Description:  version_8 Child Theme is a custom theme which is meant to be used with underscores
 Author:       Joseph Neathawk
 Author URI:   http://neathawk.us
 Template:     underscores
-Version:      8.3.1906
+Version:      8.3.190620
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags:         jpnp
@@ -84,8 +84,8 @@ Table of Contents:
 --------------------------------------------------------------*/
 /*--------------------------------------------------------------
 # Media Queries
---------------------------------------------------------------*/	
-	
+--------------------------------------------------------------*/
+
 /* small to large */
 @media only screen and (min-width: 480px) {
 /*480px width and larger*/

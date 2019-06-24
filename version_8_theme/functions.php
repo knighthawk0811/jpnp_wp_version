@@ -43,8 +43,13 @@ if ( ! function_exists( 'version_8_setup' ) ) :
 		add_theme_support( 'post-thumbnails' );
 
 		// This theme uses wp_nav_menu() in one location.
+		// @link https://developer.wordpress.org/reference/functions/register_nav_menus/
 		register_nav_menus( array(
-			'menu-1' => esc_html__( 'Primary', 'version_8' ),
+			'modal' => __( 'Modal', 'version_8' ),
+			'header-1' => __( 'Header-1', 'version_8' ),
+			'header-2' => __( 'Header-2', 'version_8' ),
+			'footer-1' => __( 'Footer-1', 'version_8' ),
+			'footer-2' => __( 'Footer-2', 'version_8' ),
 		) );
 
 		/*
@@ -58,35 +63,6 @@ if ( ! function_exists( 'version_8_setup' ) ) :
 			'gallery',
 			'caption',
 		) );
-
-		add_theme_support( 'custom-header', array(
-			'default-image'          => get_template_directory_uri() . '/image/banner_main.png',
-			'width'                  => 1800,
-			'height'                 => 1000,
-			'flex-height'            => true,
-			'flex-width'             => true,
-			'uploads'                => true,
-			'random-default'         => false,
-			'header-text'            => true,
-			'default-text-color'     => '#ffffff',
-			'wp-head-callback'       => '',
-			'admin-head-callback'    => '',
-			'admin-preview-callback' => '',
-		) );
-
-		// Set up the WordPress core custom background feature.
-		add_theme_support( 'custom-background', apply_filters( 'version_8_custom_background_args', array(
-			'default-color' => 'ffffff',
-			'default-image' => '',
-			'default-repeat'         => 'repeat',
-			'default-position-x'     => 'left',
-			'default-position-y'     => 'top',
-			'default-size'           => 'auto',
-			'default-attachment'     => 'scroll',
-			'wp-head-callback'       => '_custom_background_cb',
-			'admin-head-callback'    => '',
-			'admin-preview-callback' => ''
-		) ) );
 
 		// Add theme support for selective refresh for widgets.
 		add_theme_support( 'customize-selective-refresh-widgets' );
@@ -140,9 +116,18 @@ function version_8_widgets_init() {
 		'after_title'   => '</h3>',
 	) );
 	register_sidebar( array(
-		'name'          => esc_html__( 'Sidebar header', 'version_8_child' ),
+		'name'          => esc_html__( 'Sidebar Header', 'version_8_child' ),
 		'id'            => 'sidebar-header',
-		'description'   => esc_html__( 'Add widgets here.', 'version_8_child' ),
+		'description'   => esc_html__( 'Before the menu.', 'version_8_child' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h3 class="widget-title">',
+		'after_title'   => '</h3>',
+	) );
+	register_sidebar( array(
+		'name'          => esc_html__( 'Sidebar Header - 2', 'version_8_child' ),
+		'id'            => 'sidebar-header-2',
+		'description'   => esc_html__( 'After the menu.', 'version_8_child' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widget-title">',
@@ -151,7 +136,7 @@ function version_8_widgets_init() {
 	register_sidebar( array(
 		'name'          => esc_html__( 'Sidebar Left', 'version_8_child' ),
 		'id'            => 'sidebar-left',
-		'description'   => esc_html__( 'Add widgets here.', 'version_8_child' ),
+		'description'   => esc_html__( 'Left side of page.', 'version_8_child' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widget-title">',
@@ -160,7 +145,7 @@ function version_8_widgets_init() {
 	register_sidebar( array(
 		'name'          => esc_html__( 'Sidebar Right', 'version_8_child' ),
 		'id'            => 'sidebar-right',
-		'description'   => esc_html__( 'Add widgets here.', 'version_8_child' ),
+		'description'   => esc_html__( 'Right side of page.', 'version_8_child' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widget-title">',
@@ -169,7 +154,16 @@ function version_8_widgets_init() {
 	register_sidebar( array(
 		'name'          => esc_html__( 'Footer', 'version_8_child' ),
 		'id'            => 'sidebar-footer',
-		'description'   => esc_html__( 'Add widgets here.', 'version_8_child' ),
+		'description'   => esc_html__( 'Before the menu.', 'version_8_child' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h3 class="widget-title">',
+		'after_title'   => '</h3>',
+	) );
+	register_sidebar( array(
+		'name'          => esc_html__( 'Footer - 2', 'version_8_child' ),
+		'id'            => 'sidebar-footer-2',
+		'description'   => esc_html__( 'After the menu.', 'version_8_child' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widget-title">',
@@ -178,7 +172,16 @@ function version_8_widgets_init() {
 	register_sidebar( array(
 		'name'          => esc_html__( 'Sidebar Modal', 'version_8_child' ),
 		'id'            => 'sidebar-modal',
-		'description'   => esc_html__( 'Add widgets here.', 'version_8_child' ),
+		'description'   => esc_html__( 'The modal area. Before the menu.', 'version_8_child' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h3 class="widget-title">',
+		'after_title'   => '</h3>',
+	) );
+	register_sidebar( array(
+		'name'          => esc_html__( 'Sidebar Modal - 2', 'version_8_child' ),
+		'id'            => 'sidebar-modal-2',
+		'description'   => esc_html__( 'The modal area. After the menu.', 'version_8_child' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widget-title">',
@@ -190,35 +193,12 @@ endif;
 
 
 /**
- * register multiple menus
- *
- * @link https://developer.wordpress.org/reference/functions/register_nav_menus/
- * @version 8.3.1906
- * @since 8.3.1906
- */
-if ( ! function_exists( 'version_8_menu_setup' ) ) :
-function version_8_menu_setup() {
-	// This theme uses wp_nav_menu()
-		//'ID' => esc_html__( 'Visible Name', 'version_8' ),
-	register_nav_menus( array(
-		'mobile-1' => __( 'Mobile 1 [MAIN]', 'version_8' ),
-		'mobile-2' => __( 'Mobile 2', 'version_8' ),
-		'mobile-3' => __( 'Mobile 3', 'version_8' ),
-		'desktop-1' => __( 'Desktop 1 [MAIN]', 'version_8' ),
-		'desktop-2' => __( 'Desktop 2', 'version_8' ),
-		'desktop-3' => __( 'Desktop 3', 'version_8' ),
-	) );
-}
-add_action( 'after_setup_theme', 'version_8_menu_setup' );
-endif; // version_8_menu_setup
-
-/**
  * REGISTER SCRIPTS AND STYLES
- * 
+ *
  * done early, can be overwritten by child theme
  * wp_register_style( string $handle, string|bool $src, array $deps = array(), string|bool|null $ver = false, string $media = 'all' )
  * wp_register_script( string $handle, string|bool $src, array $deps = array(), string|bool|null $ver = false, bool $in_footer = false )
- * 
+ *
  * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
  * @version 8.3.1906
  * @since 8.3.1906
@@ -234,11 +214,11 @@ add_action( 'init', 'version_8_register_scripts' );
 endif;
 /**
  * ENQUEUE SCRIPTS AND STYLES
- * 
+ *
  * can be overwritten by child theme
  * wp_enqueue_style( string $handle, string $src = '', array $deps = array(), string|bool|null $ver = false, string $media = 'all' )
  * wp_enqueue_script( string $handle, string $src = '', array $deps = array(), string|bool|null $ver = false, bool $in_footer = false )
- * 
+ *
  * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
  * @version 8.3.1906
  * @since 8.3.1906
@@ -283,14 +263,6 @@ endif;
 add_filter( 'widget_text', 'shortcode_unautop');
 add_filter( 'widget_text', 'do_shortcode', 11);
 
-
-
-	
-
-/**
- * Implement the Custom Header feature.
- */
-require get_template_directory() . '/inc/custom-header.php';
 
 /**
  * Custom template tags for this theme.
