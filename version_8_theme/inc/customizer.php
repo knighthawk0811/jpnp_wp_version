@@ -130,7 +130,7 @@ function version_8_customize_css()
 {
 	?>
 		<style type="text/css">
-			#masthead{
+			#masthead .bg{
 				background-color: <?php echo get_theme_mod('header_background'); ?>;
 			}
 			#colophon{

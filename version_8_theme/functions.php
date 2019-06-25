@@ -110,7 +110,7 @@ function version_8_widgets_init() {
 		'name'          => esc_html__( 'Sidebar Default', 'version_8_child' ),
 		'id'            => 'sidebar-1',
 		'description'   => esc_html__( 'Add widgets here.', 'version_8_child' ),
-		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'before_widget' => '<section id="sidebar-default" class="widget %1$s %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widget-title">',
 		'after_title'   => '</h3>',
@@ -119,7 +119,7 @@ function version_8_widgets_init() {
 		'name'          => esc_html__( 'Sidebar Header', 'version_8_child' ),
 		'id'            => 'sidebar-header',
 		'description'   => esc_html__( 'Before the menu.', 'version_8_child' ),
-		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'before_widget' => '<section id="sidebar-header-1" class="widget %1$s %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widget-title">',
 		'after_title'   => '</h3>',
@@ -128,7 +128,7 @@ function version_8_widgets_init() {
 		'name'          => esc_html__( 'Sidebar Header - 2', 'version_8_child' ),
 		'id'            => 'sidebar-header-2',
 		'description'   => esc_html__( 'After the menu.', 'version_8_child' ),
-		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'before_widget' => '<section id="sidebar-header-2" class="widget %1$s %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widget-title">',
 		'after_title'   => '</h3>',
@@ -137,7 +137,7 @@ function version_8_widgets_init() {
 		'name'          => esc_html__( 'Sidebar Left', 'version_8_child' ),
 		'id'            => 'sidebar-left',
 		'description'   => esc_html__( 'Left side of page.', 'version_8_child' ),
-		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'before_widget' => '<section id="sidebar-left" class="widget %1$s %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widget-title">',
 		'after_title'   => '</h3>',
@@ -146,7 +146,7 @@ function version_8_widgets_init() {
 		'name'          => esc_html__( 'Sidebar Right', 'version_8_child' ),
 		'id'            => 'sidebar-right',
 		'description'   => esc_html__( 'Right side of page.', 'version_8_child' ),
-		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'before_widget' => '<section id="sidebar-right" class="widget %1$s %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widget-title">',
 		'after_title'   => '</h3>',
@@ -155,7 +155,7 @@ function version_8_widgets_init() {
 		'name'          => esc_html__( 'Footer', 'version_8_child' ),
 		'id'            => 'sidebar-footer',
 		'description'   => esc_html__( 'Before the menu.', 'version_8_child' ),
-		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'before_widget' => '<section id="sidebar-footer-1" class="widget %1$s %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widget-title">',
 		'after_title'   => '</h3>',
@@ -164,7 +164,7 @@ function version_8_widgets_init() {
 		'name'          => esc_html__( 'Footer - 2', 'version_8_child' ),
 		'id'            => 'sidebar-footer-2',
 		'description'   => esc_html__( 'After the menu.', 'version_8_child' ),
-		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'before_widget' => '<section id="sidebar-footer-2" class="widget %1$s %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widget-title">',
 		'after_title'   => '</h3>',
@@ -173,7 +173,7 @@ function version_8_widgets_init() {
 		'name'          => esc_html__( 'Sidebar Modal', 'version_8_child' ),
 		'id'            => 'sidebar-modal',
 		'description'   => esc_html__( 'The modal area. Before the menu.', 'version_8_child' ),
-		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'before_widget' => '<section id="sidebar-modal-1" class="widget %1$s %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widget-title">',
 		'after_title'   => '</h3>',
@@ -182,7 +182,7 @@ function version_8_widgets_init() {
 		'name'          => esc_html__( 'Sidebar Modal - 2', 'version_8_child' ),
 		'id'            => 'sidebar-modal-2',
 		'description'   => esc_html__( 'The modal area. After the menu.', 'version_8_child' ),
-		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'before_widget' => '<section id="sidebar-modal-2" class="widget %1$s %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widget-title">',
 		'after_title'   => '</h3>',
@@ -209,6 +209,13 @@ function version_8_register_scripts() {
 	wp_register_script( 'version_8-style_foundation', get_template_directory_uri() . '/style.css' );
 	wp_register_script( 'version_8-navigation', get_template_directory_uri() . '/js/navigation.js', array(), false, true );
 	wp_register_script( 'version_8-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), false, true );
+	//JS (non-AJAX)
+	//included in header
+	//wp_register_script( 'version_8-JS_head', get_template_directory_uri() . '/js/common_head.js', array('jquery'), false, false );
+	//included in footer
+	wp_register_script( 'version_8-JS_foot', get_template_directory_uri() . '/js/common_foot.js', array('jquery'), false, true );
+	//AJAX
+	//wp_register_script( 'version_8-AJAX', get_template_directory_uri() . '/js/common_ajax.js', array('jquery'), false, true );
 }
 add_action( 'init', 'version_8_register_scripts' );
 endif;
@@ -229,6 +236,16 @@ function version_8_enqueue_scripts() {
 	wp_enqueue_style( 'version_8-style_foundation', get_stylesheet_uri() );
 	wp_enqueue_script( 'version_8-navigation' );
 	wp_enqueue_script( 'version_8-skip-link-focus-fix' );
+	//JS (non-AJAX)
+	//included in header
+	//wp_enqueue_script('version_8-JS_head');
+	//included in footer
+	//wp_enqueue_script('version_8-JS_foot');
+
+	//AJAX
+	//wp_enqueue_script('version_8-AJAX');
+	//localize the script for proper AJAX functioning
+	//_wp_localize_script( 'version_8-AJAX', 'theurl', array('ajaxurl' => admin_url( 'admin-ajax.php' )));
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );

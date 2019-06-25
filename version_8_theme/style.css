@@ -983,3 +983,49 @@ object {
 .gallery-caption {
 	display: block;
 }
+
+
+
+/*--------------------------------------------------------------
+## Version_8
+--------------------------------------------------------------*/
+
+/* vip tabular container */
+.vip-tabular-container {
+    position:relative;
+}
+.vip-tabular-container .tab-nav {
+    margin:0;
+    padding:0;
+}
+.vip-tabular-container .tab-nav li {
+	float:left;
+	
+    list-style:none inside none;
+}
+.vip-tabular-container .tab-content {
+    display:inline-block;
+    position:relative;
+    width:100%;
+
+    overflow:hidden;
+    transition: opacity 750ms ease;
+}
+.vip-tabular-container .tab-content.hide {
+    max-height:0px;
+    position:absolute;
+    
+    opacity:0;
+}
+.vip-tabular-container .tab-content.hide * {
+    display:none;
+}
+.vip-tabular-container .tab-content.active {
+    max-height:1000em;
+    position:relative;
+
+    opacity:1;
+}
+.vip-tabular-container .tab-content.active * {
+
+}
