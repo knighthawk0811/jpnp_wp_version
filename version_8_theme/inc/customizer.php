@@ -75,6 +75,21 @@ function version_8_customize_register( $wp_customize ) {
 			'settings' => 'footer_background'
 		)
 	) );
+	//modal background color
+	$wp_customize->add_setting('modal_background', array(
+		'capability' => 'edit_theme_options',
+		'default' => '#dddddd',
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'modal_background_control', 
+		array(
+			'priority' => 10, // Within the section.
+			'label' => __( 'Modal Background Color' ),
+			'description' => __( 'The color of the modal area.' ),
+			'section' => 'local_custom_section', // Required, core or custom.
+			'settings' => 'modal_background'
+		)
+	) );
 
 	//custom css area
 	$wp_customize->add_section( 'custom_css', array(
@@ -135,6 +150,9 @@ function version_8_customize_css()
 			}
 			#colophon{
 				background-color: <?php echo get_theme_mod('footer_background'); ?>;
+			}
+			#modal-main-container #modal-bg{
+				background-color: <?php echo get_theme_mod('modal_background'); ?>;
 			}
 		</style>
 	<?php

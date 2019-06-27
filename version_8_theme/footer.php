@@ -16,17 +16,17 @@
 	<footer id="colophon" class="site-footer">
 		<?php get_template_part( 'sidebar-templates/sidebar', 'footer' ); ?>
         <?php
-            if ( has_nav_menu( 'header-1' ) ) {
-                echo('<div id="nav-header-1>');
+            if ( has_nav_menu( 'footer-1' ) ) {
+                echo('<div id="nav-footer-1">');
                 wp_nav_menu( array(
-                    'theme_location' => 'header-1',
+                    'theme_location' => 'footer-1',
                 ) );
                 echo('</div>');
             }
-            if ( has_nav_menu( 'header-2' ) ) {
-                echo('<div id="nav-header-2>');
+            if ( has_nav_menu( 'footer-2' ) ) {
+                echo('<div id="nav-footer-2">');
                 wp_nav_menu( array(
-                    'theme_location' => 'header-2',
+                    'theme_location' => 'footer-2',
                 ) );
                 echo('</div>');
             }
