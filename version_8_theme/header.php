@@ -70,7 +70,6 @@
 	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'version_8' ); ?></a>
 
 	<header id="masthead" class="site-header">
-		<div class="bg"></div>
 		<?php get_template_part( 'sidebar-templates/sidebar', 'header' ); ?>
 
 		<nav id="site-navigation" class="main-navigation">
