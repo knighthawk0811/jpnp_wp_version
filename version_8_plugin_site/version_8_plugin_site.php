@@ -25,8 +25,8 @@ class version_8_plugin_site {
 /*--------------------------------------------------------------
 # define default variables
 --------------------------------------------------------------*/
-define( VERSION_8_PLUGIN_SITE, '0.1.20181214' );
-define( VERSION_8_PLUGIN_SITE_DB, '0.1.20181214' );
+define( 'VERSION_8_PLUGIN_SITE', '0.1.20181214' );
+define( 'VERSION_8_PLUGIN_SITE_DB', '0.1.20181214' );
 
 
 /*--------------------------------------------------------------
