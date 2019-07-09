@@ -33,48 +33,6 @@ function version_8_customize_register( $wp_customize ) {
 		'priority' => 160,
 		'capability' => 'edit_theme_options',
 	) );
-	//header background color
-	$wp_customize->add_setting('header_background', array(
-		'capability' => 'edit_theme_options',
-		'default' => '#ffffff',
-		'sanitize_callback' => 'sanitize_hex_color',
-	) );
-	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'header_background_control', 
-		array(
-			'priority' => 10, // Within the section.
-			'label' => __( 'Header Background Color' ),
-			'description' => __( 'The color of the header, in front of the image' ),
-			'section' => 'local_custom_section', // Required, core or custom.
-			'settings' => 'header_background'
-		)
-	) );
-	//header image
-	$wp_customize->add_setting( 'header_image', array(
-	      //default
-	) );
-	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'header_image_control',
-	   array(
-	      'label' => __( 'Default Header Image' ),
-	      'description' => esc_html__( 'Select a default image to use in the header' ),
-		  'section' => 'local_custom_section', // Required, core or custom.
-		  'settings' => 'header_image'
-	   )
-	) );
-	//footer background color
-	$wp_customize->add_setting('footer_background', array(
-		'capability' => 'edit_theme_options',
-		'default' => '#ffffff',
-		'sanitize_callback' => 'sanitize_hex_color',
-	) );
-	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'footer_background_control', 
-		array(
-			'priority' => 10, // Within the section.
-			'label' => __( 'Footer Background Color' ),
-			'description' => __( 'The color of the footer area.' ),
-			'section' => 'local_custom_section', // Required, core or custom.
-			'settings' => 'footer_background'
-		)
-	) );
 	//modal background color
 	$wp_customize->add_setting('modal_background', array(
 		'capability' => 'edit_theme_options',
@@ -90,6 +48,76 @@ function version_8_customize_register( $wp_customize ) {
 			'settings' => 'modal_background'
 		)
 	) );
+	//header image
+	$wp_customize->add_setting( 'header_image', array(
+	      //default
+	) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'header_image_control',
+	   array(
+	      'label' => __( 'Default Header Image' ),
+	      'description' => esc_html__( 'Select a default image to use in the header' ),
+		  'section' => 'local_custom_section', // Required, core or custom.
+		  'settings' => 'header_image'
+	   )
+	) );
+	//header background color
+	$wp_customize->add_setting('header_background', array(
+		'capability' => 'edit_theme_options',
+		'default' => '#ffffff',
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'header_background_control', 
+		array(
+			'priority' => 10, // Within the section.
+			'label' => __( 'Header Background Color' ),
+			'description' => __( 'The color of the header, in front of the image' ),
+			'section' => 'local_custom_section', // Required, core or custom.
+			'settings' => 'header_background'
+		)
+	) );
+	//header background toggle on/off
+	$wp_customize->add_setting('header_background_toggle', array(
+		'capability' => 'edit_theme_options',
+	) );
+	$wp_customize->add_control( 'header_background_toggle_control', 
+		array(
+			'priority' => 10, // Within the section.
+			'label' => __( 'Header Background Toggle' ),
+			'type' => 'checkbox',
+			'description' => __( 'Make the header clear?' ),
+			'section' => 'local_custom_section', // Required, core or custom.
+			'settings' => 'header_background_toggle'
+		)
+	);
+	//footer background color
+	$wp_customize->add_setting('footer_background', array(
+		'capability' => 'edit_theme_options',
+		'default' => '#ffffff',
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'footer_background_control', 
+		array(
+			'priority' => 10, // Within the section.
+			'label' => __( 'Footer Background Color' ),
+			'description' => __( 'The color of the footer area.' ),
+			'section' => 'local_custom_section', // Required, core or custom.
+			'settings' => 'footer_background'
+		)
+	) );
+	//footer background toggle on/off
+	$wp_customize->add_setting('footer_background_toggle', array(
+		'capability' => 'edit_theme_options',
+	) );
+	$wp_customize->add_control( 'footer_background_toggle_control', 
+		array(
+			'priority' => 10, // Within the section.
+			'label' => __( 'Footer Background Toggle' ),
+			'type' => 'checkbox',
+			'description' => __( 'Make the footer clear?' ),
+			'section' => 'local_custom_section', // Required, core or custom.
+			'settings' => 'footer_background_toggle'
+		)
+	);
 
 	//custom css area
 	$wp_customize->add_section( 'custom_css', array(
@@ -143,16 +171,28 @@ add_action( 'customize_preview_init', 'version_8_customize_preview_js' );
 if ( ! function_exists( 'version_8_customize_css' ) ) :
 function version_8_customize_css()
 {
+	$masthead_bg = 'background-color:' . get_theme_mod('header_background');
+	if(	get_theme_mod('header_background_toggle') )
+	{
+		$masthead_bg = 'background:none';
+	}
+	
+	$colophon_bg = 'background-color:' . get_theme_mod('footer_background');
+	if(	get_theme_mod('footer_background_toggle') )
+	{
+		$colophon_bg = 'background:none';
+	}
+
 	?>
 		<style type="text/css">
-			#masthead .bg{
-				background-color: <?php echo get_theme_mod('header_background'); ?>;
-			}
-			#colophon{
-				background-color: <?php echo get_theme_mod('footer_background'); ?>;
-			}
 			#modal-main-container #modal-bg{
 				background-color: <?php echo get_theme_mod('modal_background'); ?>;
+			}
+			#masthead{
+				<?php echo( $masthead_bg ); ?>;
+			}
+			#colophon{
+				<?php echo( $colophon_bg ); ?>;
 			}
 		</style>
 	<?php
