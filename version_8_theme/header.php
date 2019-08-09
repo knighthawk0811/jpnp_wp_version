@@ -18,8 +18,8 @@
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 
 	<?php wp_head(); ?>
-						
-	<script>		
+
+	<script>
 		jQuery(document).ready(function(){
 			//side-nav and modal slide
 			//ON and OFF
@@ -51,7 +51,7 @@
 		get_template_part( 'sidebar-templates/sidebar', 'modal-2' );
 	?>
 	</div>
-	<div id="modal-button">&#9776;</div>
+	<div id="modal-button">MENU<span class="toggle-closed"><i class="material-icons md-48">menu</i></span><span class="toggle-open"><i class="material-icons md-48">close</i></span></div>
 </div>
 
 <div id="page" class="site">

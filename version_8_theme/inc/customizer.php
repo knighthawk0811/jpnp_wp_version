@@ -39,13 +39,28 @@ function version_8_customize_register( $wp_customize ) {
 		'default' => '#dddddd',
 		'sanitize_callback' => 'sanitize_hex_color',
 	) );
-	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'modal_background_control', 
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'modal_background_control',
 		array(
 			'priority' => 10, // Within the section.
 			'label' => __( 'Modal Background Color' ),
 			'description' => __( 'The color of the modal area.' ),
 			'section' => 'local_custom_section', // Required, core or custom.
 			'settings' => 'modal_background'
+		)
+	) );
+	//modal button background color
+	$wp_customize->add_setting('modal_button_background', array(
+		'capability' => 'edit_theme_options',
+		'default' => '#dddddd',
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'modal_button_background_control',
+		array(
+			'priority' => 10, // Within the section.
+			'label' => __( 'Modal Button Background Color' ),
+			'description' => __( 'The color of the modal button.' ),
+			'section' => 'local_custom_section', // Required, core or custom.
+			'settings' => 'modal_button_background'
 		)
 	) );
 	//header image
@@ -66,7 +81,7 @@ function version_8_customize_register( $wp_customize ) {
 		'default' => '#ffffff',
 		'sanitize_callback' => 'sanitize_hex_color',
 	) );
-	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'header_background_control', 
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'header_background_control',
 		array(
 			'priority' => 10, // Within the section.
 			'label' => __( 'Header Background Color' ),
@@ -79,7 +94,7 @@ function version_8_customize_register( $wp_customize ) {
 	$wp_customize->add_setting('header_background_toggle', array(
 		'capability' => 'edit_theme_options',
 	) );
-	$wp_customize->add_control( 'header_background_toggle_control', 
+	$wp_customize->add_control( 'header_background_toggle_control',
 		array(
 			'priority' => 10, // Within the section.
 			'label' => __( 'Header Background Toggle' ),
@@ -95,7 +110,7 @@ function version_8_customize_register( $wp_customize ) {
 		'default' => '#ffffff',
 		'sanitize_callback' => 'sanitize_hex_color',
 	) );
-	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'footer_background_control', 
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'footer_background_control',
 		array(
 			'priority' => 10, // Within the section.
 			'label' => __( 'Footer Background Color' ),
@@ -108,7 +123,7 @@ function version_8_customize_register( $wp_customize ) {
 	$wp_customize->add_setting('footer_background_toggle', array(
 		'capability' => 'edit_theme_options',
 	) );
-	$wp_customize->add_control( 'footer_background_toggle_control', 
+	$wp_customize->add_control( 'footer_background_toggle_control',
 		array(
 			'priority' => 10, // Within the section.
 			'label' => __( 'Footer Background Toggle' ),
@@ -176,7 +191,7 @@ function version_8_customize_css()
 	{
 		$masthead_bg = 'background:none';
 	}
-	
+
 	$colophon_bg = 'background-color:' . get_theme_mod('footer_background');
 	if(	get_theme_mod('footer_background_toggle') )
 	{
@@ -187,6 +202,11 @@ function version_8_customize_css()
 		<style type="text/css">
 			#modal-main-container #modal-bg{
 				background-color: <?php echo get_theme_mod('modal_background'); ?>;
+			}
+			#modal-main-container #modal-button,
+			#modal-main-container #modal-button .toggle-closed,
+			#modal-main-container #modal-button .toggle-open {
+				background-color: <?php echo get_theme_mod('modal_button_background'); ?>;
 			}
 			#masthead{
 				<?php echo( $masthead_bg ); ?>;
