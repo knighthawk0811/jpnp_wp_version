@@ -45,11 +45,11 @@ function parallelize_get_hostname($name) {
 //add_filter('wp_get_attachment_url', 'parallelize_hostnames', 10, 2);
 
 
- 
+
 /**
  * var_dump into a pre html element
  *
- * @link 
+ * @link
  * @version 8.3.1906
  * @since 8.3.1906
  */
@@ -66,7 +66,7 @@ endif;
 /**
 * var_dump returned as a string
 *
-* @link 
+* @link
 * @version 8.3.1906
 * @since 8.3.1906
 */
@@ -81,3 +81,117 @@ function version_8_var_dump_return($mixed = NULL)
 }
 endif;
 
+
+/***********************
+Google Material Icons
+***********************/
+/**
+ * REGISTER SCRIPTS AND STYLES
+ *
+ * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
+ * @link http://google.github.io/material-design-icons/
+ * @version 8.3.1908
+ * @since 8.3.1908
+ */
+if ( ! function_exists( 'version_8_register_marterial_icon_scripts' ) ) :
+function version_8_register_marterial_icon_scripts() {
+
+	wp_register_style( 'version_8-material_icon_style', 'https://fonts.googleapis.com/icon?family=Material+Icons', NULL , NULL , 'all' );
+
+}
+add_action( 'init', 'version_8_register_marterial_icon_scripts' );
+endif;
+/**
+ * ENQUEUE SCRIPTS AND STYLES
+ *
+ * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
+ * @link http://google.github.io/material-design-icons/
+ * @version 8.3.1908
+ * @since 8.3.1908
+ *
+ */
+if ( ! function_exists( 'version_8_enqueue_marterial_icon_scripts' ) ) :
+function version_8_enqueue_marterial_icon_scripts() {
+	wp_enqueue_style( 'version_8-material_icon_style' );
+}
+add_action( 'wp_enqueue_scripts', 'version_8_enqueue_marterial_icon_scripts' );
+endif;
+
+
+/***********************
+BEGIN prettyphoto lightbox
+***********************/
+/**
+ * REGISTER SCRIPTS AND STYLES
+ *
+ * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
+ * @version 8.3.1908
+ * @since 8.3.1908
+ */
+if ( ! function_exists( 'version_8_register_prettyPhoto_scripts' ) ) :
+function version_8_register_prettyPhoto_scripts() {
+
+	wp_register_style( 'version_8-prettyPhoto_style', get_template_directory_uri() . '/prettyPhoto.css', NULL , NULL , 'all' );
+
+	//JS (non-AJAX)
+	wp_register_script( 'version_8-prettyPhoto_script', get_template_directory_uri() . '/js/jquery.prettyPhoto.js', array('jquery'), false, false );
+
+}
+add_action( 'init', 'version_8_register_prettyPhoto_scripts' );
+endif;
+/**
+ * ENQUEUE SCRIPTS AND STYLES
+ *
+ * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
+ * @version 8.3.1908
+ * @since 8.3.1908
+ *
+ */
+if ( ! function_exists( 'version_8_enqueue_prettyPhoto_scripts' ) ) :
+function version_8_enqueue_prettyPhoto_scripts() {
+	wp_enqueue_style( 'version_8-prettyPhoto_style' );
+	wp_enqueue_script('version_8-prettyPhoto_script');
+}
+add_action( 'wp_enqueue_scripts', 'version_8_enqueue_prettyPhoto_scripts' );
+endif;
+
+/**
+* put the action in the footer
+*
+* @link
+* @version 8.3.1908
+* @since 8.3.1908
+*/
+if ( ! function_exists( 'prettyPhoto_custom_action' ) ) :
+function prettyPhoto_custom_action() {
+	if ( !is_admin())
+	{
+		//WordPress requires by default that you use the word 'jQuery' rather than '$'
+		//but we will pass it into the function so we can use it at least inside the function
+	?>
+        <script type="text/javascript">
+        	//add lightbox
+			jQuery(document).ready(function($) {
+				$(".prettyPhoto a[href*='.jpg'], .prettyPhoto a[href*='.jpeg'], .prettyPhoto a[href*='.gif'], .prettyPhoto a[href*='.png']").prettyPhoto({
+					animationSpeed: 'fast', /* fast/slow/normal */
+					padding: 40, /* padding for each side of the picture */
+					opacity: 0.35, /* Value betwee 0 and 1 */
+					theme: 'pp_default', /* pp_default / light_rounded / dark_rounded / light_square / dark_square / facebook */
+					social_tools: false, /*leave blank for default, or add html, or false */
+					show_title: true /* true/false */
+				});
+			})
+
+			//add to gallery
+			jQuery(document).ready(function($) {
+				$(".prettyGallery a[href*='.jpg'], .prettyGallery a[href*='.jpeg'], .prettyGallery a[href*='.gif'], .prettyGallery a[href*='.png']").attr('rel','prettyPhoto[pp_gal]');
+			})
+        </script>
+    <?php
+	}
+}
+endif; // prettyPhoto_custom_action
+add_action( 'wp_footer', 'prettyPhoto_custom_action' );
+/***********************
+END prettyphoto lightbox
+***********************/
