@@ -1,30 +1,54 @@
 <?php
 /*
-Plugin Name: Version 8 Plugin: Member Content
-Plugin URI: http://neathawk.us
+Plugin Name: VI Plugin: Member Content
+Plugin URI: https://neathawk.com/2019/plugin-member-content/
 Description: A collection of generic functions that separate content by visitor/member/ member of type
-Version: 0.2.181214
+Version: 9.1.191028
 Author: Joseph Neathawk
-Author URI: http://Neathawk.us
+Author URI: http://Neathawk.com
 License: GNU General Public License v2 or later
 */
 if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-class version_8_plugin_member_content {
+class vi_plugin_member_content {
     /*--------------------------------------------------------------
     >>> TABLE OF CONTENTS:
     ----------------------------------------------------------------
+    # Instructions
     # Reusable Functions
     # Shortcode Functions (are plugin territory)
+    # Shortcode Definitions (outside the class)
     --------------------------------------------------------------*/
 
-
+    /*--------------------------------------------------------------
+    # Instructions
+    --------------------------------------------------------------*/
+    //SEE README
+       
     /*--------------------------------------------------------------
     # Reusable Functions
     --------------------------------------------------------------*/
-    //nothing to see here
+    
+
+    /**
+     * display content to logged OUT users only
+     *
+     * return only boolean, let no secure data escape like an array of all the roles
+     *
+     * @link https://wordpress.stackexchange.com/questions/5047/how-to-check-if-a-user-is-in-a-specific-role
+     * @version 9.1.1028
+     * @since 9.1.1028
+     * @return true/false
+     */
+    private static function is_user_in_role( $user_id, $role  ) 
+    {           
+        $user = get_userdata( $user_id );
+        $role_array = empty( $user ) ? array() : $user->roles;
+        return in_array( $role, $role_array );
+    }
+
 
 
     /*--------------------------------------------------------------
@@ -35,16 +59,11 @@ class version_8_plugin_member_content {
      * display content to logged OUT users only
      *
      * @link
-     * @requires
-     * @version 0.1.181213
+     * @version 9.1.1028
+     * @since 0.1.181213
      */
     public static function visitor_content( $atts, $content = null )
     {
-        /*
-        [visitor]
-        content
-        [/visitor]
-        //*/
 
         if ( ( !is_user_logged_in() && !is_null( $content ) ) || is_feed() )
         {
@@ -63,28 +82,14 @@ class version_8_plugin_member_content {
     /**
      * display content to logged IN users only
      *
-     * may include any roles as well, displaying content to different roles
+     * may include any roles/abillities as well, displaying content to different roles
      *
      * @link
-     * @requires
-     * @version 0.1.181213
+     * @version 9.1.1028
+     * @since 0.1.181213
      */
     public static function member_content( $attr, $content = null )
     {
-        /*
-        [member]
-        content
-        [/member]
-        [member type="any"]
-        content
-        [/member]
-        [member type="editor"]
-        content
-        [/member]
-        [member type="subscriber, administrator"]
-        content
-        [/member]
-        //*/
 
         extract( shortcode_atts( array( 'type' => 'read' ), $attr ) );
         //remove spaces
@@ -103,7 +108,7 @@ class version_8_plugin_member_content {
                     //ACTION
                     $access_allowed = true;
                 }
-                else if( current_user_can( $item ) )
+                else if( self::is_user_in_role( $item ) || current_user_can( $item ) )
                 {
                     //ACTION
                     $access_allowed = true;
@@ -120,12 +125,11 @@ class version_8_plugin_member_content {
         return do_shortcode($content);
     }
 
-}//class version_8_plugin_member_content
+}//class vi_plugin_member_content
 
-add_shortcode( 'vip_visitor', Array(  'version_8_plugin_member_content', 'visitor_content' ) );
-add_shortcode( 'vip_member', Array(  'version_8_plugin_member_content', 'member_content' ) );
 
-//backward compatability
-add_shortcode( 'visitor', Array(  'version_8_plugin_member_content', 'visitor_content' ) );
-add_shortcode( 'member', Array(  'version_8_plugin_member_content', 'member_content' ) );
-
+/*--------------------------------------------------------------
+# Shortcode Definitions
+--------------------------------------------------------------*/
+add_shortcode( 'vi-visitor', Array(  'vi_plugin_member_content', 'visitor_content' ) );
+add_shortcode( 'vi-member', Array(  'vi_plugin_member_content', 'member_content' ) );
