@@ -156,6 +156,7 @@ add_action( 'wp_enqueue_scripts', 'version_8_enqueue_prettyPhoto_scripts' );
 endif;
 
 /**
+* prettyPhoto
 * put the action in the footer
 *
 * @link
@@ -166,8 +167,8 @@ if ( ! function_exists( 'prettyPhoto_custom_action' ) ) :
 function prettyPhoto_custom_action() {
 	if ( !is_admin())
 	{
-		//WordPress requires by default that you use the word 'jQuery' rather than '$'
-		//but we will pass it into the function so we can use it at least inside the function
+		//class="prettyPhoto" for singles
+		//class="prettyGallery" for gallery
 	?>
         <script type="text/javascript">
         	//add lightbox

@@ -23,7 +23,7 @@
 			<div class="entry-meta">
 				<?php
 				version_8_posted_on();
-				version_8_posted_by();
+				//version_8_posted_by();
 				?>
 			</div><!-- .entry-meta -->
 		<?php endif; ?>
@@ -54,6 +54,6 @@
 	</div><!-- .entry-content -->
 
 	<footer class="entry-footer">
-		<?php version_8_entry_footer(); ?>
+		<?php //version_8_entry_footer(); ?>
 	</footer><!-- .entry-footer -->
 </article><!-- #post-<?php the_ID(); ?> -->

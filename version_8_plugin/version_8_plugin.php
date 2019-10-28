@@ -102,11 +102,11 @@ register_uninstall_hook( __FILE__, 'version_8_plugin_uninstall' );
 endif;
 
 /**
- * ENQUEUE SCRIPTS AND STYLES * 
- * 
+ * ENQUEUE SCRIPTS AND STYLES *
+ *
  * wp_register_style( string $handle, string|bool $src, array $deps = array(), string|bool|null $ver = false, string $media = 'all' )
  * wp_register_script( string $handle, string|bool $src, array $deps = array(), string|bool|null $ver = false, bool $in_footer = false )
- * 
+ *
  * wp_register_style( string $handle, string|bool $src, array $deps = array(), string|bool|null $ver = false, string $media = 'all' )
  * wp_register_script( string $handle, string|bool $src, array $deps = array(), string|bool|null $ver = false, bool $in_footer = false )
  *
@@ -117,12 +117,12 @@ function version_8_plugin_scripts() {
 
     //style for the plugin
     //wp_enqueue_style( 'version_8_plugin-style', plugins_url( '/version_8_plugin.css', __FILE__ ), NULL , NULL , 'all' );
-    
+
 	//JS
 	//included in header
-	//wp_enqueue_script( 'version_8_plugin-JS_head', get_template_directory_uri() . '/js/version_8_plugin_head.js', array('jquery'), false, true );	
+	//wp_enqueue_script( 'version_8_plugin-JS_head', get_template_directory_uri() . '/js/version_8_plugin_head.js', array('jquery'), false, true );
 	//included in footer
-	//wp_enqueue_script( 'version_8_plugin-JS_foot', get_template_directory_uri() . '/js/version_8_plugin_foot.js', array('jquery'), false, false );	
+	//wp_enqueue_script( 'version_8_plugin-JS_foot', get_template_directory_uri() . '/js/version_8_plugin_foot.js', array('jquery'), false, false );
 
     //AJAX
     //wp_enqueue_script( 'version_8_plugin-AJAX', plugins_url( '/js/version_8_plugin_ajax.js', __FILE__ ), array( 'jquery' ), false, true );
@@ -130,7 +130,7 @@ function version_8_plugin_scripts() {
     //wp_localize_script( 'version_8_plugin-AJAX', 'theurl', array('ajaxurl' => admin_url( 'admin-ajax.php' )));
 
 }
-add_action( 'wp_enqueue_scripts', 'version_8_plugin_scripts' );
+//add_action( 'wp_enqueue_scripts', 'version_8_plugin_scripts' );
 endif;
 
 
@@ -267,9 +267,9 @@ if ( ! function_exists( 'version_8_plugin_display_menu' ) ) :
 function version_8_plugin_display_menu($attr)
 {
     /*
-    [site_menu id="menu_id"]
+    [vip_display_menu id="menu_id"]
     no content
-    [/site_menu]
+    [/vip_display_menu]
     */
     ob_start();
 
@@ -286,6 +286,51 @@ function version_8_plugin_display_menu($attr)
     return $content;
 }
 add_shortcode( 'vip_display_menu', 'version_8_plugin_display_menu' );
+endif;
+
+/**
+ * display a menu from another sub-site
+ *
+ * @link https://developer.wordpress.org/reference/functions/wp_nav_menu/
+ * @link https://wordpress.stackexchange.com/questions/26367/use-wp-nav-menu-to-display-a-menu-from-another-site-in-a-network-install
+ * @requires
+ */
+if ( ! function_exists( 'version_8_plugin_display_menu_multi' ) ) :
+function version_8_plugin_display_menu_multi($attr)
+{
+    /*
+    [vip_display_menu_multi id="menu_id" sub="sub_site_id"]
+    no content
+    [/vip_display_menu_multi]
+    */
+    $blog_id = get_current_blog_id();
+    $content = '';
+
+    extract( shortcode_atts( array( 'id' => null, 'sub' => $blog_id), $attr ) );
+
+    $id = sanitize_title( $id );
+    $sub = absint( $sub );
+
+    if( ( $sub != $blog_id ) && is_multisite() )
+    {
+        switch_to_blog( $sub );
+    }
+
+    ob_start();
+
+    if ( is_nav_menu( $id ) ) {
+        wp_nav_menu( array(
+            'menu' => $id,
+        ) );
+    }
+
+    $content = ob_get_contents();
+    ob_end_clean();
+
+    restore_current_blog();
+    return $content;
+}
+add_shortcode( 'vip_display_menu_multi', 'version_8_plugin_display_menu_multi' );
 endif;
 
 /**

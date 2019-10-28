@@ -7,9 +7,10 @@
  * @package version_8_child
  */
 
+//add class to body
+version_8_body_classes( 'sidebar-1' );
 get_header();
 ?>
-
 	<div id="primary" class="content-area">
 	<?php get_template_part( 'sidebar-templates/sidebar', 'left' ); ?>
 		<main id="main" class="site-main">

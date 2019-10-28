@@ -3,41 +3,82 @@
 Plugin Name: Version 8 Plugin: Include Post By
 Plugin URI: http://neathawk.us
 Description: A collection of shortcodes to include posts inside other posts, etc
-Version: 0.2.181219
+Version: 0.3.191007
 Author: Joseph Neathawk
 Author URI: http://Neathawk.us
 License: GNU General Public License v2 or later
 */
 
-//TODO: put pageination style into CSS classes
-
-class version_8_plugin_include_post_by 
+class version_8_plugin_include_post_by
 {
     /*--------------------------------------------------------------
     >>> TABLE OF CONTENTS:
     ----------------------------------------------------------------
+    # Instructions
     # TODO
     # Reusable Functions
     # Shortcode Functions (are plugin territory)
     --------------------------------------------------------------*/
 
     /*--------------------------------------------------------------
+    # Instructions
+    --------------------------------------------------------------*/
+    /*
+    [include-post-by-id
+	    id="123"
+	    display="title,meta,thumbnail,content,excerpt,more,footer,all"
+	    link="true"
+	    more_text="Continue Reading"
+    ]
+	    id = post to be shown
+	    display = display options CSV, order counts
+	    link = whether the title/thubmnail are links to the post
+	    more_text = edit the text of the read-more link
+
+
+    [include-post-by-cat
+        cat="123"
+        order="ASC"
+        orderby="title"
+        pageinate=true
+        perpage="5"
+        offset="0"
+	    display="title,meta,thumbnail,content,excerpt,more,footer,all"
+	    link="true"
+        more_text="Continue Reading"
+    ]
+	    cat = category to be shown
+	    order = sort order
+	    orderby = what to sort by
+	    pageinate = true/false
+	    perpage = items per page
+	    offset = how many to skip, useful if you are combining multiple of these
+	    display = from include-post-by-id
+	    link = from include-post-by-id
+	    more_text = from include-post-by-id
+	//*/
+
+    /*--------------------------------------------------------------
     # TODO
     --------------------------------------------------------------*/
+    //all:  put pageination style into CSS classes
+
     //include_by_cat
-    //only do "get_post" once then programatically do the offest and page rather the query the DB again
+    //only do "get_post" once then programatically do the offset and page rather than query the DB again
     //put the desired posts into a new array and delete the old array
-    //then you should be able to carry one as usual
+    //then you should be able to carry on as usual
+    //??? does this help performance considering that many users will not continue on to further pages?
 
 
     /*--------------------------------------------------------------
     # Reusable Functions
-    --------------------------------------------------------------*/	
-	
+    --------------------------------------------------------------*/
+
 	/**
 	 * return the thumbnail URL as a string
 	 *
 	 * @version 0.1.181213
+	 * @since 0.1.181213
 	 */
 	private static function get_thumbnail_url($id = null)
 	{
@@ -123,22 +164,66 @@ class version_8_plugin_include_post_by
 
 		return $the_post_thumbnail_url;
 	}
-	
+
 	/**
 	 * return the thumbnail <img> as a string
 	 *
 	 * @version 0.1.181213
+	 * @since 0.1.181213
 	 */
-	private static function get_thumbnail($id = null, $class = '')
+	private static function get_thumbnail_tag($id = null, $class = '')
 	{
 		//return string <img> value
-		return '<img src="' . version_8_plugin_include_post_by::get_thumbnail_url($id) .'" class=" ' . $class . ' attachment-thumbnail size-thumbnail wp-post-image" alt="" width="150" height="150" />';
+		return '<img src="' . version_8_plugin_include_post_by::get_thumbnail_url($id) .'" class=" ' . $class . ' attachment-thumbnail size-thumbnail wp-post-image" alt="" />';
 	}
-	
+
+	/**
+	 * return the full thumbnail content
+	 *
+	 * @version 0.3.191007
+	 * @since 0.3.191007
+	 */
+	private static function get_thumbnail($link = true)
+	{
+        if( $link )
+        {
+            echo( '<a class="post-thumbnail" href="' . esc_url( get_permalink() ) . '" >' );
+            echo( ' ' . version_8_plugin_include_post_by::get_thumbnail_tag($id) );
+            echo( '</a>' );
+        }
+        else
+        {
+            echo( '<div class="post-thumbnail">' );
+            echo( ' ' . version_8_plugin_include_post_by::get_thumbnail_tag($id) );
+            echo( '</div>' );
+        }
+        //gotta fix things after getting the thumbnail
+    	//$the_posts->reset_postdata();//setup the current post
+    }
+
+	/**
+	 * get_title
+	 *
+	 * @version 0.3.191007
+	 * @since 0.3.191007
+	 */
+	private static function get_title($link = true)
+	{
+		if( $link )
+		{
+			the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
+		}
+		else
+		{
+			the_title( '<h2 class="entry-title">', '</h2>' );
+		}
+	}
+
 	/**
 	 * posted_on
 	 *
 	 * @version 0.1.181213
+	 * @since 0.1.181213
 	 */
 	private static function posted_on()
 	{
@@ -162,11 +247,12 @@ class version_8_plugin_include_post_by
 
 		echo '<span class="posted-on">' . $posted_on . '</span>'; // WPCS: XSS OK.
 	}
-	
+
 	/**
 	 * posted_by
 	 *
 	 * @version 0.1.181213
+	 * @since 0.1.181213
 	 */
 	private static function posted_by()
 	{
@@ -178,11 +264,63 @@ class version_8_plugin_include_post_by
 
 		echo '<span class="byline"> ' . $byline . '</span>'; // WPCS: XSS OK.
 	}
-	
+
+	/**
+	 * get_meta
+	 *
+	 * @version 0.3.191007
+	 * @since 0.3.191007
+	 */
+	private static function get_meta()
+	{
+        echo( '<div class="entry-meta">' );
+        version_8_plugin_include_post_by::posted_on();
+        version_8_plugin_include_post_by::posted_by();
+        echo( '</div>' );
+	}
+
+	/**
+	 * get_content
+	 *
+	 * @version 0.3.191007
+	 * @since 0.3.191007
+	 */
+	private static function get_content()
+	{
+        echo( '<div class="entry-content">' );
+        the_content();
+        echo( '</div>' );
+	}
+
+	/**
+	 * get_excerpt
+	 *
+	 * @version 0.3.191007
+	 * @since 0.3.191007
+	 */
+	private static function get_excerpt()
+	{
+        echo( '<div class="entry-content">' );
+        the_excerpt();
+        echo( '</div>' );
+	}
+
+	/**
+	 * get_more
+	 *
+	 * @version 0.3.191007
+	 * @since 0.3.191007
+	 */
+	private static function get_more($more_text = "Continue Reading")
+	{
+        echo( '<a class="read-more" href="' . esc_url( get_permalink() ) . '">' . $more_text . '</a>' );
+	}
+
 	/**
 	 * category_list
 	 *
 	 * @version 0.1.181213
+	 * @since 0.1.181213
 	 */
 	private static function category_list()
 	{
@@ -196,6 +334,20 @@ class version_8_plugin_include_post_by
 		}
 	}//category_list
 
+	/**
+	 * get_footer
+	 *
+	 * @version 0.3.191007
+	 * @since 0.3.191007
+	 */
+	private static function get_footer()
+	{
+        echo( '<div class="entry-footer">' );
+        version_8_plugin_include_post_by::category_list();
+        echo( '</div>' );
+	}
+
+
 
     /*--------------------------------------------------------------
     # Shortcode Functions (are plugin territory)
@@ -204,99 +356,53 @@ class version_8_plugin_include_post_by
 	/**
 	 * include post by ID
 	 *
+	 * @version 0.3.191007
 	 * @since 0.1.181219
-	 * @version 0.1.190211
 	 */
 	public static function include_post_by_id( $attr )
 	{
 	    /*
 	    ***************************************************************************
-	    [include-post-by-id id="123" display="title,link,meta,thumbnail,content,excerpt,all" more="true" more_text="Continue Reading"]
-	        //no content is used here, so no closing tag required
-	    [/include-post-by-id]
-	    ***************************************************************************
-	    id = post to be shown
-	    display = display options CSV
 	    ***************************************************************************
 	    //*/
-
-	    //TODO: add thumbnail
 
 	    $post_object = null;
 	    $output = '';
 
 	    //get input
-	    extract( shortcode_atts( array( 'id' => NULL,'display' => 'all', 'more' => true, 'more_text' => '' ), $attr ) );
+	    extract( shortcode_atts( array( 'id' => NULL,'display' => 'all', 'link' => true, 'more_text' => 'Continue Reading' ), $attr ) );
 	    //remove spaces, and build array
 	    $display_option_input = explode(',', str_replace(' ', '', $display));
-	    //default values
-	    $display_option['title'] = false;
-	    $display_option['link'] = false;
-	    $display_option['meta'] = false;
-	    $display_option['thumbnail'] = false;
-	    $display_option['content'] = false;
-	    $display_option['excerpt'] = false;
-	    $display_option['all'] = false;
-	    //	    
-	    $more_option['more'] = false;
-	    $more_option['more_text'] = 'Continue Reading';
-	    //validate input
+
+	    if( !empty( sanitize_text_field( $more_text ) ) )
+	    {
+	    	$more == true;
+	    	$more_text = sanitize_text_field( $more_text );
+	    }
+
+	    //backward capability
 	    foreach( $display_option_input as $key => &$value )
 	    {
 	        switch( $value )
 	        {
-	            case 'title':
-	                $display_option['title'] = true;
-	                break;
 	            case 'link':
-	                $display_option['link'] = true;
+	                $link = true;
 	                break;
-	            case 'meta':
-	                $display_option['meta'] = true;
+	            case 'more':
+	                $more = true;
 	                break;
-	            case 'thumbnail':
-	                $display_option['thumbnail'] = true;
-	                break;
-	            case 'content':
-	                $display_option['content'] = true;
-	                break;
-	            case 'excerpt':
-	                $display_option['excerpt'] = true;
-	                break;
-	            case 'all':
-	                $display_option['title'] = true;
-	                $display_option['link'] = true;
-	                $display_option['meta'] = true;
-	                $display_option['thumbnail'] = true;
-	                $display_option['content'] = true;
-	                $display_option['excerpt'] = false;//can't do both, that's crazy
-	                break;
-	            default:
-	                //any other values are garbage in
-	                $value = null;
-	                unset($display_option[$key]);
 	        }
 	    }
-	    if($more == true)
-	    {
-	    	$more_option['more'] = true;
-	    }
-	    if( !empty( sanitize_text_field( $more_text ) ) )
-	    {
-	    	$more_option['more'] = true;
-	    	$more_option['more-text'] = sanitize_text_field( $more_text );
-	    }
 
 
-	    //get the data
+	    //get started, query the post, start a new loop
 	    if( is_numeric( $id) )
 	    {
-
 	        //obstream
 	        ob_start();
-	        //setup post
-	        $args = array( 'p' => $id );
 
+	        //setup post, loop
+	        $args = array( 'p' => $id );
 	        $the_posts = new WP_Query($args);
 	        //normal output the post stuff
 	        if ( $the_posts->have_posts() )
@@ -305,63 +411,59 @@ class version_8_plugin_include_post_by
 	            {
 	                $the_posts->the_post();//setup the current post
 
-	                if( $display_option['title'] === true)
-	                {
-	                    if( $display_option['link'] === true )
-	                    {
-	                        the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
-	                    }
-	                    else
-	                    {
-	                        the_title( '<h2 class="entry-title">', '</h2>' );
-	                    }
-	                }
+	                /***********************
+	                begin the output
+	                ***********************/
 
-	                if( $display_option['meta'] === true )
-	                {
-	                    echo( '<div class="entry-meta">' );
-	                    version_8_plugin_include_post_by::posted_on();
-	                    version_8_plugin_include_post_by::posted_by();
-	                    echo( '</div>' );
-	                    echo( '<div class="entry-footer">' );
-	                    version_8_plugin_include_post_by::category_list();
-	                    echo( '</div>' );
-	                }
+        			echo( '<div class="article">' );
 
-	                if( $display_option['thumbnail'] === true )
-	                {
-	                    if( $display_option['link'] === true )
-	                    {
-	                        echo( '<a class="post-thumbnail" href="' . esc_url( get_permalink() ) . '" >' );
-	                        echo( ' ' . version_8_plugin_include_post_by::get_thumbnail($id) );
-	                        echo( '</a>' );
-	                    }
-	                    else
-	                    {
-	                        echo( '<div class="post-thumbnail">' );
-	                        echo( ' ' . version_8_plugin_include_post_by::get_thumbnail($id) );
-	                        echo( '</div>' );
-	                    }
-	                    //gotta fix things after getting the thumbnail
-	                	$the_posts->reset_postdata();//setup the current post
-	                }
+	                //do each display in the order in which it was given by the user
+				    foreach( $display_option_input as $key => &$value )
+				    {
+				        switch( $value )
+				        {
+				            case 'title':
+				                version_8_plugin_include_post_by::get_title($link);
+				                break;
+				            case 'meta':
+				                version_8_plugin_include_post_by::get_meta();
+				                break;
+				            case 'thumbnail':
+				                version_8_plugin_include_post_by::get_thumbnail();
+				                break;
+				            case 'content':
+				                version_8_plugin_include_post_by::get_content();
+				                break;
+				            case 'excerpt':
+				                version_8_plugin_include_post_by::get_excerpt();
+				                break;
+				            case 'more':
+				                version_8_plugin_include_post_by::get_more($more_text);
+				                break;
+				            case 'footer':
+				                version_8_plugin_include_post_by::get_footer();
+				                break;
+				            case 'all':
+				            	//default ordering
+				                version_8_plugin_include_post_by::get_title($link);
+				                version_8_plugin_include_post_by::get_meta();
+				                version_8_plugin_include_post_by::get_thumbnail();
+				                version_8_plugin_include_post_by::get_content();
+				                version_8_plugin_include_post_by::get_footer();
+				                break;
+				            default:
+				                //any other values are garbage in
+				                $value = null;
+				                unset($display_option[$key]);
+				        }
+				    }
 
-	                if( $display_option['content'] === true )
-	                {
-	                    echo( '<div class="entry-content">' );
-	                    the_content();
-	                    echo( '</div>' );
-	                }
-	                else if( $display_option['excerpt'] === true )
-	                {
-	                    echo( '<div class="entry-content">' );
-	                    the_excerpt();
-	                    if($more_option['more'])
-	                    {
-		                    echo( '<a href="' . esc_url( get_permalink() ) . '">' . $more_option['more-text'] . '</a>' );
-		                }
-	                    echo( '</div>' );
-	                }
+        			echo( '</div>' );//article
+
+
+	                /***********************
+	                output build complete
+	                ***********************/
 	            }
 	            wp_reset_postdata();
 	        }
@@ -380,42 +482,31 @@ class version_8_plugin_include_post_by
 	 * uses include-post-by-id
 	 *
 	 * @version 0.1.181212
+	 * @since 0.1.181212
 	 */
 	public static function include_post_by_cat( $attr )
 	{
 	    /*
-	    *************************************
-	    [include-post-by-cat 
-	        cat="123" 
-	        order="ASC" 
-	        orderby="title"
-	        display="title,link,meta,thumbnail,content,excerpt,all"
-	        pageinate=true
-	        perpage="5" 
-	        offset="0"
-	    ]
-	    *************************************
-	    uses:    
-	    [include-post-by-id id="123" display="title,link,meta,thumbnail,content,excerpt,all"]
-	    *************************************
-	    cat = category to be shown
-	    order = sort order
-	    orderby = what to sort by
-	    display = from include-post-by-id
-	    pageinate = true/false
-	    perpage = items per page
-	    offset = how many to skip, useful if you are combining multiple of these
-	    *************************************
+	    ***************************************************************************
+	    ***************************************************************************
 	    //*/
+
+	    /*
+	    uses/requires:
+	    [include-post-by-id]
+	    //*/
+
 	    $output = '';
-	    extract( shortcode_atts( array( 
-	    	'cat' => NULL, 
-	    	'order' => 'DESC', 
-	    	'orderby' => 'date', 
-	    	'display' => 'all', 
-	    	'pageinate' => true, 
-	    	'perpage' => 5, 
-	    	'offset' => 0 
+	    extract( shortcode_atts( array(
+	    	'cat' => NULL,
+	    	'order' => 'DESC',
+	    	'orderby' => 'date',
+	    	'pageinate' => true,
+	    	'perpage' => 5,
+	    	'offset' => 0,
+	    	'display' => 'all',
+	    	'link' => true,
+	    	'more_text' => 'Continue Reading'
 	    ), $attr ) );
 
 
@@ -512,7 +603,9 @@ class version_8_plugin_include_post_by
 	                //call site_include_post_by_id();
 	                $args = array(
 	                    'id'       =>"$item->ID",
-	                    'display'   =>"$display"
+	                    'display'   =>"$display",
+	                    'more_text'   =>"$more_text",
+	                    'link'   =>"$link"
 	                    );
 	                $output .= version_8_plugin_include_post_by::include_post_by_id( $args );
 	            }
@@ -527,12 +620,12 @@ class version_8_plugin_include_post_by
 	                    $page_previous = $page_current - 1;
 	                    $url_var = '?pn=';
 	                    if( $page_previous <= 1 )
-                    	{ 
-                    		$url_var = ''; 
+                    	{
+                    		$url_var = '';
                     	}
                     	else
-                		{ 
-                			$url_var .= $page_previous; 
+                		{
+                			$url_var .= $page_previous;
                 		}
 	                    $output .= '<a style="clear:left;float:left;" href="' . esc_url( get_permalink() ) . $url_var . '" title="Previous Page">Previous Page</a>';
 	                }
@@ -614,10 +707,7 @@ class version_8_plugin_include_post_by
 
 	    return $output;
 	}
-
-
 }
 
 add_shortcode( 'include-post-by-id', Array(  'version_8_plugin_include_post_by', 'include_post_by_id' ) );
 add_shortcode( 'include-post-by-cat', Array( 'version_8_plugin_include_post_by', 'include_post_by_cat' ) );
-

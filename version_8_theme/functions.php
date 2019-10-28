@@ -206,7 +206,7 @@ endif;
 if ( ! function_exists( 'version_8_register_scripts' ) ) :
 function version_8_register_scripts() {
 	//
-	wp_register_script( 'version_8-style_foundation', get_template_directory_uri() . '/style.css' );
+	wp_register_script( 'version_8-style_foundation', get_template_directory_uri() . '/style.min.css' );
 	wp_register_script( 'version_8-navigation', get_template_directory_uri() . '/js/navigation.js', array(), false, true );
 	wp_register_script( 'version_8-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), false, true );
 	//JS (non-AJAX)

@@ -14,7 +14,7 @@
 <html <?php language_attributes(); ?>>
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
-	<meta name="viewport" content="width=600, initial-scale=auto">
+	<meta name="viewport" content="width=720, initial-scale=0.86, maximum-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 
 	<?php wp_head(); ?>
@@ -35,6 +35,8 @@
 </head>
 
 <body <?php body_class(); ?>>
+<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'version_8' ); ?></a>
+
 <div id="modal-main-shade"></div>
 <div id="modal-main-container">
 	<div id="modal-bg"></div>
@@ -67,7 +69,6 @@
 	?>
 	</div><!-- .single-featured-image-header -->
 
-	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'version_8' ); ?></a>
 
 	<header id="masthead" class="site-header">
 		<?php get_template_part( 'sidebar-templates/sidebar', 'header' ); ?>

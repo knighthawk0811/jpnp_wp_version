@@ -402,10 +402,6 @@ textarea {
 	line-height: 1.5;
 }
 
-h1, h2, h3, h4, h5, h6 {
-	clear: both;
-}
-
 p {
 	margin-bottom: 1.5em;
 }
@@ -656,7 +652,7 @@ a:hover, a:active {
 	position: absolute;
 	top: 100%;
 	left: -999em;
-	z-index: 99999;
+	z-index: 900;
 }
 
 .main-navigation ul ul ul {
@@ -999,22 +995,19 @@ object {
     padding:0;
 }
 .vip-tabular-container .tab-nav li {
-	float:left;
-	
     list-style:none inside none;
 }
 .vip-tabular-container .tab-content {
-    display:inline-block;
     position:relative;
     width:100%;
 
-    overflow:hidden;
     transition: opacity 750ms ease;
 }
 .vip-tabular-container .tab-content.hide {
     max-height:0px;
     position:absolute;
-    
+
+    overflow:hidden;
     opacity:0;
 }
 .vip-tabular-container .tab-content.hide * {
@@ -1024,6 +1017,7 @@ object {
     max-height:1000em;
     position:relative;
 
+    overflow:visible;
     opacity:1;
 }
 .vip-tabular-container .tab-content.active * {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Right Sidebar
+ * Template Name: Both Sidebars
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
@@ -8,10 +8,11 @@
  */
 
 //add class to body
-version_8_body_classes( 'sidebar-2' );
+version_8_body_classes( 'sidebar-1 sidebar-2' );
 get_header();
 ?>
 	<div id="primary" class="content-area">
+		<?php get_template_part( 'sidebar-templates/sidebar', 'left' ); ?>
 		<main id="main" class="site-main">
 
 		<?php

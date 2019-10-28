@@ -1,19 +1,20 @@
 <?php
 /**
- * Template Name: Right Sidebar
+ * Template Name: Sertoma Main
+ * The template for displaying events pages *
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * @package version_8_child
+ * @package version_8
  */
 
 //add class to body
-version_8_body_classes( 'sidebar-2' );
+version_8_body_add_class( 'sertoma-main' );
+
 get_header();
 ?>
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main">
-
 		<?php
 		while ( have_posts() ) :
 			the_post();
@@ -29,7 +30,6 @@ get_header();
 		?>
 
 		</main><!-- #main -->
-		<?php get_template_part( 'sidebar-templates/sidebar', 'right' ); ?>
 	</div><!-- #primary -->
 
 <?php
