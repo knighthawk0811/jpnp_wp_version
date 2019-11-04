@@ -595,7 +595,7 @@ class version_8_plugin_include_post_by
 	        }
 
 	        //display content
-	        $output .= '<div class="' . get_category( $cat )->slug . '">';
+	        $output .= '<div class="include-post-by ' . get_category( $cat )->slug . '">';
 	        if(is_array( $post_array ) && count( $post_array ) > 0)
 	        {
 	            foreach( $post_array as $item )

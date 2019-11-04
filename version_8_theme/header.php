@@ -23,7 +23,7 @@
 		jQuery(document).ready(function(){
 			//side-nav and modal slide
 			//ON and OFF
-			jQuery("#modal-main-container #modal-button").click(function(event){
+			jQuery("#modal-button a").click(function(event){
 				jQuery("body").toggleClass( "modal-main-toggle-on" );
 			});
 			//secondary OFF
@@ -36,7 +36,6 @@
 
 <body <?php body_class(); ?>>
 <a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'version_8' ); ?></a>
-
 <div id="modal-main-shade"></div>
 <div id="modal-main-container">
 	<div id="modal-bg"></div>
@@ -53,8 +52,9 @@
 		get_template_part( 'sidebar-templates/sidebar', 'modal-2' );
 	?>
 	</div>
-	<div id="modal-button">MENU<span class="toggle-closed"><i class="material-icons md-48">menu</i></span><span class="toggle-open"><i class="material-icons md-48">close</i></span></div>
 </div>
+<div id="modal-button">MENU<a class="toggle-closed"><i class="material-icons md-48">menu</i></a><a class="toggle-open"><i class="material-icons md-48">close</i></a></div>
+
 
 <div id="page" class="site">
 	<div class="single-featured-image-header">

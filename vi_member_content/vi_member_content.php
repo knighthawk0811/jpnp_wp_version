@@ -1,12 +1,13 @@
 <?php
 /*
-Plugin Name: VI Plugin: Member Content
+Plugin Name: VI: Member Content
 Plugin URI: https://neathawk.com/2019/plugin-member-content/
 Description: A collection of generic functions that separate content by visitor/member/ member of type
 Version: 9.1.191028
 Author: Joseph Neathawk
 Author URI: http://Neathawk.com
 License: GNU General Public License v2 or later
+* Text Domain: vi-member-content
 */
 if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
