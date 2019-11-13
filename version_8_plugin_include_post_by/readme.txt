@@ -3,7 +3,7 @@ Contributors: knighthawk0811
 Tags: get, params, shortcode, vars
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 0.1.181213
+Version: 0.3.191113
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,6 +15,12 @@ Version 8 Plugin: Include Post By - provides your pages and posts with shortcode
 
 
 == Changelog ==
+
+= 0.3.191113 =
+* Added the custom class entry field that will place a class name in the wrapper element
+
+= 0.3.191007 =
+* added the baility for the display input field to actually cause the output to be in that order
 
 = 0.2.181219 =
 * fixed bug in include-post-by-id where display data was being cached between multiple executions

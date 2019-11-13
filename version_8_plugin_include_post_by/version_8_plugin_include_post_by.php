@@ -3,7 +3,7 @@
 Plugin Name: Version 8 Plugin: Include Post By
 Plugin URI: http://neathawk.us
 Description: A collection of shortcodes to include posts inside other posts, etc
-Version: 0.3.191007
+Version: 0.3.191113
 Author: Joseph Neathawk
 Author URI: http://Neathawk.us
 License: GNU General Public License v2 or later
@@ -27,6 +27,7 @@ class version_8_plugin_include_post_by
     [include-post-by-id
 	    id="123"
 	    display="title,meta,thumbnail,content,excerpt,more,footer,all"
+	    class="custom-class-name"
 	    link="true"
 	    more_text="Continue Reading"
     ]
@@ -38,12 +39,13 @@ class version_8_plugin_include_post_by
 
     [include-post-by-cat
         cat="123"
-        order="ASC"
-        orderby="title"
+        order="DESC"
+        orderby="date"
         pageinate=true
         perpage="5"
         offset="0"
 	    display="title,meta,thumbnail,content,excerpt,more,footer,all"
+	    class="custom-class-name"
 	    link="true"
         more_text="Continue Reading"
     ]
@@ -54,6 +56,7 @@ class version_8_plugin_include_post_by
 	    perpage = items per page
 	    offset = how many to skip, useful if you are combining multiple of these
 	    display = from include-post-by-id
+	    class= custom-class-name used in the wrapper element
 	    link = from include-post-by-id
 	    more_text = from include-post-by-id
 	//*/
@@ -370,7 +373,14 @@ class version_8_plugin_include_post_by
 	    $output = '';
 
 	    //get input
-	    extract( shortcode_atts( array( 'id' => NULL,'display' => 'all', 'link' => true, 'more_text' => 'Continue Reading' ), $attr ) );
+	    extract( shortcode_atts( array(
+	    	'id' => NULL,
+	    	'display' => 'all',
+	    	'link' => true,
+	    	'class' => '',
+	    	'more_text' => 'Continue Reading'
+	    ), $attr ) );
+
 	    //remove spaces, and build array
 	    $display_option_input = explode(',', str_replace(' ', '', $display));
 
@@ -415,7 +425,7 @@ class version_8_plugin_include_post_by
 	                begin the output
 	                ***********************/
 
-        			echo( '<div class="article">' );
+        			echo( '<div class="article include-post-by ' . $class . '">' );
 
 	                //do each display in the order in which it was given by the user
 				    foreach( $display_option_input as $key => &$value )
@@ -505,6 +515,7 @@ class version_8_plugin_include_post_by
 	    	'perpage' => 5,
 	    	'offset' => 0,
 	    	'display' => 'all',
+	    	'class' => '',
 	    	'link' => true,
 	    	'more_text' => 'Continue Reading'
 	    ), $attr ) );
@@ -595,7 +606,7 @@ class version_8_plugin_include_post_by
 	        }
 
 	        //display content
-	        $output .= '<div class="include-post-by ' . get_category( $cat )->slug . '">';
+	        $output .= '<div class="include-post-by ' . get_category( $cat )->slug . ' ' . $class . '">';
 	        if(is_array( $post_array ) && count( $post_array ) > 0)
 	        {
 	            foreach( $post_array as $item )
