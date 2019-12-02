@@ -3,7 +3,7 @@
 Plugin Name: Version 8 Plugin: Include Post By
 Plugin URI: http://neathawk.us
 Description: A collection of shortcodes to include posts inside other posts, etc
-Version: 0.3.191113
+Version: 0.3.191125
 Author: Joseph Neathawk
 Author URI: http://Neathawk.us
 License: GNU General Public License v2 or later
@@ -47,7 +47,7 @@ class version_8_plugin_include_post_by
 	    display="title,meta,thumbnail,content,excerpt,more,footer,all"
 	    class="custom-class-name"
 	    link="true"
-        more_text="Continue Reading"
+        moretext="Continue Reading"
     ]
 	    cat = category to be shown
 	    order = sort order
@@ -58,7 +58,7 @@ class version_8_plugin_include_post_by
 	    display = from include-post-by-id
 	    class= custom-class-name used in the wrapper element
 	    link = from include-post-by-id
-	    more_text = from include-post-by-id
+	    moretext = from include-post-by-id
 	//*/
 
     /*--------------------------------------------------------------
@@ -80,15 +80,18 @@ class version_8_plugin_include_post_by
 	/**
 	 * return the thumbnail URL as a string
 	 *
-	 * @version 0.1.181213
+	 * @version 0.3.191125
 	 * @since 0.1.181213
+	 * @todo custom ID is not returning the post properly for some reason.
+	 *		result is going to the current page/post after returning.
+	 *		following procedures then have the wrong post data
 	 */
 	private static function get_thumbnail_url($id = null)
 	{
 		//return value
 		$the_post_thumbnail_url = '';
 
-		if($id == null)
+		if(true || $id == null)//always do this until it gets fixed
 		{
 			// no new loop
 			global $post;
@@ -186,18 +189,18 @@ class version_8_plugin_include_post_by
 	 * @version 0.3.191007
 	 * @since 0.3.191007
 	 */
-	private static function get_thumbnail($link = true)
+	private static function get_thumbnail($id = NULL, $link = true, $class = '')
 	{
         if( $link )
         {
             echo( '<a class="post-thumbnail" href="' . esc_url( get_permalink() ) . '" >' );
-            echo( ' ' . version_8_plugin_include_post_by::get_thumbnail_tag($id) );
+            echo( ' ' . version_8_plugin_include_post_by::get_thumbnail_tag($id, $class) );
             echo( '</a>' );
         }
         else
         {
             echo( '<div class="post-thumbnail">' );
-            echo( ' ' . version_8_plugin_include_post_by::get_thumbnail_tag($id) );
+            echo( ' ' . version_8_plugin_include_post_by::get_thumbnail_tag($id, $class) );
             echo( '</div>' );
         }
         //gotta fix things after getting the thumbnail
@@ -378,17 +381,13 @@ class version_8_plugin_include_post_by
 	    	'display' => 'all',
 	    	'link' => true,
 	    	'class' => '',
-	    	'more_text' => 'Continue Reading'
+	    	'moretext' => 'Continue Reading'
 	    ), $attr ) );
 
 	    //remove spaces, and build array
 	    $display_option_input = explode(',', str_replace(' ', '', $display));
 
-	    if( !empty( sanitize_text_field( $more_text ) ) )
-	    {
-	    	$more == true;
-	    	$more_text = sanitize_text_field( $more_text );
-	    }
+	    $more_text = sanitize_text_field( $moretext );
 
 	    //backward capability
 	    foreach( $display_option_input as $key => &$value )
@@ -397,9 +396,6 @@ class version_8_plugin_include_post_by
 	        {
 	            case 'link':
 	                $link = true;
-	                break;
-	            case 'more':
-	                $more = true;
 	                break;
 	        }
 	    }
@@ -439,7 +435,7 @@ class version_8_plugin_include_post_by
 				                version_8_plugin_include_post_by::get_meta();
 				                break;
 				            case 'thumbnail':
-				                version_8_plugin_include_post_by::get_thumbnail();
+				                version_8_plugin_include_post_by::get_thumbnail($id, $link, $class);
 				                break;
 				            case 'content':
 				                version_8_plugin_include_post_by::get_content();
@@ -457,7 +453,7 @@ class version_8_plugin_include_post_by
 				            	//default ordering
 				                version_8_plugin_include_post_by::get_title($link);
 				                version_8_plugin_include_post_by::get_meta();
-				                version_8_plugin_include_post_by::get_thumbnail();
+				                version_8_plugin_include_post_by::get_thumbnail($id, $link, $class);
 				                version_8_plugin_include_post_by::get_content();
 				                version_8_plugin_include_post_by::get_footer();
 				                break;
@@ -469,6 +465,10 @@ class version_8_plugin_include_post_by
 				    }
 
         			echo( '</div>' );//article
+
+        			//echo( ' <div style="display:none;">' );
+        			//var_dump( $display_option_input );
+        			//echo( '</div>');
 
 
 	                /***********************
@@ -517,7 +517,7 @@ class version_8_plugin_include_post_by
 	    	'display' => 'all',
 	    	'class' => '',
 	    	'link' => true,
-	    	'more_text' => 'Continue Reading'
+	    	'moretext' => 'Continue Reading'
 	    ), $attr ) );
 
 
@@ -569,6 +569,9 @@ class version_8_plugin_include_post_by
 	            $page_current = 1;
 	        }
 
+	    	$class = sanitize_text_field( $class );
+	    	$class = get_category( $cat )->slug . ' ' . $class;
+
 	        //count all posts
 	        $post_count = 0;
 	        $transient_name = 'v8_' . md5( $cat . $perpage . $order . $orderby ) . '_c';
@@ -606,7 +609,7 @@ class version_8_plugin_include_post_by
 	        }
 
 	        //display content
-	        $output .= '<div class="include-post-by ' . get_category( $cat )->slug . ' ' . $class . '">';
+        	$output .= '<div class="include-post-by ' . $class . '">';
 	        if(is_array( $post_array ) && count( $post_array ) > 0)
 	        {
 	            foreach( $post_array as $item )
@@ -615,8 +618,9 @@ class version_8_plugin_include_post_by
 	                $args = array(
 	                    'id'       =>"$item->ID",
 	                    'display'   =>"$display",
-	                    'more_text'   =>"$more_text",
-	                    'link'   =>"$link"
+	                    'moretext'   =>"$moretext",
+	                    'link'   =>"$link",
+	                    'class' => "$class"
 	                    );
 	                $output .= version_8_plugin_include_post_by::include_post_by_id( $args );
 	            }
@@ -710,6 +714,7 @@ class version_8_plugin_include_post_by
 	            }
 	        }
 	        $output .= '</div>';//close the category div tag
+
 	    }
 	    else
 	    {

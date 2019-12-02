@@ -16,6 +16,9 @@ Version 8 Plugin: Include Post By - provides your pages and posts with shortcode
 
 == Changelog ==
 
+= 0.3.191125 =
+* Fixing the 'thumbnail' and 'more' functions
+
 = 0.3.191113 =
 * Added the custom class entry field that will place a class name in the wrapper element
 
