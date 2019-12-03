@@ -3,7 +3,7 @@
 Plugin Name: VI: Member Content
 Plugin URI: https://neathawk.com/2019/plugin-member-content/
 Description: A collection of generic functions that separate content by visitor/member/ member of type
-Version: 9.1.191028
+Version: 9.1.191203
 Author: Joseph Neathawk
 Author URI: http://Neathawk.com
 License: GNU General Public License v2 or later
