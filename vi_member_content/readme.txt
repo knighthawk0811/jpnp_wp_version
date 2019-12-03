@@ -37,7 +37,7 @@ List of available shortcodes:
 	[/vi-member]
 
 * publish content only visible by logged-in visitors of a certian role/ability
-	vi-[member type="editor"]
+	[vi-member type="editor"]
 	your content
 	[/vi-member]
 
@@ -50,6 +50,10 @@ List of available shortcodes:
 
 
 == Changelog ==
+
+= 9.1.191203 =
+* Fixed bug: missing parameter
+* Edit: replaced !is_feed initial requirement with is_user_logged_in
 
 = 9.1.191028 =
 * Fixed role/ability separation
