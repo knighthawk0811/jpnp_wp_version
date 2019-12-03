@@ -98,8 +98,8 @@ class vi_plugin_member_content {
         $ability = explode(",", $type);
         $access_allowed = false;
 
-        //not NULL and also not in any feeds
-        if ( !is_null( $content ) && !is_feed() )
+        //not NULL and user is at least logged in
+        if ( !is_null( $content ) && is_user_logged_in() )
         {
             //targetted users get this content
             foreach( $ability as $item )
