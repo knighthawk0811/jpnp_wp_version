@@ -4,7 +4,7 @@ Donate link:
 Tags:
 Requires at least: ?
 Tested up to: 5.2
-Version: 9.1.191028
+Version: 9.1.191203
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
