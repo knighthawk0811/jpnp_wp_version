@@ -27,11 +27,11 @@ class vi_plugin_member_content {
     # Instructions
     --------------------------------------------------------------*/
     //SEE README
-       
+
     /*--------------------------------------------------------------
     # Reusable Functions
     --------------------------------------------------------------*/
-    
+
 
     /**
      * display content to logged OUT users only
@@ -43,8 +43,8 @@ class vi_plugin_member_content {
      * @since 9.1.1028
      * @return true/false
      */
-    private static function is_user_in_role( $user_id, $role  ) 
-    {           
+    private static function is_user_in_role( $user_id, $role  )
+    {
         $user = get_userdata( $user_id );
         $role_array = empty( $user ) ? array() : $user->roles;
         return in_array( $role, $role_array );
@@ -109,7 +109,7 @@ class vi_plugin_member_content {
                     //ACTION
                     $access_allowed = true;
                 }
-                else if( self::is_user_in_role( $item ) || current_user_can( $item ) )
+                else if( self::is_user_in_role( get_current_user_id(), $item ) || current_user_can( $item ) )
                 {
                     //ACTION
                     $access_allowed = true;
