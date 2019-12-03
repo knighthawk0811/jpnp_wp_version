@@ -1,4 +1,4 @@
-=== Version 8 Plugin: Member Content ===
+=== VI: Member Content ===
 Contributors: Knighthawk
 Donate link:
 Tags:
@@ -12,9 +12,9 @@ Site Specific Functions
 
 == Description ==
 
-Allows you to place content for different users on the same post/page
-Separated by logged in/out
-Separated by user role or ability
+Allows you to place content intended for different users on the same post/page
+Content for logged in/out users
+Content separated by user role/ability
 
 See Installation for a list of Shortcodes
 
@@ -23,29 +23,29 @@ See Installation for a list of Shortcodes
 List of available shortcodes:
 
 * publish content only visible by non-logged-in visitors
-	[visitor]
+	[vi-visitor]
 	your content
-	[/visitor]
+	[/vi-visitor]
 
 * publish content only visible by logged-in visitors
-	[member]
+	[vi-member]
 	your content
-	[/member]
+	[/vi-member]
 
-	[member type="any"]
+	[vi-member type="any"]
 	your content
-	[/member]
+	[/vi-member]
 
 * publish content only visible by logged-in visitors of a certian role/ability
-	[member type="editor"]
+	vi-[member type="editor"]
 	your content
-	[/member]
+	[/vi-member]
 
 	comma separated list of roles/abilities
 	(user needs only one of these)
-	[member type="subscriber, editor, custom_ability"]
+	[vi-member type="subscriber, editor, custom_ability"]
 	your content
-	[/member]
+	[/vi-member]
 
 
 
