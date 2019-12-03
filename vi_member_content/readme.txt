@@ -3,7 +3,7 @@ Contributors: Knighthawk
 Donate link:
 Tags:
 Requires at least: ?
-Tested up to: 5.2
+Tested up to: 5.3
 Version: 9.1.191203
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
