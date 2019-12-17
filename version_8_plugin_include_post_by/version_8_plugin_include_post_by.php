@@ -112,7 +112,8 @@ class version_8_plugin_include_post_by
 					//no thumbnail set, then grab the first image
 					ob_start();
 					ob_end_clean();
-					$output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $query2->post->post_content, $matches);
+					$matches = array();
+					$output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches);
 					$the_post_thumbnail_url = $matches[1][0];
 
 					//set a default image inside the theme folder
@@ -152,6 +153,7 @@ class version_8_plugin_include_post_by
 							//no thumbnail set, then grab the first image
 							ob_start();
 							ob_end_clean();
+							$matches = array();
 							$output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $query2->post->post_content, $matches);
 							$the_post_thumbnail_url = $matches[1][0];
 
@@ -460,7 +462,7 @@ class version_8_plugin_include_post_by
 				            default:
 				                //any other values are garbage in
 				                $value = null;
-				                unset($display_option[$key]);
+				                unset($display_option_input[$key]);
 				        }
 				    }
 
@@ -507,7 +509,7 @@ class version_8_plugin_include_post_by
 	    //*/
 
 	    $output = '';
-	    extract( shortcode_atts( array(
+	    $input_array =  shortcode_atts( array(
 	    	'cat' => NULL,
 	    	'order' => 'DESC',
 	    	'orderby' => 'date',
@@ -518,7 +520,9 @@ class version_8_plugin_include_post_by
 	    	'class' => '',
 	    	'link' => true,
 	    	'moretext' => 'Continue Reading'
-	    ), $attr ) );
+	    ), $attr );
+		$intput_string = implode($input_array);
+	    extract( $input_array );
 
 
 	    if ( !is_null( $cat ) && ( is_numeric( $cat ) || preg_match( '/^[0-9,]+$/', $cat ) ) && !is_feed() )
@@ -574,7 +578,7 @@ class version_8_plugin_include_post_by
 
 	        //count all posts
 	        $post_count = 0;
-	        $transient_name = 'v8_' . md5( $cat . $perpage . $order . $orderby ) . '_c';
+	        $transient_name = 'v8_' . md5( $intput_string ) . '_c';
 	        if( false === ( $post_count = get_transient( $transient_name ) ) )
 	        {
 	            // It wasn't there, so regenerate the data and save the transient
@@ -591,7 +595,7 @@ class version_8_plugin_include_post_by
 	            set_transient( $transient_name, $post_count, 10 * MINUTE_IN_SECONDS );
 	        }
 	        //get content for just the current page of posts
-	        $transient_name = 'v8_' . md5( $cat . $perpage . $order . $orderby ) . '_' . $page_current;
+	        $transient_name = 'v8_' . md5( $intput_string ) . '_' . $page_current;
 	        if( false === ( $post_array = get_transient( $transient_name ) ) )
 	        {
 	            // It wasn't there, so regenerate the data and save the transient
