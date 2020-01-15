@@ -4,7 +4,7 @@ Donate link:
 Tags:
 Requires at least: ?
 Tested up to: 5.3
-Version: 9.1.191203
+Version: 9.1.200115
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -50,6 +50,10 @@ List of available shortcodes:
 
 
 == Changelog ==
+
+= 9.1.200115 =
+* Fixed bug: potential for empty string in foreach
+* Edit: moved check if $content is null earlier to skip doing extra work
 
 = 9.1.191203 =
 * Fixed bug: missing parameter

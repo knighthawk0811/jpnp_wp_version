@@ -3,7 +3,7 @@
 Plugin Name: VI: Member Content
 Plugin URI: https://neathawk.com/2019/plugin-member-content/
 Description: A collection of generic functions that separate content by visitor/member/ member of type
-Version: 9.1.191203
+Version: 9.1.200115
 Author: Joseph Neathawk
 Author URI: http://Neathawk.com
 License: GNU General Public License v2 or later
@@ -86,33 +86,43 @@ class vi_plugin_member_content {
      * may include any roles/abillities as well, displaying content to different roles
      *
      * @link
-     * @version 9.1.1028
+     * @version 9.1.200115
      * @since 0.1.181213
      */
     public static function member_content( $attr, $content = null )
     {
-
-        extract( shortcode_atts( array( 'type' => 'read' ), $attr ) );
-        //remove spaces
-        $type = str_replace(" ", "", $type);
-        $ability = explode(",", $type);
+        //default is no access
         $access_allowed = false;
 
-        //not NULL and user is at least logged in
-        if ( !is_null( $content ) && is_user_logged_in() )
+        if ( !is_null( $content ) )
         {
-            //targetted users get this content
-            foreach( $ability as $item )
+            extract( shortcode_atts( array( 'type' => 'read' ), $attr ) );
+            //remove spaces
+            $type = str_replace(" ", "", $type);
+            $ability = explode(",", $type);
+
+            //make absolutely sure $ability isn't empty
+            if( !is_array($ability) )
             {
-                if( strtolower($item) === 'any' )
+                $ability[] = 'read';
+            }
+
+            //not NULL and user is at least logged in
+            if ( is_user_logged_in() )
+            {
+                //targetted users get this content
+                foreach( $ability as $item )
                 {
-                    //ACTION
-                    $access_allowed = true;
-                }
-                else if( self::is_user_in_role( get_current_user_id(), $item ) || current_user_can( $item ) )
-                {
-                    //ACTION
-                    $access_allowed = true;
+                    if( strtolower($item) === 'any' )
+                    {
+                        //ACTION
+                        $access_allowed = true;
+                    }
+                    else if( self::is_user_in_role( get_current_user_id(), $item ) || current_user_can( $item ) )
+                    {
+                        //ACTION
+                        $access_allowed = true;
+                    }
                 }
             }
         }
