@@ -164,7 +164,7 @@ function version_8_widgets_init() {
 		'name'          => esc_html__( 'Footer - 2', 'version_8_child' ),
 		'id'            => 'sidebar-footer-2',
 		'description'   => esc_html__( 'After the menu.', 'version_8_child' ),
-		'before_widget' => '<section id="sidebar-footer-2" class="widget %1$s %2$s">',
+		'before_widget' => '<section class="widget %1$s %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widget-title">',
 		'after_title'   => '</h3>',
