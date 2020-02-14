@@ -14,6 +14,8 @@ $version_8_theme_default_value = array(
     'header_background' => '#cccccc',
     'header_background_toggle' => 'true',
     'header_font_color' => '#000000',
+    'content_background' => '#cccccc',
+    'content_background_toggle' => 'true',
     'footer_background' => '#cccccc',
     'footer_background_toggle' => 'false',
     'footer_font_color' => '#000000',
@@ -205,8 +207,8 @@ function version_8_customize_register( $wp_customize )
 	) );
 	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'header_image_control',
 	   array(
-	      'label' => __( 'Header Image (Default)' ),
-	      'description' => esc_html__( 'Select a default image to use in the header. A unique image can be set as the featured image for individual pages and posts.' ),
+	      'label' => __( 'Header Image' ),
+	      'description' => esc_html__( 'Select an image to use in the header.' ),
 		  'section' => 'local_custom_section', // Required, core or custom.
 		  'settings' => 'header_image'
 	   )
@@ -225,6 +227,52 @@ function version_8_customize_register( $wp_customize )
 			'section' => 'local_custom_section', // Required, core or custom.
 			'settings' => 'header_font_color'
 		)
+	) );
+
+/*--------------------------------------------------------------
+# Content
+--------------------------------------------------------------*/
+	//Content background color
+	$wp_customize->add_setting('content_background', array(
+		'capability' => 'edit_theme_options',
+		'default' => $version_8_theme_default_value['content_background'],
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'content_background_control',
+		array(
+			'priority' => 10, // Within the section.
+			'label' => __( 'Content Background Color' ),
+			'description' => __( 'The background color of the Content, when there is no image' ),
+			'section' => 'local_custom_section', // Required, core or custom.
+			'settings' => 'content_background'
+		)
+	) );
+	//Content background toggle on/off
+	$wp_customize->add_setting('content_background_toggle', array(
+		'capability' => 'edit_theme_options',
+		'default' => $version_8_theme_default_value['content_background_toggle'],
+	) );
+	$wp_customize->add_control( 'content_background_toggle_control',
+		array(
+			'priority' => 10, // Within the section.
+			'label' => __( 'Content Background Toggle' ),
+			'type' => 'checkbox',
+			'description' => __( 'Make the Content background clear?' ),
+			'section' => 'local_custom_section', // Required, core or custom.
+			'settings' => 'content_background_toggle'
+		)
+	);
+	//Content image
+	$wp_customize->add_setting( 'content_image', array(
+	      //default
+	) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'content_image_control',
+	   array(
+	      'label' => __( 'Content Image (Default)' ),
+	      'description' => esc_html__( 'Select a default image to use in the Content. A unique image can be set as the featured image for individual pages and posts.' ),
+		  'section' => 'local_custom_section', // Required, core or custom.
+		  'settings' => 'content_image'
+	   )
 	) );
 
 
@@ -512,6 +560,18 @@ function version_8_customize_css()
 		{
 			$masthead_bg = 'background:none';
 		}
+		$masthead_bg_img = 'background-image:none';
+		if( get_theme_mod( 'header_image', '0' ) != '0' ) :
+				$masthead_bg_img =  'background-image:url("' . get_theme_mod( 'header_image', '0' ) . '")';
+			else :
+				//do nothing
+			endif;
+
+		$content_bg = 'background-color:' . version_8_get_customizer_value('content_background');
+		if(	'false' == version_8_get_customizer_value('content_background_toggle') )
+		{
+			$content_bg = 'background:none';
+		}
 
 		$colophon_bg = 'background-color:' . version_8_get_customizer_value('footer_background');
 		if(	'false' == version_8_get_customizer_value('footer_background_toggle') )
@@ -547,6 +607,7 @@ function version_8_customize_css()
 					color: <?php echo version_8_get_customizer_value('header_font_color'); ?>;
 
 					<?php echo( $masthead_bg ); ?>;
+					<?php echo( $masthead_bg_img . ';' ); ?>
 
 				}
 				#colophon{

@@ -10,5 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <?php if ( is_active_sidebar( 'sidebar-footer' ) ) : ?>
+    <div id="sidebar-footer-1">
 	<?php dynamic_sidebar( 'sidebar-footer' ); ?>
+</div>
 <?php endif; ?>
