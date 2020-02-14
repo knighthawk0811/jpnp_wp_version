@@ -613,7 +613,7 @@ class version_8_plugin_include_post_by
 	        }
 
 	        //display content
-        	$output .= '<div class="include-post-by ' . $class . '">';
+        	$output .= '<div class="include-post-by-container ' . $class . '">';
 	        if(is_array( $post_array ) && count( $post_array ) > 0)
 	        {
 	            foreach( $post_array as $item )
@@ -633,6 +633,8 @@ class version_8_plugin_include_post_by
 				//pageination
 	            if( $pageinate )
 	            {
+	            	$output .= '<div class="paginate-container">';
+
 	                //paginate link back to previous/newer content
 	                if( $page_current > 1 )
 	                {
@@ -646,7 +648,7 @@ class version_8_plugin_include_post_by
                 		{
                 			$url_var .= $page_previous;
                 		}
-	                    $output .= '<a style="clear:left;float:left;" href="' . esc_url( get_permalink() ) . $url_var . '" title="Previous Page">Previous Page</a>';
+	                    $output .= '<a class="previous" style="clear:left;float:left;" href="' . esc_url( get_permalink() ) . $url_var . '" title="Previous Page">Previous Page</a>';
 	                }
 	                //paginate link to next/older content
 	                if( count( $post_array ) == $perpage )
@@ -670,13 +672,13 @@ class version_8_plugin_include_post_by
 	                    $count = count( $post_array_next );
 	                    if( count( $count ) > 0 )
 	                    {
-	                        $output .= '<a style="clear:right;float:right;" href="' . esc_url( get_permalink() ) . '?pn=' . ( $page_current + 1 ) . '" title="Next Page">Next Page</a>';
+	                        $output .= '<a class="next" style="clear:right;float:right;" href="' . esc_url( get_permalink() ) . '?pn=' . ( $page_current + 1 ) . '" title="Next Page">Next Page</a>';
 	                    }
 	                }
 	                //paginate page numbers
 	                if( $post_count > $perpage )
 	                {
-	                    $output .= '<div style="height:40px; margin:0 auto; position:relative; width:220px; text-align:center;">';
+	                    $output .= '<div class="page-number" style="height:40px; margin:0 auto; position:relative; width:220px; text-align:center;">';
 	                    $page_count = intval( ceil( $post_count / $perpage ) );
 	                    $i = 1;
 	                    $step = 0;
@@ -713,8 +715,9 @@ class version_8_plugin_include_post_by
 	                            $output .= '<a style="display:inline-block; margin:3px; min-width:20px; padding:0 3px; background:rgba(0,0,0,0.25); ' . $link_extra_style . '" href="' . esc_url(get_permalink()) . '?pn=' . $i . '" title="Page ' . $i . '">' . $i . '</a>';
 	                        }
 	                    }
-	                    $output .= '</div>';
+	                    $output .= '</div>';//page-number
 	                }
+	                $output .= '</div>';//pageinate-conteiner
 	            }
 	        }
 	        $output .= '</div>';//close the category div tag
