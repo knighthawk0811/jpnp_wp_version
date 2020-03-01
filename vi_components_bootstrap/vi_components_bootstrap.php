@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: VI: Bootstrap Components
+Plugin Name: VI: Components Bootstrap
 Plugin URI: http://neathawk.us
 Description: Just include the Bootstrap Components, on the public facing side of the website, nothing more
 Version: 9.1.191204
@@ -17,6 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Add Bootstrap components
  *
  * @link https://getbootstrap.com/docs/4.1/getting-started/introduction/
+ * @link https://developer.wordpress.org/reference/functions/wp_enqueue_script/
+ * @link https://developer.wordpress.org/reference/functions/wp_enqueue_style/
  * @version 9.1.191204
  * @since 9.1.191204
  */

@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: VI: jQuery Components
+Plugin Name: VI: Components jQuery
 Plugin URI: http://neathawk.us
 Description: Just include the jQuery Components, on the public facing side of the website, nothing more
 Version: 9.1.191212
@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @link https://developers.google.com/speed/libraries/
  * @link https://developer.wordpress.org/reference/functions/wp_enqueue_script/
+ * @link https://developer.wordpress.org/reference/functions/wp_enqueue_style/
  * @version 9.1.191212
  * @since 9.1.191212
  */

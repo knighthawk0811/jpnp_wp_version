@@ -34,7 +34,7 @@ class version_8_plugin_include_post_by
 	    id = post to be shown
 	    display = display options CSV, order counts
 	    link = whether the title/thubmnail are links to the post
-	    more_text = edit the text of the read-more link
+	    moretext = edit the text of the read-more link
 
 
     [include-post-by-cat

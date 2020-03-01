@@ -1,4 +1,4 @@
-=== VI: jQuery Components ===
+=== VI: Components jQuery ===
 Contributors: Knighthawk
 Donate link:
 Tags:
