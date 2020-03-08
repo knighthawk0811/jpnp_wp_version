@@ -114,7 +114,10 @@ class version_8_plugin_include_post_by
 					ob_end_clean();
 					$matches = array();
 					$output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches);
-					$the_post_thumbnail_url = $matches[1][0];
+					if( isset($matches[1][0]) )
+					{
+						$the_post_thumbnail_url = $matches[1][0];
+					}
 
 					//set a default image inside the theme folder
 					if(empty($the_post_thumbnail_url))
