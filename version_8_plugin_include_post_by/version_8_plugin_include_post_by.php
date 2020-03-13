@@ -29,7 +29,7 @@ class version_8_plugin_include_post_by
 	    display="title,meta,thumbnail,content,excerpt,more,footer,all"
 	    class="custom-class-name"
 	    link="true"
-	    more_text="Continue Reading"
+	    moretext="Continue Reading"
     ]
 	    id = post to be shown
 	    display = display options CSV, order counts
@@ -46,6 +46,7 @@ class version_8_plugin_include_post_by
         offset="0"
 	    display="title,meta,thumbnail,content,excerpt,more,footer,all"
 	    class="custom-class-name"
+	    container="custom-class-name"
 	    link="true"
         moretext="Continue Reading"
     ]
@@ -56,7 +57,8 @@ class version_8_plugin_include_post_by
 	    perpage = items per page
 	    offset = how many to skip, useful if you are combining multiple of these
 	    display = from include-post-by-id
-	    class= custom-class-name used in the wrapper element
+	    class= custom-class-name used in the internal element
+	    container= custom-class-name used in the wrapper element
 	    link = from include-post-by-id
 	    moretext = from include-post-by-id
 	//*/
@@ -521,6 +523,7 @@ class version_8_plugin_include_post_by
 	    	'offset' => 0,
 	    	'display' => 'all',
 	    	'class' => '',
+	    	'container' => '',
 	    	'link' => true,
 	    	'moretext' => 'Continue Reading'
 	    ), $attr );
@@ -579,6 +582,9 @@ class version_8_plugin_include_post_by
 	    	$class = sanitize_text_field( $class );
 	    	$class = get_category( $cat )->slug . ' ' . $class;
 
+	    	$container = sanitize_text_field( $container );
+	    	$container = get_category( $cat )->slug . ' ' . $container;
+
 	        //count all posts
 	        $post_count = 0;
 	        $transient_name = 'v8_' . md5( $intput_string ) . '_c';
@@ -616,7 +622,7 @@ class version_8_plugin_include_post_by
 	        }
 
 	        //display content
-        	$output .= '<div class="include-post-by-container ' . $class . '">';
+        	$output .= '<div class="include-post-by-container ' . $container . '">';
 	        if(is_array( $post_array ) && count( $post_array ) > 0)
 	        {
 	            foreach( $post_array as $item )
