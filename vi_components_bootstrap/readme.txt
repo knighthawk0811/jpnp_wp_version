@@ -17,5 +17,9 @@ Just include the Bootstrap Components, on the public facing side of the website,
 
 == Changelog ==
 
+= 9.1.200310 =
+* added priority of 5
+Effor to to be bumped earlier so that the theme style will have a chance to override naturally.
+
 = 9.1.191204 =
 * FPL v9
