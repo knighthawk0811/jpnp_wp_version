@@ -9,13 +9,14 @@
  * Adds custom classes to the array of body classes.
  *
  * @link https://codex.wordpress.org/Plugin_API/Filter_Reference/body_class
- * @version 8.3.1908
+ * @version 8.3.2003
  * @since 8.3.1904
  * @uses version_8_body_add_class
  */
 if ( ! function_exists( 'version_8_body_classes' ) ) :
 function version_8_body_classes( $classes = null ) {
 
+	//must be array
 	if(!is_array( $classes ))
 	{
 		$temp = explode(' ', $classes);
@@ -47,8 +48,11 @@ endif;
 /**
  * Adds dynamic classes to the array for body classes.
  *
+ * call before the header, static variable will ensure viability when the header calls the body_class action/filter
+ * version_8_body_add_class( 'home-page' );
+ *
  * @link https://wordpress.stackexchange.com/a/48683
- * @version 8.3.1908
+ * @version 8.3.2003
  * @since 8.3.1908
  */
 if ( ! function_exists( 'version_8_body_add_class' ) ) :
@@ -56,6 +60,7 @@ function version_8_body_add_class( $input = null ) {
 
 	static $version_8_body_add_class_array = array();
 
+	//must be an array so we can merge them.
 	if(!is_array( $input ))
 	{
 		$temp = explode(' ', $input);

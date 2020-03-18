@@ -8,10 +8,10 @@
 
 /**
 * limit access to content and display an error message
-* 
-* TODO: combine with member content plugin
 *
-* @link 
+* TODO: combine with the cutomizer for post ids
+*
+* @link
 * @version 8.3.1906
 * @since 8.3.1906
 */
@@ -42,7 +42,7 @@ function version_8_view_access($level = 0)
 }
 endif;
 
- 
+
 
 /**
  * Translates a number to a short alphanumeric version
@@ -79,7 +79,7 @@ if ( ! function_exists( 'version_8_url_short' ) ) :
 		{
 			$padding = 8;
 		}
-	
+
 		//will reshuffle the $index using the $pass_key
 		if($pass_key !== null)
 		{
@@ -90,10 +90,10 @@ if ( ! function_exists( 'version_8_url_short' ) ) :
 			}//*/
 			//split $index string into array of single characters
 			$i = str_split($index,1);
-	
+
 			$pass_hash = hash('sha256',$pass_key);
 			$pass_hash = (strlen($pass_hash) < strlen($index) ? hash('sha512', $pass_key) : $pass_hash);
-	
+
 			//* classic version required to keep $i and $p the same length
 			for ($n = 0; $n < strlen($index); $n++)
 			{
@@ -101,30 +101,30 @@ if ( ! function_exists( 'version_8_url_short' ) ) :
 			}//*/
 			//split $pass_hash string into array of single characters
 			//$p = str_split($pass_hash,1);
-	
+
 			//sort $p descending, and also sort $i in the corresponding order
 			//(every sort change made in $p will be made in $i and $i will not be in desc order afterward)
 			array_multisort($p, SORT_DESC, $i);
 			//put the re-arranged $i back into the $index
 			$index = implode($i);
 		}
-	
+
 		if($decode)
 		{
 			//DECODE
 			// Digital number  <<--  alphabet letter code
 			$len = strlen($input) - 1;
-	
+
 			for ($t = $len; $t >= 0; $t--)
 			{
 				$bcp = bcpow($base, $len - $t);
 				$output = $output + strpos($index, substr($input, $t, 1)) * $bcp;
 			}
-	
+
 			if (is_numeric($padding))
 			{
 				$padding--;
-	
+
 				if ($padding > 0)
 				{
 					$output -= pow($base, $padding);
@@ -138,13 +138,13 @@ if ( ! function_exists( 'version_8_url_short' ) ) :
 			if (is_numeric($padding))
 			{
 				$padding--;
-	
+
 				if ($padding > 0)
 				{
 					$input += pow($base, $padding);
 				}
 			}
-	
+
 			for ($t = ($input != 0 ? floor(log($input, $base)) : 0); $t >= 0; $t--)
 			{
 				$bcp = bcpow($base, $t);
@@ -153,9 +153,8 @@ if ( ! function_exists( 'version_8_url_short' ) ) :
 				$input  = $input - ($a * $bcp);
 			}
 		}
-	
+
 		  return $output;
 	}
 	endif;
-	
-	
+

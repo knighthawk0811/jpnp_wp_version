@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @link https://www.bootstrapcdn.com/fontawesome/
  * @link https://developer.wordpress.org/reference/functions/wp_enqueue_script/
  * @link https://developer.wordpress.org/reference/functions/wp_enqueue_style/
+ * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
  * @version 9.1.200310
  * @since 9.1.200220
  */

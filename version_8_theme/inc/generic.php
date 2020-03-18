@@ -82,40 +82,6 @@ function version_8_var_dump_return($mixed = NULL)
 endif;
 
 
-/***********************
-Google Material Icons
-***********************/
-/**
- * REGISTER SCRIPTS AND STYLES
- *
- * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
- * @link http://google.github.io/material-design-icons/
- * @version 8.3.1908
- * @since 8.3.1908
- */
-if ( ! function_exists( 'version_8_register_marterial_icon_scripts' ) ) :
-function version_8_register_marterial_icon_scripts() {
-
-	wp_register_style( 'version_8-material_icon_style', 'https://fonts.googleapis.com/icon?family=Material+Icons', NULL , NULL , 'all' );
-
-}
-add_action( 'init', 'version_8_register_marterial_icon_scripts' );
-endif;
-/**
- * ENQUEUE SCRIPTS AND STYLES
- *
- * @link https://developer.wordpress.org/themes/basics/including-css-javascript/#stylesheets
- * @link http://google.github.io/material-design-icons/
- * @version 8.3.1908
- * @since 8.3.1908
- *
- */
-if ( ! function_exists( 'version_8_enqueue_marterial_icon_scripts' ) ) :
-function version_8_enqueue_marterial_icon_scripts() {
-	wp_enqueue_style( 'version_8-material_icon_style' );
-}
-add_action( 'wp_enqueue_scripts', 'version_8_enqueue_marterial_icon_scripts' );
-endif;
 
 
 /***********************
