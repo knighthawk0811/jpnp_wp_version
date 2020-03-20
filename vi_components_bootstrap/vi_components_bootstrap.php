@@ -30,5 +30,5 @@ function version_8_load_bootstrap_components() {
     wp_enqueue_script( 'bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array('jquery'), '4.3.1', true );
 }
 //prioritize above default so that it is more likely to be overridden naturally in the theme
-add_action( 'wp_enqueue_scripts', 'version_8_load_bootstrap_components' 5 );
+add_action( 'wp_enqueue_scripts', 'version_8_load_bootstrap_components', 5 );
 endif;

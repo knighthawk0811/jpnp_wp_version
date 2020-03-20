@@ -30,5 +30,5 @@ function version_8_load_material_icon_components() {
     wp_enqueue_style( 'version_8-material_icon_style', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), '3.0.1', 'all' );
 }
 //prioritize above default so that it is more likely to be overridden naturally in the theme
-add_action( 'wp_enqueue_scripts', 'version_8_load_material_icon_components' 5 );
+add_action( 'wp_enqueue_scripts', 'version_8_load_material_icon_components', 5 );
 endif;

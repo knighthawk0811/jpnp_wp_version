@@ -30,5 +30,5 @@ function version_8_load_fontawesome_components() {
     //wp_enqueue_style( 'fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), '4.7.0', false );
 }
 //prioritize above default so that it is more likely to be overridden naturally in the theme
-add_action( 'wp_enqueue_scripts', 'version_8_load_fontawesome_components' 5 );
+add_action( 'wp_enqueue_scripts', 'version_8_load_fontawesome_components', 5 );
 endif;
