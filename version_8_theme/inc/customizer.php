@@ -6,8 +6,20 @@
  */
 
 $version_8_theme_default_value = array(
+    'body_bg_color' => 'color_bg_w',
+    'body_text_color' => 'color_text_b',
+    'modal_bg_color' => 'color_bg_1',
+    'modal_text_color' => 'color_text_1',
     'modal_background_trans' => '75',
+    'header_bg_color' => 'color_bg_2',
+    'header_text_color' => 'color_text_2',
     'header_image' => '0',
+    'content_bg_color' => 'color_bg_3',
+    'content_text_color' => 'color_text_3',
+    'content_image' => '0',
+    'footer_bg_color' => 'color_bg_4',
+    'footer_text_color' => 'color_text_4',
+    'footer_image' => '0',
     'version_8_custom_style_duration' => '48',
     'color_bg_1' => '#eeeeee',
     'color_bg_2' => '#dddddd',
@@ -78,13 +90,21 @@ function version_8_customize_register( $wp_customize )
 		'panel' => 'version_8_custom_panel',
 	) );
 
-	$wp_customize->add_section( 'version_8_custom_section_modal', array(
-		'title' => __('Modal Settings' ),
-		'description' => __( 'Settings for the Modal here.' ),
+	$wp_customize->add_section( 'version_8_custom_section_body', array(
+		'title' => __('Body Settings' ),
+		'description' => __( 'Settings for the Main page here.' ),
 		'priority' => 160,
 		'capability' => 'edit_theme_options',
 		'panel' => 'version_8_custom_panel',
 	) );
+
+    $wp_customize->add_section( 'version_8_custom_section_modal', array(
+        'title' => __('Modal Settings' ),
+        'description' => __( 'Settings for the Modal here.' ),
+        'priority' => 160,
+        'capability' => 'edit_theme_options',
+        'panel' => 'version_8_custom_panel',
+    ) );
 
 	$wp_customize->add_section( 'version_8_custom_section_header', array(
 		'title' => __('Header Settings' ),
@@ -118,7 +138,8 @@ function version_8_customize_register( $wp_customize )
 	$wp_customize->add_setting('version_8_custom_style_duration', array(
 		'capability' => 'edit_theme_options',
 		'default' => $version_8_theme_default_value['version_8_custom_style_duration'],
-      	'sanitize_callback' => 'sanitize_text_field'
+      	'sanitize_callback' => 'sanitize_text_field',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
 	) );
 	$wp_customize->add_control( 'version_8_custom_style_duration_control',
 		array(
@@ -144,6 +165,7 @@ function version_8_customize_register( $wp_customize )
 		'capability' => 'edit_theme_options',
 		'default' => $version_8_theme_default_value['color_bg_1'],
 		'sanitize_callback' => 'sanitize_hex_color',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'color_bg_1_control',
 		array(
@@ -159,6 +181,7 @@ function version_8_customize_register( $wp_customize )
 		'capability' => 'edit_theme_options',
 		'default' => $version_8_theme_default_value['color_bg_2'],
 		'sanitize_callback' => 'sanitize_hex_color',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'color_bg_2_control',
 		array(
@@ -174,6 +197,7 @@ function version_8_customize_register( $wp_customize )
 		'capability' => 'edit_theme_options',
 		'default' => $version_8_theme_default_value['color_bg_3'],
 		'sanitize_callback' => 'sanitize_hex_color',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'color_bg_3_control',
 		array(
@@ -189,6 +213,7 @@ function version_8_customize_register( $wp_customize )
 		'capability' => 'edit_theme_options',
 		'default' => $version_8_theme_default_value['color_bg_4'],
 		'sanitize_callback' => 'sanitize_hex_color',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'color_bg_4_control',
 		array(
@@ -206,6 +231,7 @@ function version_8_customize_register( $wp_customize )
 		'capability' => 'edit_theme_options',
 		'default' => $version_8_theme_default_value['color_text_1'],
 		'sanitize_callback' => 'sanitize_hex_color',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'color_text_1_control',
 		array(
@@ -221,6 +247,7 @@ function version_8_customize_register( $wp_customize )
 		'capability' => 'edit_theme_options',
 		'default' => $version_8_theme_default_value['color_text_2'],
 		'sanitize_callback' => 'sanitize_hex_color',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'color_text_2_control',
 		array(
@@ -236,6 +263,7 @@ function version_8_customize_register( $wp_customize )
 		'capability' => 'edit_theme_options',
 		'default' => $version_8_theme_default_value['color_text_3'],
 		'sanitize_callback' => 'sanitize_hex_color',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'color_text_3_control',
 		array(
@@ -251,6 +279,7 @@ function version_8_customize_register( $wp_customize )
 		'capability' => 'edit_theme_options',
 		'default' => $version_8_theme_default_value['color_text_4'],
 		'sanitize_callback' => 'sanitize_hex_color',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize,  'color_text_4_control',
 		array(
@@ -264,14 +293,75 @@ function version_8_customize_register( $wp_customize )
 
 
 /*--------------------------------------------------------------
+# Body
+--------------------------------------------------------------*/
+$wp_customize->add_setting( 'body_bg_color',
+    array(
+        'default' => 'color_bg_w',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'version_8_sanitize_radio',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
+    )
+);
+$wp_customize->add_control( 'body_bg_color',
+   array(
+      'label' => __( 'Body Background Color' ),
+      'description' => esc_html__( 'Choose from your 4 pre-selected background colors' ),
+      'section' => 'version_8_custom_section_body',
+      'priority' => 10, // Optional. Order priority to load the control. Default: 10
+      'type' => 'radio',
+      'capability' => 'edit_theme_options', // Optional. Default: 'edit_theme_options'
+      'choices' => array( // Optional.
+         'color_bg_1' => __( 'Color 1' ),
+         'color_bg_2' => __( 'Color 2' ),
+         'color_bg_3' => __( 'Color 3' ),
+         'color_bg_4' => __( 'Color 4' ),
+         'color_bg_b' => __( 'Color Black' ),
+         'color_bg_w' => __( 'Color White' ),
+         'color_bg_c' => __( 'Color Clear' )
+      )
+   )
+);
+
+$wp_customize->add_setting( 'body_text_color',
+    array(
+        'default' => 'color_text_b',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'version_8_sanitize_radio',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
+    )
+);
+$wp_customize->add_control( 'body_text_color',
+   array(
+      'label' => __( 'Body Text Color' ),
+      'description' => esc_html__( 'Choose from your 4 pre-selected text colors' ),
+      'section' => 'version_8_custom_section_body',
+      'priority' => 10, // Optional. Order priority to load the control. Default: 10
+      'type' => 'radio',
+      'capability' => 'edit_theme_options', // Optional. Default: 'edit_theme_options'
+      'choices' => array( // Optional.
+         'color_text_1' => __( 'Color 1' ),
+         'color_text_2' => __( 'Color 2' ),
+         'color_text_3' => __( 'Color 3' ),
+         'color_text_4' => __( 'Color 4' ),
+         'color_text_b' => __( 'Color Black' ),
+         'color_text_w' => __( 'Color White' ),
+         'color_text_c' => __( 'Color Clear' )
+      )
+   )
+);
+
+
+/*--------------------------------------------------------------
 # Modal
 --------------------------------------------------------------*/
 $wp_customize->add_setting( 'modal_bg_color',
-   array(
-      'default' => 'color_bg_1',
-      'transport' => 'refresh',
-      'sanitize_callback' => 'version_8_sanitize_radio'
-   )
+    array(
+        'default' => 'color_bg_1',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'version_8_sanitize_radio',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
+    )
 );
 $wp_customize->add_control( 'modal_bg_color',
    array(
@@ -295,30 +385,32 @@ $wp_customize->add_control( 'modal_bg_color',
 
 //modal background transparency
 $wp_customize->add_setting('modal_background_trans', array(
-	'capability' => 'edit_theme_options',
-	'default' => $version_8_theme_default_value['modal_background_trans'],
+    'capability' => 'edit_theme_options',
+    'default' => $version_8_theme_default_value['modal_background_trans'],
+    'validate_callback' => 'version_8_custom_style_update_last_changed'
 ) );
 $wp_customize->add_control( 'modal_background_trans_control',
-	array(
-		'type' => 'range',
-		'priority' => 10, // Within the section.
-		'label' => __( 'Modal Background Transparency' ),
-		'description' => __( 'The Transparency of the modal area.' ),
-		'section' => 'version_8_custom_section_modal', // Required, core or custom.
-		'settings' => 'modal_background_trans',
-		'input_attrs' => array(
-		    'min' => 0,
-		    'max' => 100,
-		    'step' => 1,)
-	)
+    array(
+        'type' => 'range',
+        'priority' => 10, // Within the section.
+        'label' => __( 'Modal Background Transparency' ),
+        'description' => __( 'The Transparency of the modal area.' ),
+        'section' => 'version_8_custom_section_modal', // Required, core or custom.
+        'settings' => 'modal_background_trans',
+        'input_attrs' => array(
+            'min' => 0,
+            'max' => 100,
+            'step' => 1,)
+    )
 );
 
 $wp_customize->add_setting( 'modal_text_color',
-   array(
-      'default' => 'color_text_1',
-      'transport' => 'refresh',
-      'sanitize_callback' => 'version_8_sanitize_radio'
-   )
+    array(
+        'default' => 'color_text_1',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'version_8_sanitize_radio',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
+    )
 );
 $wp_customize->add_control( 'modal_text_color',
    array(
@@ -344,11 +436,12 @@ $wp_customize->add_control( 'modal_text_color',
 # Header
 --------------------------------------------------------------*/
 $wp_customize->add_setting( 'header_bg_color',
-   array(
-      'default' => 'color_bg_1',
-      'transport' => 'refresh',
-      'sanitize_callback' => 'version_8_sanitize_radio'
-   )
+array(
+    'default' => 'color_bg_2',
+    'transport' => 'refresh',
+    'sanitize_callback' => 'version_8_sanitize_radio',
+    'validate_callback' => 'version_8_custom_style_update_last_changed'
+)
 );
 $wp_customize->add_control( 'header_bg_color',
    array(
@@ -372,7 +465,8 @@ $wp_customize->add_control( 'header_bg_color',
 
 //header image
 $wp_customize->add_setting( 'header_bg_image', array(
-      //default
+    //default
+    'validate_callback' => 'version_8_custom_style_update_last_changed'
 ) );
 $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'header_bg_image_control',
    array(
@@ -384,11 +478,12 @@ $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'head
 ) );
 
 $wp_customize->add_setting( 'header_text_color',
-   array(
-      'default' => 'color_text_1',
-      'transport' => 'refresh',
-      'sanitize_callback' => 'version_8_sanitize_radio'
-   )
+    array(
+        'default' => 'color_text_2',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'version_8_sanitize_radio',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
+    )
 );
 $wp_customize->add_control( 'header_text_color',
    array(
@@ -415,11 +510,12 @@ $wp_customize->add_control( 'header_text_color',
 # Content
 --------------------------------------------------------------*/
 $wp_customize->add_setting( 'content_bg_color',
-   array(
-      'default' => 'color_bg_1',
-      'transport' => 'refresh',
-      'sanitize_callback' => 'version_8_sanitize_radio'
-   )
+    array(
+        'default' => 'color_bg_3',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'version_8_sanitize_radio',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
+    )
 );
 $wp_customize->add_control( 'content_bg_color',
    array(
@@ -443,7 +539,8 @@ $wp_customize->add_control( 'content_bg_color',
 
 //content image
 $wp_customize->add_setting( 'content_bg_image', array(
-      //default
+    //default
+    'validate_callback' => 'version_8_custom_style_update_last_changed'
 ) );
 $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'content_bg_image_control',
    array(
@@ -455,11 +552,12 @@ $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'cont
 ) );
 
 $wp_customize->add_setting( 'content_text_color',
-   array(
-      'default' => 'color_text_1',
-      'transport' => 'refresh',
-      'sanitize_callback' => 'version_8_sanitize_radio'
-   )
+    array(
+        'default' => 'color_text_3',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'version_8_sanitize_radio',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
+    )
 );
 $wp_customize->add_control( 'content_text_color',
    array(
@@ -486,11 +584,12 @@ $wp_customize->add_control( 'content_text_color',
 # Footer
 --------------------------------------------------------------*/
 $wp_customize->add_setting( 'footer_bg_color',
-   array(
-      'default' => 'color_bg_1',
-      'transport' => 'refresh',
-      'sanitize_callback' => 'version_8_sanitize_radio'
-   )
+    array(
+        'default' => 'color_bg_4',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'version_8_sanitize_radio',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
+    )
 );
 $wp_customize->add_control( 'footer_bg_color',
    array(
@@ -514,7 +613,8 @@ $wp_customize->add_control( 'footer_bg_color',
 
 //footer image
 $wp_customize->add_setting( 'footer_bg_image', array(
-      //default
+    //default
+    'validate_callback' => 'version_8_custom_style_update_last_changed'
 ) );
 $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'footer_bg_image_control',
    array(
@@ -526,11 +626,12 @@ $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'foot
 ) );
 
 $wp_customize->add_setting( 'footer_text_color',
-   array(
-      'default' => 'color_text_1',
-      'transport' => 'refresh',
-      'sanitize_callback' => 'version_8_sanitize_radio'
-   )
+    array(
+        'default' => 'color_text_4',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'version_8_sanitize_radio',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
+    )
 );
 $wp_customize->add_control( 'footer_text_color',
    array(
@@ -559,7 +660,8 @@ $wp_customize->add_control( 'footer_text_color',
 	$wp_customize->add_setting('version_8_test_value', array(
 		'capability' => 'edit_theme_options',
 		'default' => version_8_get_customizer_value('header_bg_color'),
-      	'sanitize_callback' => 'sanitize_text_field'
+      	'sanitize_callback' => 'sanitize_text_field',
+        'validate_callback' => 'version_8_custom_style_update_last_changed'
 	) );
 	$wp_customize->add_control( 'version_8_test_value_control',
 		array(
@@ -669,8 +771,7 @@ function version_8_get_customizer_value( $input = '' )
 	$input = sanitize_title($input);
 	$output = get_theme_mod($input, $version_8_theme_default_value[$input]);
 	//force set to default value?
-	set_theme_mod($input, $output);
-
+	//set_theme_mod($input, $output);
 
 	switch($output)
 	{
@@ -700,104 +801,185 @@ endif;
 
 
 /**
+ * update the most recent time that settings were changed
+ *
+ * @link
+ * @version 8.3.2003
+ * @since 8.3.1909
+ */
+if ( ! function_exists( 'version_8_custom_style_update_last_changed' ) ) :
+function version_8_custom_style_update_last_changed( $validity, $value )
+{
+    $today = intval(date('YmdHi'));
+    set_theme_mod('version_8_custom_style_changed', $today);
+
+    return $validity;
+}
+endif;
+
+
+
+/**
  * Load customizer CSS in the wp_head
  * this function should be overridden by the child theme
  *
  * @link
- * @version 8.3.1910
+ * @version 8.3.2003
  * @since 8.3.1906
  */
 if ( ! function_exists( 'version_8_customize_css' ) ) :
 function version_8_customize_css()
 {
-	$today = intval(date('YmdH'));
-	$reset_time = intval(get_theme_mod('version_8_custom_style_time'),$today);
-	$reset_duration = intval(get_theme_mod('version_8_custom_style_duration','01'));
-	//if the file doesn't exist, then force the math to reset
-	if( !file_exists( dirname( __FILE__ ) . '/style_custom.css' ) )
+	$today = intval(date('YmdHi'));
+	$last_change = intval( get_theme_mod( 'version_8_custom_style_changed', $today ) );
+    $last_update = intval( get_theme_mod( 'version_8_custom_style_updated', $today ) );
+
+	//if the file doesn't exist, then force it to be reset
+	if( !file_exists( get_stylesheet_directory() . '/style_customize_' . get_current_blog_id() . '.css' ) )
 	{
-	    set_theme_mod('version_8_custom_style_time', $today);
-		$reset_duration = -999;
+	    set_theme_mod('version_8_custom_style_changed', $today);
+        set_theme_mod('version_8_custom_style_updated', $today - 1);
 	}
 
-	//echo($today . '-' . $reset_time . '-' . ($today - $reset_time) . '-' . $reset_duration);
-	if(( $today - $reset_time ) > $reset_duration)
+    //if the last change is more recent than the last time this was updated
+	if( $last_change > $last_update)
 	{
-
-		$masthead_bg = 'background-color:' . version_8_get_customizer_value('header_background');
-		if(	'false' == version_8_get_customizer_value('header_background_toggle') )
-		{
-			$masthead_bg = 'background:none';
-		}
-		$masthead_bg_img = 'background-image:none';
-		if( get_theme_mod( 'header_image', '0' ) != '0' ) :
-				$masthead_bg_img =  'background-image:url("' . get_theme_mod( 'header_image', '0' ) . '")';
-			else :
-				//do nothing
-			endif;
-
-
-		?>
-			<style type="text/css">
-				#modal-main-container #modal-bg{
-					opacity:<?php echo( intval(version_8_get_customizer_value('modal_background_trans')) / 100); ?>;
-				}
-
-				#masthead{
-					<?php echo( $masthead_bg ); ?>;
-					<?php echo( $masthead_bg_img . ';' ); ?>
-				}
-
-				.color-bg-1 {
-					background-color: <?php echo version_8_get_customizer_value('color_bg_1'); ?>;
-				}
-				.color-bg-2 {
-					background-color: <?php echo version_8_get_customizer_value('color_bg_2'); ?>;
-				}
-				.color-bg-3 {
-					background-color: <?php echo version_8_get_customizer_value('color_bg_3'); ?>;
-				}
-				.color-bg-4 {
-					background-color: <?php echo version_8_get_customizer_value('color_bg_4'); ?>;
-				}
-				.color-bg-b {
-					background-color: <?php echo version_8_get_customizer_value('color_bg_b'); ?>;
-				}
-				.color-bg-w {
-					background-color: <?php echo version_8_get_customizer_value('color_bg_w'); ?>;
-				}
-				.color-bg-c {
-					background-color: <?php echo version_8_get_customizer_value('color_bg_c'); ?>;
-				}
-				.color-text-1 {
-					color: <?php echo version_8_get_customizer_value('color_text_1'); ?>;
-				}
-				.color-text-2 {
-					color: <?php echo version_8_get_customizer_value('color_text_2'); ?>;
-				}
-				.color-text-3 {
-					color: <?php echo version_8_get_customizer_value('color_text_3'); ?>;
-				}
-				.color-text-4 {
-					color: <?php echo version_8_get_customizer_value('color_text_4'); ?>;
-				}
-				.color-text-b {
-					color: <?php echo version_8_get_customizer_value('color_text_b'); ?>;
-				}
-				.color-text-w {
-					color: <?php echo version_8_get_customizer_value('color_text_w'); ?>;
-				}
-				.color-text-c {
-					color: <?php echo version_8_get_customizer_value('color_text_c'); ?>;
-				}
-			</style>
-		<?php
-	    $content = ob_get_contents();
-	    ob_end_clean();
-	    file_put_contents ( get_stylesheet_directory() . '/style_custom.css' , $content);
-	    set_theme_mod('version_8_custom_style_time', $today);
+        //get the default output
+	    $content = version_8_customize_css_default();
+        //write it to the file
+	    file_put_contents ( get_stylesheet_directory() . '/style_customize_' . get_current_blog_id() . '.css' , $content );
+        //update the time
+        set_theme_mod( 'version_8_custom_style_updated', $today );
 
 	}
 }
 add_action( 'wp_head', 'version_8_customize_css');
+endif;
+
+
+/**
+ * output the default style
+ * can/should be used by the child theme rather than rewriting all of this.
+ * only returns the output buffer content, does not actually output anything.
+ *
+ * @link
+ * @version 8.3.2003
+ * @since 8.3.2003
+ */
+if ( ! function_exists( 'version_8_customize_css_default' ) ) :
+function version_8_customize_css_default()
+{
+
+    $masthead_bg_img = 'background-image:none';
+    if( get_theme_mod( 'header_bg_image', '0' ) != '0' )
+    {
+        $masthead_bg_img =  'background-image:url("' . get_theme_mod( 'header_bg_image', '0' ) . '")';
+    }
+
+    $content_bg_img = 'background-image:none';
+    if( get_theme_mod( 'header_bg_image', '0' ) != '0' )
+    {
+        $content_bg_img =  'background-image:url("' . get_theme_mod( 'content_bg_image', '0' ) . '")';
+    }
+
+    $footer_bg_img = 'background-image:none';
+    if( get_theme_mod( 'header_bg_image', '0' ) != '0' )
+    {
+        $footer_bg_img =  'background-image:url("' . get_theme_mod( 'footer_bg_image', '0' ) . '")';
+    }
+
+    //start capturing the output
+    ob_start();
+    ?>
+        <style type="text/css">
+            body {
+                color: <?php echo version_8_get_customizer_value('body_text_color'); ?>;
+
+                background-color: <?php echo version_8_get_customizer_value('body_bg_color'); ?>;
+            }
+
+
+            #modal-main-container {
+                color: <?php echo version_8_get_customizer_value('modal_text_color'); ?>;
+            }
+            #modal-main-container #modal-bg {
+                background-color: <?php echo version_8_get_customizer_value('modal_bg_color'); ?>;
+                opacity:<?php echo( intval(version_8_get_customizer_value('modal_background_trans')) / 100); ?>;
+            }
+
+
+            #masthead {
+                color: <?php echo version_8_get_customizer_value('header_text_color'); ?>;
+
+                background-color: <?php echo version_8_get_customizer_value('header_bg_color'); ?>;
+                <?php echo( $masthead_bg_img . ';' ); ?>
+            }
+
+            #content {
+                color: <?php echo version_8_get_customizer_value('content_text_color'); ?>;
+
+                background-color: <?php echo version_8_get_customizer_value('content_bg_color'); ?>;
+                <?php echo( $content_bg_img . ';' ); ?>
+            }
+
+            #colophon {
+                color: <?php echo version_8_get_customizer_value('footer_text_color'); ?>;
+
+                background-color: <?php echo version_8_get_customizer_value('footer_bg_color'); ?>;
+                <?php echo( $footer_bg_img . ';' ); ?>
+            }
+
+
+
+
+
+            .color-bg-1 {
+                background-color: <?php echo version_8_get_customizer_value('color_bg_1'); ?>;
+            }
+            .color-bg-2 {
+                background-color: <?php echo version_8_get_customizer_value('color_bg_2'); ?>;
+            }
+            .color-bg-3 {
+                background-color: <?php echo version_8_get_customizer_value('color_bg_3'); ?>;
+            }
+            .color-bg-4 {
+                background-color: <?php echo version_8_get_customizer_value('color_bg_4'); ?>;
+            }
+            .color-bg-b {
+                background-color: <?php echo version_8_get_customizer_value('color_bg_b'); ?>;
+            }
+            .color-bg-w {
+                background-color: <?php echo version_8_get_customizer_value('color_bg_w'); ?>;
+            }
+            .color-bg-c {
+                background-color: <?php echo version_8_get_customizer_value('color_bg_c'); ?>;
+            }
+            .color-text-1 {
+                color: <?php echo version_8_get_customizer_value('color_text_1'); ?>;
+            }
+            .color-text-2 {
+                color: <?php echo version_8_get_customizer_value('color_text_2'); ?>;
+            }
+            .color-text-3 {
+                color: <?php echo version_8_get_customizer_value('color_text_3'); ?>;
+            }
+            .color-text-4 {
+                color: <?php echo version_8_get_customizer_value('color_text_4'); ?>;
+            }
+            .color-text-b {
+                color: <?php echo version_8_get_customizer_value('color_text_b'); ?>;
+            }
+            .color-text-w {
+                color: <?php echo version_8_get_customizer_value('color_text_w'); ?>;
+            }
+            .color-text-c {
+                color: <?php echo version_8_get_customizer_value('color_text_c'); ?>;
+            }
+        </style>
+    <?php
+    $content = ob_get_contents();
+    ob_end_clean();
+
+    return $content;
+}
 endif;

@@ -78,9 +78,27 @@ if ( ! function_exists( 'version_8_setup' ) ) :
 			'flex-width'  => true,
 			'flex-height' => true,
 		) );
+
+
+		//custom image sizes
+		add_theme_support( 'crop-portrait' );
+		add_image_size( 'crop-portrait', 480, 854, array( 'center', 'center' ) );
+		add_theme_support( 'crop-landscape' );
+		add_image_size( 'crop-landscape', 1024, 576, array( 'center', 'center' ) );
+
 	}
 endif;
 add_action( 'after_setup_theme', 'version_8_setup' );
+
+
+// Register the image sizes for use in Add Media modal
+function version_8_custom_image_sizes( $sizes ) {
+    return array_merge( $sizes, array(
+        'crop-portrait' => __( 'Portrait' ),
+        'crop-landscape' => __( 'Landscape' ),
+    ) );
+}
+add_filter( 'image_size_names_choose', 'version_8_custom_image_sizes' );
 
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
@@ -171,7 +189,7 @@ function version_8_widgets_init() {
 	) );
 	register_sidebar( array(
 		'name'          => esc_html__( 'Sidebar Modal - 1', 'version_8_child' ),
-		'id'            => 'sidebar-modal-1',
+		'id'            => 'sidebar-modal',
 		'description'   => esc_html__( 'The modal area. Before the menu.', 'version_8_child' ),
 		'before_widget' => '<section class="widget %1$s %2$s">',
 		'after_widget'  => '</section>',
@@ -209,6 +227,9 @@ function version_8_register_scripts() {
 	wp_register_script( 'version_8-style_foundation', get_template_directory_uri() . '/style.min.css' );
 	wp_register_script( 'version_8-navigation', get_template_directory_uri() . '/js/navigation.js', array(), false, true );
 	wp_register_script( 'version_8-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), false, true );
+	//this custom style sheet is created OTF
+	version_8_customize_css();
+	wp_register_style( 'version_8-style_customize', get_template_directory_uri() . '/style_customize_' . get_current_blog_id() . '.css', 'version_8-style_foundation' , get_theme_mod( 'version_8_custom_style_updated', $today ) , 'all' );
 	//JS (non-AJAX)
 	//included in header
 	//wp_register_script( 'version_8-JS_head', get_template_directory_uri() . '/js/common_head.js', array('jquery'), false, false );
@@ -236,6 +257,8 @@ function version_8_enqueue_scripts() {
 	wp_enqueue_style( 'version_8-style_foundation', get_stylesheet_uri() );
 	wp_enqueue_script( 'version_8-navigation' );
 	wp_enqueue_script( 'version_8-skip-link-focus-fix' );
+	//this custom style sheet is created OTF
+	wp_enqueue_style( 'version_8-style_customize' );
 	//JS (non-AJAX)
 	//included in header
 	//wp_enqueue_script('version_8-JS_head');

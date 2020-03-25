@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <?php if ( is_active_sidebar( 'sidebar-modal' ) ) : ?>
-<div class="sidebar-modal modal-1" id="sidebar-header-2">
+<div class="sidebar-modal modal-1" id="sidebar-modal-1">
 	<?php dynamic_sidebar( 'sidebar-modal' ); ?>
 </div>
 <?php endif; ?>
