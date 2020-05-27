@@ -286,6 +286,7 @@ function version_8_plugin_display_menu($attr)
     return $content;
 }
 add_shortcode( 'vip_display_menu', 'version_8_plugin_display_menu' );
+add_shortcode( 'vip-display-menu', 'version_8_plugin_display_menu' );
 endif;
 
 /**
