@@ -307,10 +307,12 @@ function version_8_plugin_display_menu_multi($attr)
     $blog_id = get_current_blog_id();
     $content = '';
 
-    extract( shortcode_atts( array( 'id' => null, 'sub' => $blog_id), $attr ) );
+    extract( shortcode_atts( array( 'id' => null, 'sub' => $blog_id, 'bs' => false ), $attr ) );
 
     $id = sanitize_title( $id );
     $sub = absint( $sub );
+    if ( $bs === 'true' ) $bs = true;
+    $container_id = 'bs-navbar-collapse-' . $id;
 
     if( ( $sub != $blog_id ) && is_multisite() )
     {
@@ -319,10 +321,41 @@ function version_8_plugin_display_menu_multi($attr)
 
     ob_start();
 
-    if ( is_nav_menu( $id ) ) {
-        wp_nav_menu( array(
-            'menu' => $id,
-        ) );
+    if ( is_nav_menu( $id ) )
+    {
+        if($bs)
+        {
+            ?>
+                <nav  class="vi-navigation navbar navbar-expand-md" role="navigation">
+                <div id="nav-<?php echo($id); ?>">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#<?php echo($container_id); ?>" aria-controls="<?php echo($container_id); ?>" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            <?php
+
+            wp_nav_menu( array(
+                'menu' => $id,
+                'depth'           => 2, // 1 = no dropdowns, 2 = with dropdowns.
+                'container'       => 'div',
+                'container_class' => 'collapse navbar-collapse',
+                'container_id'    => $container_id,
+                'menu_class'      => 'navbar-nav mr-auto',
+                'fallback_cb'     => 'WP_Bootstrap_Navwalker::fallback',
+                'walker'          => new WP_Bootstrap_Navwalker(),
+            ) );
+
+            ?>
+
+                </div>
+                </nav><!-- .vi-navigation -->
+            <?php
+        }
+        else
+        {
+            wp_nav_menu( array(
+                'menu' => $id,
+            ) );
+        }
     }
 
     $content = ob_get_contents();
